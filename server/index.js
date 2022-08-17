@@ -1,12 +1,10 @@
-const express = require('express');
-const server = require('./src/config')
-const { conn } = require("./src/db.js");
+const server = require('./config/config');
+const { conn } = require("./config/db.js");
+require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 
-// server.listen(3000, ()=>{
-//     console.log('server on port 3000')
-// });
-conn.sync({ force: true }).then(() => {
-    server.listen(3001,() => {
-      console.log("Servidor corriendo en el puerto 3001");
-    });
+conn.sync({ force: false }).then(() => {
+  server.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
   });
+});
