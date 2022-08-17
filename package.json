@@ -1,0 +1,27 @@
+{
+  "name": "tbm",
+  "version": "1.0.0",
+  "description": "Solucion para TBM",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brain-espaciocreativo/TBM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brain-espaciocreativo/TBM/issues"
+  },
+  "homepage": "https://github.com/brain-espaciocreativo/TBM#readme",
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1"
+  }
+}
