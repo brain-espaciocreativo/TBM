@@ -3,9 +3,9 @@ const { Sequelize } = require("sequelize");
 
 // console.log(process.env)
 
-const database = 'pokemon'
-const username = 'postgres'
-const password = 'Yoel1234'
+const database = 'j'
+const username = 'j'
+const password = 'j'
 
 const sequelize = new Sequelize(database, username, password, {
   host: 'localhost',
