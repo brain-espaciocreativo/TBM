@@ -1,17 +1,22 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
+const { DataTypes } = require('sequelize');
 
-class News extends Model {}
+const {conn} = require('../config/db.js');
+const Work = require('../models/Work')
 
-News.init({
-  // Model attributes are defined here
+
+
+ const News = conn.define('news', {
+  id: {
+    type:DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   categories: {
     type: DataTypes.STRING,
     allowNull: false
   },
   date: {
     type: DataTypes.DATE
-    // allowNull defaults to true
   },
   description:{
     type: DataTypes.STRING
@@ -20,12 +25,10 @@ News.init({
     type: DataTypes.STRING
   }
 }, {
-  // Other model options go here
-  sequelize, // We need to pass the connection instance
-  modelName: 'News' // We need to choose the model name
-});
+  timestamps: false
+})
 
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
+News.belongsToMany(Work, { through: 'news_work' });
+Work.belongsToMany(News, { through: 'news_work' });
 
-module.exports= News
+module.exports = News;

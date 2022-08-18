@@ -1,18 +1,20 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const Obra = require('./Work');
-const sequelize = new Sequelize('sqlite::memory:');
+const { DataTypes } = require('sequelize');
 
-class User extends Model {}
+const {conn} = require('../config/db.js');
 
-User.init({
-  // Model attributes are defined here
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
+const Work = require('./Work.js');
+
+ const User = conn.define('user', {
+  id: {
+    type:DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
-  lastName: {
+  name:{
     type: DataTypes.STRING
-    // allowNull defaults to true
+  },
+  lasName:{
+    type: DataTypes.STRING
   },
   password:{
     type: DataTypes.STRING
@@ -21,17 +23,15 @@ User.init({
     type: DataTypes.STRING
   },
   phone:{
-    type: DataTypes.NUMBER
+    type: DataTypes.STRING
+  },
+  role:{
+    type: DataTypes.STRING
   }
 }, {
-  // Other model options go here
-  sequelize, // We need to pass the connection instance
-  modelName: 'User' // We need to choose the model name
-});
-
-User.belongsToMany(Obra, {through:'user_work'});
-
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
+  timestamps: false
+})
+User.belongsToMany(Work, { through: 'user_work' });
+Work.belongsToMany(User, { through: 'user_work' });
 
 module.exports = User;

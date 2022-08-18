@@ -1,24 +1,30 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
+const { DataTypes } = require('sequelize');
 
-class Categories extends Model {}
+const {conn} = require('../config/db.js');
+const Work = require('../models/Work')
 
-Categories.init({
-  // Model attributes are defined here
+
+ const Categories = conn.define('categories', {
+  id: {
+    type:DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false
   }
 }, {
-  // Other model options go here
-  sequelize, // We need to pass the connection instance
-  modelName: 'Categories' // We need to choose the model name
-});
-Categorias.belongsToMany(Obras, {through:'categories_works'});
+  timestamps: false
+})
 
-
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
-
-
+Categories.belongsToMany(Work, { through: 'categories_work' });
+Work.belongsToMany(Categories, { through: 'categories_work' });
 module.exports = Categories;
+
+
+
+
+
+
+
