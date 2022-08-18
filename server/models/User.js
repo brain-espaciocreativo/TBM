@@ -13,7 +13,7 @@ const Work = require('./Work.js');
   name:{
     type: DataTypes.STRING
   },
-  lasName:{
+  lastName:{
     type: DataTypes.STRING
   },
   password:{
