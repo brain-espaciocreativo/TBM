@@ -1,5 +1,8 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
+// const User = require('../models/User');
+// const Work = require('../models/Work');
+
 
 
 const database = process.env.DB || 'TBM';
@@ -11,7 +14,8 @@ const sequelize = new Sequelize(database, username, password, {
   host,
   dialect: 'postgres'
 });
-
+// User.belongsToMany(Work, { through: 'user_work' });
+// Work.belongsToMany(User, { through: 'user_work' });
 module.exports = {
   conn: sequelize,
 
