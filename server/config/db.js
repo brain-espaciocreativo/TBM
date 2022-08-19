@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
 
+
 const database = process.env.DB || 'TBM';
 const username = process.env.USERDB || 'postgres';
 const password = process.env.PASSDB || 'postgres';
@@ -13,4 +14,5 @@ const sequelize = new Sequelize(database, username, password, {
 
 module.exports = {
   conn: sequelize,
+
 };
