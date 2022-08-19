@@ -1,5 +1,5 @@
 const getUsers = ()=>{
-    console.log('Hola');
+    return 'Hola';
 }
 
 module.export = { getUsers }
