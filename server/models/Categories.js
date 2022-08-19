@@ -14,5 +14,4 @@ const Categories = (conn) => conn.define('categories', {
   timestamps: false
 });
 
-
 module.exports = Categories;
