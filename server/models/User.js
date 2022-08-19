@@ -1,37 +1,31 @@
 const { DataTypes } = require('sequelize');
 
-const {conn} = require('../config/db.js');
-
-const Work = require('./Work.js');
-
- const User = conn.define('user', {
+const User = (conn) => conn.define('user', {
   id: {
-    type:DataTypes.INTEGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  name:{
+  name: {
     type: DataTypes.STRING
   },
-  lastName:{
+  lastName: {
     type: DataTypes.STRING
   },
-  password:{
+  password: {
     type: DataTypes.STRING
   },
-  email:{
+  email: {
     type: DataTypes.STRING
   },
-  phone:{
+  phone: {
     type: DataTypes.STRING
   },
-  role:{
+  role: {
     type: DataTypes.STRING
-  }
+  },
 }, {
   timestamps: false
-})
-User.belongsToMany(Work, { through: 'user_work' });
-Work.belongsToMany(User, { through: 'user_work' });
+});
 
 module.exports = User;

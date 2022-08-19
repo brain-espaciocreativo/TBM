@@ -1,10 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const {conn} = require('../config/db.js');
-const Work = require('../models/Work')
-
-
- const Categories = conn.define('categories', {
+const Categories = (conn) => conn.define('categories', {
   id: {
     type:DataTypes.INTEGER,
     primaryKey: true,
@@ -16,15 +12,7 @@ const Work = require('../models/Work')
   }
 }, {
   timestamps: false
-})
+});
 
-Categories.belongsToMany(Work, { through: 'categories_work' });
-Work.belongsToMany(Categories, { through: 'categories_work' });
+
 module.exports = Categories;
-
-
-
-
-
-
-

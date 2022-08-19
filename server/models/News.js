@@ -1,34 +1,32 @@
 const { DataTypes } = require('sequelize');
 
-const {conn} = require('../config/db.js');
-const Work = require('../models/Work')
-
-
-
- const News = conn.define('news', {
+const News = (conn) => conn.define('news', {
   id: {
-    type:DataTypes.INTEGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  categories: {
-    type: DataTypes.STRING,
+  categoriesId: {
+    field: 'categories_id',
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  workId: {
+    field: 'work_id',
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   date: {
     type: DataTypes.DATE
   },
-  description:{
+  description: {
     type: DataTypes.STRING
   },
-  video:{
+  video: {
     type: DataTypes.STRING
   }
 }, {
   timestamps: false
-})
-
-News.belongsToMany(Work, { through: 'news_work' });
-Work.belongsToMany(News, { through: 'news_work' });
+});
 
 module.exports = News;

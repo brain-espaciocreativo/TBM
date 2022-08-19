@@ -1,25 +1,27 @@
 const { DataTypes } = require('sequelize');
 
-const Work = (conn) => conn.define('works', {
+const Progress = (conn) => conn.define('progress', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
+    workId: {
+        field: 'work_id',
         type: DataTypes.STRING,
         allowNull: false
     },
-    progress: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+    value: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    novedades: {
+    categoriesId: {
+        field: 'categories_id',
         type: DataTypes.INTEGER,
         allowNull: false,
     }
 }, {
     timestamps: false
-});
+})
 
-module.exports = Work;
+module.exports = Progress;
