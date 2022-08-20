@@ -1,28 +1,11 @@
 const { Router } = require('express');
 const router = Router();
-const User = require('../models/User');
+const userController = require('../controllers/user');
 
-router.get('/', (req, res)=>{
-    try {
-        res.send('Funcionando!!!')
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-router.post('/', (req, res) => {
-    const {name, lastName, password, email, phone, role} = req.body; 
-
-    try {
-        const result = User.create({
-            name, lastName, password, email, phone, role
-        });
-        console.log('este es el body', req.body);
-        res.send(result);
-    } catch (error) {
-        console.log(error);
-    }
-});
-
+router.get('/', userController.all);
+router.get('/:id', userController.showId)
+router.post('/', userController.create);
+router.put('/:id', userController.edit);
+router.delete("/:id", userController.delete);
 
 module.exports = router;
