@@ -9,7 +9,7 @@ const User = (conn) => conn.define('user', {
   name: {
     type: DataTypes.STRING
   },
-  name:{
+  surname:{
     type: DataTypes.STRING
   },
   password: {
