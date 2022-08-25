@@ -1,0 +1,10 @@
+.caja{
+box-shadow: 1px 4px 17px -10px #000000;
+}
+.rol{
+    text-transform: uppercase;
+    font-size: .8rem !important;
+}
+.error{
+    color: red;
+}

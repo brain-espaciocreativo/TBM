@@ -20,26 +20,26 @@ let userController= {
         }
     },
     create: (req, res) => {
-        const {name, lastName, password, email, phone, role} = req.body; 
+        const {name, surname, password, email, phone, role} = req.body; 
+        console.log(req.body);
         try {
-            if(!name || !lastName || !email || !password || !role) throw Error(res.status(402).send("Datos obligatorios"));
+            if(!name || !surname || !email || !password || !role || !phone) throw Error(res.status(402).send("Datos obligatorios"));
             const result = Users.create({
-                name, lastName, password, email, phone, role
+                name, surname, password, email, phone, role
             });
-            console.log('este es el body', req.body);
-            res.send(result);
+            res.send('se ha creado correctamente');
         } catch (error) {
             console.log(error);
         }
     },
     edit:async(req, res)=>{
         const { id } = req.params;
-        const {name, lastName, role, phone, email, password} = req.body;
+        const {name, surname, role, phone, email, password} = req.body;
         try {
-            if(!name || !lastName || !email || !password || !role) throw Error(res.status(402).send("Datos obligatorios"));
+            if(!name || !surname || !email || !password || !role || !phone) throw Error(res.status(402).send("Datos obligatorios"));
             const result = await Users.update({
                 name: name,
-                lastName: lastName,
+                surname: surname,
                 email: email,
                 phone: phone,
                 password: password,

@@ -1,0 +1,9 @@
+.avatar{
+    background: #C62828 !important;
+    color: blue;
+}
+.bg-grid{
+    background-image: url(../../../public/bg.jpg);
+    background-size: cover;
+    background-position: center;
+}
