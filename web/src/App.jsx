@@ -8,8 +8,8 @@ import Dashboard from './container/dashboard/Dashboard';
 import Login from './container/login/Login';
 import Register from './container/register/Register';
 
-function App() {
 
+function App() {
   return (
     <div className="App">
       

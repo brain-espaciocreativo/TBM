@@ -76,7 +76,7 @@ export default function SignUp() {
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'center', 
             justifyContent:'center'
           }}
         >
@@ -215,7 +215,7 @@ export default function SignUp() {
               </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="../login" variant="body2" color="error">
+                <Link href="/" variant="body2" color="error">
                   Ya tenés una cuenta? Iniciá Sesión
                 </Link>
               </Grid>
