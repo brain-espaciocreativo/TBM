@@ -60,6 +60,7 @@ export const updateOneUser = (payload) => {
             dispatch(updateUser());
         })
         .catch((error) => console.log(error))
+<<<<<<< HEAD
     }
 }
 

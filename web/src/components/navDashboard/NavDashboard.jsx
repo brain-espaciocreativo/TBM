@@ -1,6 +1,7 @@
 import React from 'react'
-import { AppBar, Button, Toolbar, Typography, useTheme, useMediaQuery } from '@mui/material/';
+import { AppBar, Button, Grid, IconButton, Tabs, Tab, Toolbar, Typography, Box, useTheme, useMediaQuery } from '@mui/material/';
 import { makeStyles } from '@mui/styles';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import DrawerDashboard from '../drawerDashboard/DrawerDashboard';
 import AppleIcon from '@mui/icons-material/Apple';
@@ -28,14 +29,26 @@ export default function NavDashboard({links}) {
         <AppBar>
             <Toolbar>
             <AppleIcon />
-            <Typography>TBM</Typography>
                 {
                     isMatch ? (
                     <>
+                    <Typography>
+                        TBM
+                    </Typography>
                     <DrawerDashboard links={links}/>
                     </>
                 ) : (
                     <>
+                    <Tabs
+                    indicatorColor='secondary' 
+                    textColor='inherit' 
+                    value={value} 
+                    onChange={(e,value)=>setValue(value)}
+                    >
+                    {links.map((link, index) => (
+                        <Tab key={index} label={link} />
+                    ))}
+                    </Tabs>
                     <Button sx={{marginLeft: 'auto'}} variant='contained'>
                         Login
                     </Button>
@@ -45,6 +58,7 @@ export default function NavDashboard({links}) {
                     </>
                 )}
             </Toolbar>
+            
         </AppBar>
     </div>
   )
