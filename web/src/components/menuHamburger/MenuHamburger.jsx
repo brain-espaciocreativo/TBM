@@ -1,17 +1,13 @@
 import React from 'react'
-import { Divider, Grid, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material/';
+import { Divider, Grid, List, ListItem, ListItemIcon, ListItemText } from '@mui/material/';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
-import { useEffect } from 'react';
 
-export default function NavDashboard2() {
+export default function MenuHamburger() {
 
-    useEffect (()=>{
-        console.log('activado');
-    },[])
   return (
     <>
         <Grid container>

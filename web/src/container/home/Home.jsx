@@ -1,7 +1,5 @@
 import React from 'react'
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux'
-import { getAllUsers } from '../../redux/slices/userSlice';
 import { Button, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material/';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
@@ -9,10 +7,6 @@ import PersonIcon from '@mui/icons-material/Person';
 export default function Home() {
 
     const dispatch = useDispatch();
-
-    useEffect(()=>{
-        dispatch(getAllUsers());
-    },[dispatch]);
 
   return (
     <div>

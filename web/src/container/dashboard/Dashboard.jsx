@@ -4,7 +4,7 @@ import NavDashboard from '../../components/NavDashboard/NavDashboard';
 import { makeStyles } from '@mui/styles';
 import ListUserDashboard from '../../components/listUserDashboard/ListUserDashboard';
 const linksArray = ['Charts', 'Users'];
-import NavDashboard2 from '../../components/navDachboard2/NavDashboard2';
+import MenuHamburger from '../../components/menuHamburger/MenuHamburger';
 
 const useStyle = makeStyles(theme => ({
   btn: {
@@ -34,15 +34,14 @@ export default function Dashboard() {
       <Grid container>
         {
           !isMatch ?  <Grid item xs={3} columns={1}>
-            <NavDashboard2 />
+            <MenuHamburger />
           </Grid> : <p></p>
           }
           <Grid item xs columns={2}>
             <ListUserDashboard />
           </Grid>
         </Grid>
-      
-
+        
     </div>
   )
 };
