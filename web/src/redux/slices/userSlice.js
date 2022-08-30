@@ -15,22 +15,20 @@ export const userSlice = createSlice({
         getOneUser: (state, action) => {
             state.user = action.payload;
         },
-        createUser:(state, action) =>{
-            state.user += action.payload;
+        createUser: (state, action) => {
+            state.list = action.payload;
+            // return {...state, list: [...state.list ,action.payload]}
         },
-        login: (state, action) =>{
-            console.log(action.payload);
-            state.logged = action.payload;
+        updateUser: (state, action) => {
+            state
         },
-        logout: ( state ) =>{
-            state.logged = null;
+        deleteUser : (state, action) => {
+            state
         }
     }
 });
 
-export const { setUserList , createUser , login , logout} = userSlice.actions;
-
-
+export const { setUserList, createUser, updateUser, deleteUser } = userSlice.actions;
 
 export default userSlice.reducer;
 
@@ -38,28 +36,40 @@ export const getAllUsers = () => {
     return (dispatch) => {
         axios('http://localhost:3000/user')
         .then((res) => {
-            dispatch(setUserList(res.data));
+            dispatch(setUserList(res.data.data));
         })
         .catch((error) => console.log(error))
     }
 }
 
-export const createOneUser = (payload) =>{
-    return async(dispatch) =>{
-        await axios.post('http://localhost:3000/user/' , payload )
-        .then((res) =>{
-            dispatch(createUser(res.data));
+export const createOneUser = (payload) => {
+    return async (dispatch) => {
+        await axios.post('http://localhost:3000/user', payload)
+        .then((res) => {
+            dispatch(createUser(res.data))
         })
-        .catch((err) => console.log(err));
+        .catch(error => console.log(error));
     }
 }
 
-   export const loggedUser = (payload) =>{
-       return async(dispatch) => {
-           await axios.post('http://localhost:3000/auth/login', payload)
-           .then( (res) =>{
-               dispatch(login(res.data))
-           })
-           .catch( (err) => console.log(err));
-       }
-   }
+export const updateOneUser = (payload) => {
+    
+    return async (dispatch) => {
+        await axios.put('http://localhost:3000/user/'+payload.id, payload)
+        .then(res => {
+            dispatch(updateUser());
+        })
+        .catch((error) => console.log(error))
+    }
+}
+
+export const deleteOneUser = (payload) => {
+    
+    return async (dispatch) => {
+        await axios.delete('http://localhost:3000/user/'+payload)
+        .then(res => {
+            dispatch(deleteUser());
+        })
+        .catch((error) => console.log(error))
+    }
+}

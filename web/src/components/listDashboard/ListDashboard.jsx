@@ -1,19 +1,12 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { Button, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material/';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import React from 'react';
+import { List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material/';
 import PersonIcon from '@mui/icons-material/Person';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
-export default function Home() {
-
-    const dispatch = useDispatch();
-
+export default function ListDashboard() {
   return (
     <div>
-        
-        <Grid container>
-          <Grid item xs={12} columns={1}>
-          <List component='nav'>
+        <List component='nav'>
             <ListItem button>
                 <ListItemIcon>
                     <BarChartIcon />
@@ -27,9 +20,7 @@ export default function Home() {
                 <ListItemText primary='Usuarios' />
             </ListItem>
             <Divider />
-            </List>
-          </Grid>
-        </Grid>
+        </List>
     </div>
   )
 }
