@@ -3,7 +3,7 @@
     color: blue;
 }
 .bg-grid{
-    background-image: linear-gradient(rgba(0, 0, 0, 0.422),rgba(0, 0, 0, 0.354)), url(../../../public/tmb.png);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.023),rgba(0, 0, 0, 0.028)), url(../../../public/tmb.png);
     background-size: cover;
     background-position: center;
 }
