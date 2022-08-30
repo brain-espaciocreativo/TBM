@@ -1,10 +1,8 @@
 import React from 'react'
-import { AppBar, Button, Grid, IconButton, Tabs, Tab, Toolbar, Typography, Box, useTheme, useMediaQuery } from '@mui/material/';
+import { AppBar, Button,Toolbar, Typography, Box, useTheme, useMediaQuery } from '@mui/material/';
 import { makeStyles } from '@mui/styles';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
 import DrawerDashboard from '../drawerDashboard/DrawerDashboard';
-import AppleIcon from '@mui/icons-material/Apple';
+import './NavDashboard.css';
 
 const useStyle = makeStyles(theme=>({
     offset: theme.mixins.toolbar,
@@ -18,7 +16,6 @@ const useStyle = makeStyles(theme=>({
 
 export default function NavDashboard({links}) {
     const styles = useStyle();
-    const [value, setValue] = useState();
 
     const theme = useTheme();
 
@@ -26,33 +23,20 @@ export default function NavDashboard({links}) {
 
   return (
     <div>
-        <AppBar>
+        <AppBar sx={{backgroundColor:'rgb(160, 7, 7)', height:'90px'}} >
             <Toolbar>
-            <AppleIcon />
+            TBM
                 {
                     isMatch ? (
                     <>
-                    <Typography>
-                        TBM
-                    </Typography>
                     <DrawerDashboard links={links}/>
                     </>
                 ) : (
                     <>
-                    <Tabs
-                    indicatorColor='secondary' 
-                    textColor='inherit' 
-                    value={value} 
-                    onChange={(e,value)=>setValue(value)}
-                    >
-                    {links.map((link, index) => (
-                        <Tab key={index} label={link} />
-                    ))}
-                    </Tabs>
-                    <Button sx={{marginLeft: 'auto'}} variant='contained'>
+                    <Button sx={{marginLeft: 'auto', backgroundColor:'rgb(160, 7, 7)'}} className='button' variant='contained'>
                         Login
                     </Button>
-                    <Button sx={{marginLeft: '10px'}} variant='contained'>
+                    <Button sx={{marginLeft: '10px', backgroundColor:'rgb(160, 7, 7)'}} className='button' variant='contained'>
                         Log out
                     </Button>
                     </>

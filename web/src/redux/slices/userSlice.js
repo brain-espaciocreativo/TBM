@@ -46,7 +46,7 @@ export const createOneUser = (payload) => {
     return async (dispatch) => {
         await axios.post('http://localhost:3000/user', payload)
         .then((res) => {
-            dispatch(createUser(res.data))
+            dispatch(createUser(payload))
         })
         .catch(error => console.log(error));
     }

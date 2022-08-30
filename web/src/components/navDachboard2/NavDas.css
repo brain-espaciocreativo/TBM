@@ -1,0 +1,10 @@
+.boton:hover{
+    box-shadow: 1px 4px 17px -10px #000000;
+    transition: .5s;
+}
+.boton{
+    transition: .5s;
+}
+.icon{
+    font-size: 3rem;
+}

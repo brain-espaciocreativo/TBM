@@ -141,7 +141,7 @@ export default function Login() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="../register" variant="body2" color="error">
+                  <Link href="#" variant="body2" color="error">
                     {"No tenes una cuenta? Registráte"}
                   </Link>
                 </Grid>
