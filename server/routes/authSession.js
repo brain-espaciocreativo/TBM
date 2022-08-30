@@ -26,7 +26,8 @@ authSessionRouter.post('/login', (req, res)=>{
     res.cookie('sessionId', sessionId, {
         httpOnly: true
     });
-    res.send(`Usuario ${user.name} autenticado`);
+    console.log(user);
+    res.status(201).send({data:`Usuario ${guid} autenticado`});
 });
 
 authSessionRouter.get('/profile', (req, res)=>{

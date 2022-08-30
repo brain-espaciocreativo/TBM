@@ -1,4 +1,4 @@
-
+import { useForm } from '../../hooks/useForm';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,11 +28,27 @@ function Copyright(props) {
   );
 }
 
+const initialForm ={
+  email:'',
+  password:''
+}
+const validationsForm = (user) =>{
 
+  let errors = {};
+  let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+
+  if(!user.email.trim()){
+     errors.email = "Campo  requerido*"
+  }else if(!regexEmail.test(user.email.trim())){
+    errors.email="formato inválido";
+  }
+   if(!user.password.trim()){ errors.password = "Campo  requerido*"}
+  return errors;
+}
 export default function Login() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+
+  const {user,err,handleBlur,handleChange,loggedSubmit} = useForm(initialForm, validationsForm)
+
 
   return (
    
@@ -61,18 +77,21 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Ingresar
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Box component="form"  onSubmit={loggedSubmit} sx={{ mt: 3 }}>
               <Box>
               <TextField
                 margin="normal"
                 required
                 fullWidth
+                autoFocus
                 id="email"
                 label="Email"
                 name="email"
+                type="email"
                 autoComplete="email"
-                autoFocus
                 className='input'
+                onChange={handleChange}
+                onBlur={handleBlur}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -80,6 +99,7 @@ export default function Login() {
                   }
                 }}
               />
+              {err.email && <Typography className="error">{err.email}</Typography>}
               <TextField
                 margin="normal"
                 required
@@ -90,6 +110,8 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -97,6 +119,7 @@ export default function Login() {
                   }
                 }}
               />
+              {err.password && <Typography className="error">{err.password}</Typography>}
               </Box>
               <FormControlLabel
                 control={<Checkbox value="remember" color="error" />}

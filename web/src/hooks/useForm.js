@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createOneUser } from '../redux/slices/userSlice';
+import { loggedUser } from '../redux/slices/userSlice';
+import Swal from 'sweetalert2'
 
 
 export const useForm = (initialForm, validationsForm) =>{
     const [ user, setUser] = useState(initialForm);
     const [ err, setErr] = useState({});
+
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -23,11 +28,24 @@ export const useForm = (initialForm, validationsForm) =>{
     const handleSubmit = (e) =>{
         e.preventDefault();
         dispatch(createOneUser(user));
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'USUARIO CREADO',
+            showConfirmButton: false,
+            timer: 1500
+          }).then( () => navigate('/home'))
     }
+     const loggedSubmit = (e) =>{
+         e.preventDefault();
+         dispatch(loggedUser(user))
+     }
 return {
     user,
     err,
     handleBlur,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    loggedSubmit
+    
 }}
