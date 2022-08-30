@@ -5,8 +5,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import { useEffect } from 'react';
 
 export default function NavDashboard2() {
+
+    useEffect (()=>{
+        console.log('activado');
+    },[])
   return (
     <>
         <Grid container>

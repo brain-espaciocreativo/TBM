@@ -1,8 +1,8 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField } from '@mui/material'
 import React, { useEffect } from 'react'
-import { Delete, Edit } from '@mui/icons-material';
+import { DatasetSharp, Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOneUser, getAllUsers } from '../../redux/slices/userSlice';
+import { createOneUser, deleteOneUser, getAllUsers, updateOneUser } from '../../redux/slices/userSlice';
 import { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import Swal from 'sweetalert2'
@@ -38,16 +38,15 @@ export default function ListUserDashboard() {
     email: "",
     phone: "",
     password: "",
-    phone: "",
   });
   const [ editState, setEditState ] = useState({
+    id : "",
     name: "",
     surname: "",
     email: "",
     phone: "",
     role: "",
     password: "",
-    phone: "",
   });
 
   const dispatch = useDispatch();
@@ -62,9 +61,17 @@ export default function ListUserDashboard() {
       setModal(!modal);
     };
 
-    const handleModalEdit = (id) => {
+    const handleModalEdit = (data) => {
       setModalEdit(!modalEdit);
-      console.log(id)
+      setEditState({
+        id: data.id,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        role: data.role,
+        password: data.password,
+      })
     }
 
     const handleCreateUser = (e) => {
@@ -72,21 +79,34 @@ export default function ListUserDashboard() {
       setCreateUserState(state => ({...state, [name]: value}));
     }
 
-    // const selectedUser = (userSelect, case) => {
-    //   setEditState(userSelect);
-    //   // (case==='edit')&&handleModalEdit()
-    // }
+    const handleChangeEdit = (e) => {
+      const { name, value} = e.target;
+      setEditState(state => ({...state, [name]: value}));
+      console.log(editState)
+    }
 
     const createUser = () => {
       dispatch(createOneUser(createUserState));
     }
 
     const editUser = () => {
-      console.log('editado');
+      dispatch(updateOneUser(editState))
+      Swal.fire({
+        title: 'Usuario actualizado!',
+      })
+      handleModalEdit()
     }
 
-    const deleteUser = () => {
-      console.log('borrado')
+    const deleteUser = (id) => {
+      Swal.fire({
+        title: 'Desea eliminar este usuario?',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(deleteOneUser(id));
+          Swal.fire('Eliminado!', '', 'success')}
+      })
     }
 
     const alertDelete = () => {
@@ -123,20 +143,20 @@ export default function ListUserDashboard() {
     const bodyEdit = (
       <div className={styles.modal}>
         <h3>Editar Usuario</h3>
-        <TextField label="Nombre" value={editState&&editState.name} />
+        <TextField label="Nombre" name='name' value={editState.name} onChange={handleChangeEdit}/>
         <br />
-        <TextField label="Apellido" value={editState&&editState.surname} />
+        <TextField label="Apellido" name='surname' value={editState.surname} onChange={handleChangeEdit}/>
         <br />
-        <TextField label="Email" value={editState&&editState.email} />
+        <TextField label="Email" name='email' value={editState.email} onChange={handleChangeEdit}/>
         <br />
-        <TextField label="Contraseña" value={editState&&editState.password} />
+        <TextField label="Contraseña" name='password' value={editState.password} onChange={handleChangeEdit}/>
         <br />
-        <TextField label="Role" value={editState&&editState.role} />
+        <TextField label="Role" name='role' value={editState.role} onChange={handleChangeEdit}/>
         <br />
-        <TextField label="Telefono" value={editState&&editState.phone} />
+        <TextField label="Telefono" name='phone' value={editState.phone} onChange={handleChangeEdit}/>
         <br />
         <div align="right">
-        <Button onClick={e=>console.log(rowData.name)} color='primary'>Aceptar</Button>
+        <Button onClick={editUser} color='primary'>Aceptar</Button>
         <Button onClick={handleModalEdit}>Cancelar</Button>
         </div>
       </div>
@@ -160,7 +180,7 @@ export default function ListUserDashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users ? users.map((e)=>(
+            {users && users.length ? users.map((e)=>(
               <TableRow key={e.id}>
                 <TableCell>{e.name}</TableCell>
                 <TableCell>{e.surname}</TableCell>
@@ -168,8 +188,8 @@ export default function ListUserDashboard() {
                 <TableCell>{e.phone}</TableCell>
                 <TableCell>{e.role}</TableCell>
                 <TableCell>
-                  <Edit onClick={handleModalEdit(e.id)}/>
-                  <Delete onClick={alertDelete(e.id)} />
+                  <Edit onClick={() => handleModalEdit(e)}/>
+                  <Delete onClick={() => deleteUser(e.id)} />
                 </TableCell>
               </TableRow>
             )) : <p>Cargando...</p>}
