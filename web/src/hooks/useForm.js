@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOneUser, getOneUser } from '../redux/slices/userSlice';
@@ -13,6 +13,16 @@ export const useForm = (initialForm, validationsForm) =>{
 
     const dispatch = useDispatch();
     const userSelect = useSelector((state) => state.users.user)
+
+
+    useEffect ( () =>{
+        if(userSelect.role === 'usuario'){
+            navigate('/home')
+        }
+        if(userSelect.role === 'admin'){
+            navigate('/admin')
+        }
+    },[userSelect])
 
     const handleChange = (e) =>{
         const {name, value} = e.target;
@@ -41,13 +51,10 @@ export const useForm = (initialForm, validationsForm) =>{
             //  if(userSelect.role === undefined){
             //     return console.log('usuario no existe');
             //  }
-            if(userSelect.role === 'usuario'){
-                navigate('/home')
-            }
-            if(userSelect.role === 'admin'){
-                navigate('/admin')
-            }
+        console.log(userSelect.role);
     }
+
+
 return {
     user,
     err,
