@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createOneUser } from '../redux/slices/userSlice';
-import { loggedUser } from '../redux/slices/userSlice';
 import Swal from 'sweetalert2'
 
 
@@ -38,7 +37,7 @@ export const useForm = (initialForm, validationsForm) =>{
     }
      const loggedSubmit = (e) =>{
          e.preventDefault();
-         dispatch(loggedUser(user))
+         
      }
 return {
     user,
