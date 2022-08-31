@@ -46,17 +46,16 @@ export default function NavDashboard2() {
             </ListItem>
             <ListItem button className='boton'>
                 <ListItemIcon>
-                    <PersonIcon className='icon' />
-                </ListItemIcon>
-                <ListItemText primary='Usuarios' />
-            </ListItem>
-            <ListItem button className='boton'>
-                <ListItemIcon>
                     <HomeWorkIcon />
                 </ListItemIcon>
                 <ListItemText primary='Obras' />
             </ListItem>
-            
+            <ListItem button className='boton'>
+                <ListItemIcon>
+                    <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary='Usuarios' />
+            </ListItem>
             <ListItem onClick={handleClean} button className='boton'>
                 <ListItemIcon>
                     <LogoutIcon />

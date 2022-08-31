@@ -1,35 +1,38 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { Button, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material/';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import PersonIcon from '@mui/icons-material/Person';
+import React from 'react';
+import { Box, Grid} from '@mui/material/';
+import NavDashboard from '../../components/navDashboard/NavDashboard';
+import { makeStyles } from '@mui/styles';
+import ListUserDashboard from '../../components/listUserDashboard/ListUserDashboard';
+const linksArray = ['Charts', 'Users'];
+import NavDashboard2 from '../../components/navDachboard2/NavDashboard2';
 
-export default function Home() {
+const useStyle = makeStyles({
+  btn: {
+    background: 'black',
+    color: 'white'
+  }
+});
+export default function Dashboard() {
 
-    const dispatch = useDispatch();
+  const styles = useStyle();
 
+  
   return (
     <div>
-        
-        <Grid container>
-          <Grid item xs={12} columns={1}>
-          <List component='nav'>
-            <ListItem button>
-                <ListItemIcon>
-                    <BarChartIcon />
-                </ListItemIcon>
-                <ListItemText primary='Estadisticas' />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <PersonIcon />
-                </ListItemIcon>
-                <ListItemText primary='Usuarios' />
-            </ListItem>
-            <Divider />
-            </List>
+      <NavDashboard 
+      links={linksArray}
+       />
+
+      <h1>Home</h1>
+      <Grid container>
+          <Grid item xs={12} columns={2} sx={{height:'100vh',display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Box>
+              <h1>Proximamente las novedades</h1>
+            </Box>
           </Grid>
         </Grid>
+      
+
     </div>
   )
-}
+};;
