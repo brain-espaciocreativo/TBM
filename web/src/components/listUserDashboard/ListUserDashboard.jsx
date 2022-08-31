@@ -1,57 +1,104 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField } from '@mui/material'
-import React, { useEffect } from 'react'
-import { DatasetSharp, Delete, Edit } from '@mui/icons-material';
+import { useEffect,useState } from 'react'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField,Typography } from '@mui/material'
+import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOneUser, deleteOneUser, getAllUsers, updateOneUser } from '../../redux/slices/userSlice';
-import { useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import Swal from 'sweetalert2'
+import { useForm} from '../../hooks/useForm';
+import './ListUserDas.css';
+import ListUI from './ListUI';
+import Swal from 'sweetalert2';
+
 
 const useStyles = makeStyles((theme) => ({
   modal: {
     position: 'absolute',
     width: 400,
+    margin:'auto',
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    borderRadius:'1rem',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    display:'flex',
+    flexDirection:'column',
+    gap:'.8rem'
   },
   iconos:{
     cursor: 'pointer'
   }, 
   inputMaterial:{
     width: '100%'
+  },
+  inputs:{
+    width:'100%',
+    boxShadow: '1px 4px 17px -10px #000000'
   }
 }));
+ const initialForm ={
+   name:'',
+   surname:'',
+   email:'',
+   password:'',
+   phone:'',
+   role:''
+ }
+const validationsForm = (user) =>{
+
+   let errors = {};
+   let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+   let regexphone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+
+  
+   if(!user.email.trim()){
+      errors.email = "Campo  requerido*"
+   }else if(!regexEmail.test(user.email.trim())){
+     errors.email="formato inválido";
+   }
+  if(!user.phone.trim()){
+    errors.phone = "Campo  requerido*"
+  }else if(!regexphone.test(user.phone.trim())){
+    errors.phone="formato inválido";
+  }
+  
+  
+   if(!user.name.trim()){ errors.name = "Campo es requerido*"}
+   if(!user.surname.trim()){ errors.surname = "Campo  requerido*"}
+    if(!user.password.trim()){ errors.password = "Campo  requerido*"}
+    if(!user.role.trim()){ errors.role = "Campo  requerido*"}
+
+   return errors;
+ }
 
 export default function ListUserDashboard() {
+
+  const {err,handleBlur} = useForm(initialForm, validationsForm)
 
   const styles= useStyles();
   const [ modal, setModal ] = useState(false);
   const [ modalEdit, setModalEdit ] = useState(false);
   const [ createUserState, setCreateUserState ] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    phone: "",
-    password: "",
-  });
+     name: "",
+     surname: "",
+     email: "",
+     phone: "",
+     password: "",
+     role: ""  
+   });
   const [ editState, setEditState ] = useState({
-    id : "",
     name: "",
     surname: "",
     email: "",
     phone: "",
     role: "",
-    password: "",
+    password: ""
   });
 
   const dispatch = useDispatch();
+
   const users = useSelector(state => state.users.list);
-  console.log(users)
 
     useEffect(()=>{
         dispatch(getAllUsers());
@@ -85,15 +132,16 @@ export default function ListUserDashboard() {
       console.log(editState)
     }
 
-    const createUser = () => {
-      dispatch(createOneUser(createUserState));
+    const createUser = async () => {
+      await dispatch(createOneUser(createUserState));
+      await dispatch(getAllUsers());
     }
 
     const editUser = () => {
       dispatch(updateOneUser(editState))
       Swal.fire({
         title: 'Usuario actualizado!',
-      })
+      }).then(()=> dispatch(getAllUsers()))
       handleModalEdit()
     }
 
@@ -106,6 +154,7 @@ export default function ListUserDashboard() {
         if (result.isConfirmed) {
           dispatch(deleteOneUser(id));
           Swal.fire('Eliminado!', '', 'success')}
+          dispatch(getAllUsers())
       })
     }
 
@@ -120,44 +169,211 @@ export default function ListUserDashboard() {
 
     const bodyInsert = (
       <div className={styles.modal}>
-        <h3>Agregar Usuario</h3>
-        <TextField label="Nombre" name='name' onChange={handleCreateUser} />
-        <br />
-        <TextField label="Apellido" name='surname' onChange={handleCreateUser} />
-        <br />
-        <TextField label="Email" name='email' onChange={handleCreateUser} />
-        <br />
-        <TextField label="Contraseña" name='password' onChange={handleCreateUser} />
-        <br />
-        <TextField label="Role" name='role' onChange={handleCreateUser} />
-        <br />
-        <TextField label="Telefono" name='phone' onChange={handleCreateUser} />
-        <br />
-        <div align="right">
-        <Button onClick={createUser} color='primary'>Aceptar</Button>
-        <Button onClick={handleModalCreate}>Cancelar</Button>
+        <Typography className='Encabezado'>
+          Agregar Usuario
+          </Typography>
+        <TextField  
+        className={styles.inputs}
+        label="Nombre"
+        name='name'
+        onChange={handleCreateUser}
+        value={createUserState.name}
+        onBlur={handleBlur}
+        InputLabelProps={{
+                    style:{
+                      textTransform: "uppercase",
+                      fontSize:".8rem"
+                    }
+                  }} 
+        />
+        {err.name && <Typography className="error">{err.name}</Typography>}
+        <TextField className={styles.inputs}
+         label="Apellido" 
+         name='surname' 
+         onChange={handleCreateUser}
+        onBlur={handleBlur}
+        value={createUserState.surname}
+         InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }}
+        />
+        {err.surname && <Typography className="error">{err.surname}</Typography>}
+        <TextField 
+        className={styles.inputs}
+        required
+         label="Email" 
+         name='email'
+         type='email'
+          onChange={handleCreateUser}
+          onBlur={handleBlur}
+        value={createUserState.email}
+          InputLabelProps={{
+            style:{
+              textTransform: "uppercase",
+              fontSize:".8rem"
+            }
+          }}
+        />
+        {err.email && <Typography className="error">{err.email}</Typography>}
+        <TextField 
+        className={styles.inputs} 
+        label="Contraseña" 
+        type='password'
+        name='password' 
+        onChange={handleCreateUser} 
+        onBlur={handleBlur}
+        value={createUserState.password}
+        InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }}
+        />
+        {err.password && <Typography className="error">{err.password}</Typography>}
+        <TextField 
+        className={styles.inputs} 
+        label="Role" 
+        name='role'
+        onChange={handleCreateUser} 
+        onBlur={handleBlur}
+        value={createUserState.role}
+         InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }}
+         />
+         {err.role && <Typography className="error">{err.role}</Typography>}
+        <TextField 
+        className={styles.inputs} 
+        label="Telefono" 
+        name='phone' 
+        value={createUserState.phone}
+        onBlur={handleBlur}
+        onChange={handleCreateUser}
+        InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }}
+        />
+        {err.phone && <Typography className="error">{err.phone}</Typography>}
+        <div >
+          <Button onClick={createUser}
+           sx={{
+            backgroundColor: 'rgb(160, 7, 7) ',
+            color: 'white',
+            padding: '10px',
+            margin: '0 15px',
+            border:'1px solid rgb(160, 7, 7) ',
+            transition: '.5s'
+          }}
+          className='aceptar'
+          >Aceptar</Button>
+          <Button onClick={handleModalCreate} color='error' >Cancelar</Button>
         </div>
       </div>
     );
 
     const bodyEdit = (
       <div className={styles.modal}>
-        <h3>Editar Usuario</h3>
-        <TextField label="Nombre" name='name' value={editState.name} onChange={handleChangeEdit}/>
-        <br />
-        <TextField label="Apellido" name='surname' value={editState.surname} onChange={handleChangeEdit}/>
-        <br />
-        <TextField label="Email" name='email' value={editState.email} onChange={handleChangeEdit}/>
-        <br />
-        <TextField label="Contraseña" name='password' value={editState.password} onChange={handleChangeEdit}/>
-        <br />
-        <TextField label="Role" name='role' value={editState.role} onChange={handleChangeEdit}/>
-        <br />
-        <TextField label="Telefono" name='phone' value={editState.phone} onChange={handleChangeEdit}/>
-        <br />
+        <Typography className='Encabezado'>
+          Editar Usuario
+          </Typography>
+        <TextField
+        onChange={handleChangeEdit}  
+        name='name'
+        label="Nombre" 
+        value={editState.name}
+        InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }} 
+        className={styles.inputs}
+        />
+        <TextField 
+        name='surname' 
+        value={editState.surname}
+        onChange={handleChangeEdit} 
+          InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }} 
+        label="Apellido" 
+        className={styles.inputs} 
+        />
+        <TextField 
+        onChange={handleChangeEdit} 
+        InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }} 
+        name='email' 
+        value={editState.email}
+        label="Email" 
+        className={styles.inputs} 
+         />
+        <TextField 
+        name='password' 
+        value={editState.password}
+        onChange={handleChangeEdit} 
+        InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }} 
+        label="Contraseña" 
+        className={styles.inputs}
+        />
+        <TextField 
+        onChange={handleChangeEdit}
+         InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }}  
+        name='role' 
+        value={editState.role}
+        label="Role"
+         className={styles.inputs}
+          />
+        <TextField 
+        onChange={handleChangeEdit} 
+        InputLabelProps={{
+          style:{
+            textTransform: "uppercase",
+            fontSize:".8rem"
+          }
+        }} 
+        label="Telefono"  
+        className={styles.inputs}  
+        />
         <div align="right">
-        <Button onClick={editUser} color='primary'>Aceptar</Button>
-        <Button onClick={handleModalEdit}>Cancelar</Button>
+        <Button onClick={editUser} sx={{
+            backgroundColor: 'rgb(160, 7, 7) ',
+            color: 'white',
+            padding: '10px',
+            margin: '0 15px',
+            border:'1px solid rgb(160, 7, 7) ',
+            transition: '.5s'
+          }} 
+          className='aceptar'
+          >Aceptar</Button>
+        <Button onClick={handleModalEdit} color='error'>Cancelar</Button>
         </div>
       </div>
     );
@@ -165,10 +381,17 @@ export default function ListUserDashboard() {
   return (
     <div>
       <br />
-      <Button onClick={handleModalCreate}>Insertar</Button>
+      <Button onClick={handleModalCreate} sx={{
+            backgroundColor: 'rgb(160, 7, 7) ',
+            color: 'white',
+            padding: '10px',
+            margin: '0 15px',
+            border:'1px solid rgb(160, 7, 7) ',
+            transition: '.5s'
+          }} className='aceptar'>Insertar</Button>
       <br /><br />
       <TableContainer>
-        <Table>
+        <Table >
           <TableHead>
             <TableRow>
               <TableCell>Nombre</TableCell>
@@ -188,11 +411,11 @@ export default function ListUserDashboard() {
                 <TableCell>{e.phone}</TableCell>
                 <TableCell>{e.role}</TableCell>
                 <TableCell>
-                  <Edit onClick={() => handleModalEdit(e)}/>
-                  <Delete onClick={() => deleteUser(e.id)} />
+                  <Edit onClick={() =>handleModalEdit(e)}/>
+                  <Delete onClick={() =>deleteUser(e.id)} />
                 </TableCell>
               </TableRow>
-            )) : <p>Cargando...</p>}
+            )) : <ListUI/>} 
           </TableBody>
         </Table>
       </TableContainer>

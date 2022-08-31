@@ -1,9 +1,8 @@
 import React from 'react'
-import { AppBar, Button, Toolbar, Typography, useTheme, useMediaQuery } from '@mui/material/';
+import { AppBar, Button,Toolbar, Typography, Box, useTheme, useMediaQuery } from '@mui/material/';
 import { makeStyles } from '@mui/styles';
-import { useState } from 'react';
 import DrawerDashboard from '../drawerDashboard/DrawerDashboard';
-import AppleIcon from '@mui/icons-material/Apple';
+import './NavDashboard.css';
 
 const useStyle = makeStyles(theme=>({
     offset: theme.mixins.toolbar,
@@ -17,7 +16,6 @@ const useStyle = makeStyles(theme=>({
 
 export default function NavDashboard({links}) {
     const styles = useStyle();
-    const [value, setValue] = useState();
 
     const theme = useTheme();
 
@@ -25,10 +23,9 @@ export default function NavDashboard({links}) {
 
   return (
     <div>
-        <AppBar>
+        <AppBar sx={{backgroundColor:'rgb(160, 7, 7)', height:'90px'}} >
             <Toolbar>
-            <AppleIcon />
-            <Typography>TBM</Typography>
+            TBM
                 {
                     isMatch ? (
                     <>
@@ -36,15 +33,16 @@ export default function NavDashboard({links}) {
                     </>
                 ) : (
                     <>
-                    <Button sx={{marginLeft: 'auto'}} variant='contained'>
+                    <Button sx={{marginLeft: 'auto', backgroundColor:'rgb(160, 7, 7)'}} className='button' variant='contained'>
                         Login
                     </Button>
-                    <Button sx={{marginLeft: '10px'}} variant='contained'>
+                    <Button sx={{marginLeft: '10px', backgroundColor:'rgb(160, 7, 7)'}} className='button' variant='contained'>
                         Log out
                     </Button>
                     </>
                 )}
             </Toolbar>
+            
         </AppBar>
     </div>
   )
