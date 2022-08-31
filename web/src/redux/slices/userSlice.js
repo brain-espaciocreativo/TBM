@@ -6,7 +6,6 @@ export const userSlice = createSlice({
     initialState: {
         list: [],
         user: {},
-        logged: null
     },
     reducers: {
         setUserList: (state, action) => {
@@ -24,11 +23,17 @@ export const userSlice = createSlice({
         },
         deleteUser : (state, action) => {
             state
+        },
+        user:(state, action) =>{
+            state.user = action.payload
+        },
+        cleanUser:(state,action) =>{
+            state.user = ''
         }
     }
 });
 
-export const { setUserList, createUser, updateUser, deleteUser } = userSlice.actions;
+export const { setUserList, createUser, updateUser, deleteUser, user, cleanUser } = userSlice.actions;
 
 export default userSlice.reducer;
 
@@ -71,5 +76,20 @@ export const deleteOneUser = (payload) => {
             dispatch(deleteUser());
         })
         .catch((error) => console.log(error))
+    }
+}
+export const getOneUser = (payload) => {
+
+    return async (dispatch) => {
+        await axios.post('http://localhost:3000/auth/login', payload)
+        .then(res => {
+            dispatch(user(res.data.user));
+        })
+        .catch((error) => console.log(error));
+    }
+}
+export const cleanOneUser = () =>{
+    return  (dispatch) =>{
+        dispatch(cleanUser());
     }
 }

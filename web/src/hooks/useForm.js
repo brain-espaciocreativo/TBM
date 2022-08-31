@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { createOneUser } from '../redux/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOneUser, getOneUser } from '../redux/slices/userSlice';
 import Swal from 'sweetalert2'
 
 
@@ -12,7 +12,17 @@ export const useForm = (initialForm, validationsForm) =>{
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
+    const userSelect = useSelector((state) => state.users.user)
 
+
+    useEffect ( () =>{
+        if(userSelect.role === 'usuario'){
+            navigate('/home')
+        }
+        if(userSelect.role === 'admin'){
+            navigate('/admin')
+        }
+    },[userSelect])
 
     const handleChange = (e) =>{
         const {name, value} = e.target;
@@ -35,10 +45,16 @@ export const useForm = (initialForm, validationsForm) =>{
             timer: 1500
           }).then( () => navigate('/home'))
     }
-     const loggedSubmit = (e) =>{
-         e.preventDefault();
-         
-     }
+     const loggedSubmit = async (e) =>{
+        e.preventDefault();
+        await dispatch(getOneUser(user))
+            //  if(userSelect.role === undefined){
+            //     return console.log('usuario no existe');
+            //  }
+        console.log(userSelect.role);
+    }
+
+
 return {
     user,
     err,

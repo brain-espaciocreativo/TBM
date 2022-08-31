@@ -2,20 +2,26 @@ const e = require('express');
 const { Router } = require('express');
 const USERS_BBDD = require('./DDBB');
 const authSessionRouter =  Router();
+const hash = require('object-hash');
 // const nanoid = require('nanoid');
-const DDBB = require('./DDBB');
+const { Users} = require('../models/index');
 
 const sessions = [];
 
-authSessionRouter.post('/login', (req, res)=>{
+authSessionRouter.post('/login', async (req, res)=>{
+
     const {email, password} = req.body;
+    if(!email || !password) return res.status(400);
 
-    if(!email || !password) return res.sendStatus(400);
+    const user = await Users.findOne({
+        where:{
+            email:email
+        }
+    })
 
-    const user = DDBB.find(e=> e.email === email);
-    if(!user) return res.sendStatus(401);
-
-    if(user.password !== password) return res.sendStatus(401);
+    const pass = hash.MD5(password)
+    if(!user) return res.status(401).send('datos incorrectos'); 
+    if(user.password !== pass) return res.status(401);
 
     // const sessionId = nanoid();
     const { guid } = user;
@@ -26,8 +32,7 @@ authSessionRouter.post('/login', (req, res)=>{
     res.cookie('sessionId', sessionId, {
         httpOnly: true
     });
-    console.log(user);
-    res.status(201).send({data:`Usuario ${guid} autenticado`});
+    res.status(201).send({data:`Usuario ${user} autenticado`, user: user});
 });
 
 authSessionRouter.get('/profile', (req, res)=>{

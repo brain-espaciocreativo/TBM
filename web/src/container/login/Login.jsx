@@ -32,22 +32,22 @@ const initialForm ={
   email:'',
   password:''
 }
-const validationsForm = (user) =>{
+ const validationsForm = (user) =>{
 
-  let errors = {};
-  let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+   let errors = {};
+   let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
 
-  if(!user.email.trim()){
-     errors.email = "Campo  requerido*"
-  }else if(!regexEmail.test(user.email.trim())){
-    errors.email="formato inválido";
-  }
-   if(!user.password.trim()){ errors.password = "Campo  requerido*"}
-  return errors;
-}
+   if(!user.email.trim()){
+      errors.email = "Campo  requerido*"
+   }else if(!regexEmail.test(user.email.trim())){
+     errors.email="formato inválido";
+   }
+    if(!user.password.trim()){ errors.password = "Campo  requerido*"}
+   return errors;
+ }
 export default function Login() {
 
-  const {user,err,handleBlur,handleChange,loggedSubmit} = useForm(initialForm, validationsForm)
+  const {user,handleChange,loggedSubmit} = useForm(initialForm, validationsForm)
 
 
   return (
@@ -90,8 +90,9 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 className='input'
+                value={user.email}
                 onChange={handleChange}
-                onBlur={handleBlur}
+                // onBlur={handleBlur}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -99,7 +100,7 @@ export default function Login() {
                   }
                 }}
               />
-              {err.email && <Typography className="error">{err.email}</Typography>}
+              {/* {err.email && <Typography className="error">{err.email}</Typography>} */}
               <TextField
                 margin="normal"
                 required
@@ -109,9 +110,10 @@ export default function Login() {
                 label="Contraseña"
                 type="password"
                 id="password"
+                value={user.password}
                 autoComplete="current-password"
                 onChange={handleChange}
-                onBlur={handleBlur}
+                // onBlur={handleBlur}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -119,7 +121,7 @@ export default function Login() {
                   }
                 }}
               />
-              {err.password && <Typography className="error">{err.password}</Typography>}
+              {/* {err.password && <Typography className="error">{err.password}</Typography>} */}
               </Box>
               <FormControlLabel
                 control={<Checkbox value="remember" color="error" />}
