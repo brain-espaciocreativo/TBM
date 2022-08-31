@@ -25,12 +25,9 @@ export default function Dashboard() {
 
       <h1>Home</h1>
       <Grid container>
-          <Grid item xs={3} columns={1}>
-            <NavDashboard2 />
-          </Grid>
-          <Grid item xs={9} columns={2} sx={{height:'100vh',display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Grid item xs={12} columns={2} sx={{height:'100vh',display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <Box>
-              <h1>Sitio en construción</h1>
+              <h1>Proximamente las novedades</h1>
             </Box>
           </Grid>
         </Grid>
