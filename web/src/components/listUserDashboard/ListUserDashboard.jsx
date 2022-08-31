@@ -2,12 +2,12 @@ import { useEffect,useState } from 'react'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField,Typography } from '@mui/material'
 import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOneUser, getAllUsers } from '../../redux/slices/userSlice';
+import { createOneUser, deleteOneUser, getAllUsers, updateOneUser } from '../../redux/slices/userSlice';
 import { makeStyles } from '@mui/styles';
 import { useForm} from '../../hooks/useForm';
-import Swal from 'sweetalert2';
 import './ListUserDas.css';
 import ListUI from './ListUI';
+import Swal from 'sweetalert2';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -108,9 +108,17 @@ export default function ListUserDashboard() {
       setModal(!modal);
     };
 
-    const handleModalEdit = (id) => {
+    const handleModalEdit = (data) => {
       setModalEdit(!modalEdit);
-      console.log(id)
+      setEditState({
+        id: data.id,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        role: data.role,
+        password: data.password,
+      })
     }
 
     const handleCreateUser = (e) => {
@@ -118,10 +126,11 @@ export default function ListUserDashboard() {
       setCreateUserState(state => ({...state, [name]: value}));
     }
 
-    // const selectedUser = (userSelect, case) => {
-    //   setEditState(userSelect);
-    //   // (case==='edit')&&handleModalEdit()
-    // }
+    const handleChangeEdit = (e) => {
+      const { name, value} = e.target;
+      setEditState(state => ({...state, [name]: value}));
+      console.log(editState)
+    }
 
     const createUser = async () => {
       await dispatch(createOneUser(createUserState));
@@ -129,11 +138,24 @@ export default function ListUserDashboard() {
     }
 
     const editUser = () => {
-      console.log('editado');
+      dispatch(updateOneUser(editState))
+      Swal.fire({
+        title: 'Usuario actualizado!',
+      }).then(()=> dispatch(getAllUsers()))
+      handleModalEdit()
     }
 
-    const deleteUser = () => {
-      console.log('borrado')
+    const deleteUser = (id) => {
+      Swal.fire({
+        title: 'Desea eliminar este usuario?',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(deleteOneUser(id));
+          Swal.fire('Eliminado!', '', 'success')}
+          dispatch(getAllUsers())
+      })
     }
 
     const alertDelete = () => {
@@ -264,52 +286,93 @@ export default function ListUserDashboard() {
         <Typography className='Encabezado'>
           Editar Usuario
           </Typography>
-        <TextField  
+        <TextField
+        onChange={handleChangeEdit}  
+        name='name'
+        label="Nombre" 
+        value={editState.name}
         InputLabelProps={{
           style:{
             textTransform: "uppercase",
             fontSize:".8rem"
           }
-        }} label="Nombre" className={styles.inputs} value={editState&&editState.name} />
-        <TextField  InputLabelProps={{
+        }} 
+        className={styles.inputs}
+        />
+        <TextField 
+        name='surname' 
+        value={editState.surname}
+        onChange={handleChangeEdit} 
+          InputLabelProps={{
           style:{
             textTransform: "uppercase",
             fontSize:".8rem"
           }
-        }} label="Apellido" className={styles.inputs} value={editState&&editState.surname} />
-        <TextField  InputLabelProps={{
+        }} 
+        label="Apellido" 
+        className={styles.inputs} 
+        />
+        <TextField 
+        onChange={handleChangeEdit} 
+        InputLabelProps={{
           style:{
             textTransform: "uppercase",
             fontSize:".8rem"
           }
-        }} label="Email" className={styles.inputs} value={editState&&editState.email} />
-        <TextField  InputLabelProps={{
+        }} 
+        name='email' 
+        value={editState.email}
+        label="Email" 
+        className={styles.inputs} 
+         />
+        <TextField 
+        name='password' 
+        value={editState.password}
+        onChange={handleChangeEdit} 
+        InputLabelProps={{
           style:{
             textTransform: "uppercase",
             fontSize:".8rem"
           }
-        }} label="Contraseña" className={styles.inputs} value={editState&&editState.password} />
-        <TextField InputLabelProps={{
+        }} 
+        label="Contraseña" 
+        className={styles.inputs}
+        />
+        <TextField 
+        onChange={handleChangeEdit}
+         InputLabelProps={{
           style:{
             textTransform: "uppercase",
             fontSize:".8rem"
           }
-        }}  label="Role" className={styles.inputs} value={editState&&editState.role} />
-        <TextField  InputLabelProps={{
+        }}  
+        name='role' 
+        value={editState.role}
+        label="Role"
+         className={styles.inputs}
+          />
+        <TextField 
+        onChange={handleChangeEdit} 
+        InputLabelProps={{
           style:{
             textTransform: "uppercase",
             fontSize:".8rem"
           }
-        }} label="Telefono"  className={styles.inputs} value={editState&&editState.phone} />
+        }} 
+        label="Telefono"  
+        className={styles.inputs}  
+        />
         <div align="right">
-        <Button onClick={e=>console.log(rowData.name)} sx={{
+        <Button onClick={editUser} sx={{
             backgroundColor: 'rgb(160, 7, 7) ',
             color: 'white',
             padding: '10px',
             margin: '0 15px',
             border:'1px solid rgb(160, 7, 7) ',
             transition: '.5s'
-          }} className='aceptar'>Aceptar</Button>
+          }} 
+          className='aceptar'
+          >Aceptar</Button>
         <Button onClick={handleModalEdit} color='error'>Cancelar</Button>
         </div>
       </div>
@@ -348,8 +411,8 @@ export default function ListUserDashboard() {
                 <TableCell>{e.phone}</TableCell>
                 <TableCell>{e.role}</TableCell>
                 <TableCell>
-                  <Edit onClick={() =>handleModalEdit(e.id)}/>
-                  <Delete onClick={() =>alertDelete(e.id)} />
+                  <Edit onClick={() =>handleModalEdit(e)}/>
+                  <Delete onClick={() =>deleteUser(e.id)} />
                 </TableCell>
               </TableRow>
             )) : <ListUI/>} 
