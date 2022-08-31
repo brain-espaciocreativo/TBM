@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material/';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
@@ -6,8 +8,21 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import './NavDas.css';
+import { cleanOneUser } from '../../redux/slices/userSlice';
 
 export default function NavDashboard2() {
+
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate()
+
+    const handleClean = () =>{
+        dispatch(cleanOneUser())
+        navigate('/')
+    }
+
+
+
   return (
     <>
         <Grid container>
@@ -41,13 +56,8 @@ export default function NavDashboard2() {
                 </ListItemIcon>
                 <ListItemText primary='Obras' />
             </ListItem>
-            <ListItem button className='boton'>
-                <ListItemIcon>
-                    <LoginIcon />
-                </ListItemIcon>
-                <ListItemText primary='Login' />
-            </ListItem>
-            <ListItem button className='boton'>
+            
+            <ListItem onClick={handleClean} button className='boton'>
                 <ListItemIcon>
                     <LogoutIcon />
                 </ListItemIcon>

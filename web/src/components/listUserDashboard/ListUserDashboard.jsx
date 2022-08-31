@@ -135,6 +135,11 @@ export default function ListUserDashboard() {
     const createUser = async () => {
       await dispatch(createOneUser(createUserState));
       await dispatch(getAllUsers());
+      Swal.fire({
+        title: 'Usuario creado!',
+      })
+      handleModalCreate()
+      setCreateUserState('')
     }
 
     const editUser = () => {
