@@ -48,7 +48,7 @@ export default function NavDashboard({links}) {
                     </>
                 ) : (
                     <>
-                    <Button sx={{marginLeft: 'auto', backgroundColor:'rgb(160, 7, 7)'}} className='button' variant='contained'>
+                    <Button onClick={handleClean} sx={{marginLeft: 'auto', backgroundColor:'rgb(160, 7, 7)'}} className='button' variant='contained'>
                         Log out
                     </Button>
                     </>
