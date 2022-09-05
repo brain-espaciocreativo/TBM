@@ -15,7 +15,6 @@ const useStyle = makeStyles({
 export default function Dashboard() {
 
   const styles = useStyle();
-
   
   return (
     <div>
