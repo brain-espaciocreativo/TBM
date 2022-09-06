@@ -4,7 +4,13 @@ import NavDashboard from '../../components/navDashboard/NavDashboard';
 import { makeStyles } from '@mui/styles';
 const linksArray = ['Charts', 'Users'];
 import { useDispatch, useSelector } from 'react-redux';
-// import { setNewsList } from '../../redux/slices/newsSlice';
+import React from 'react';
+import { Box, Grid} from '@mui/material/';
+import NavDashboard from '../../components/navDashboard/NavDashboard';
+import { makeStyles } from '@mui/styles';
+import ListUserDashboard from '../../components/listUserDashboard/ListUserDashboard';
+const linksArray = ['Charts', 'Users'];
+import NavDashboard2 from '../../components/navDachboard2/NavDashboard2';
 
 const useStyle = makeStyles({
   btn: {
@@ -18,11 +24,6 @@ export default function Dashboard() {
 
   const dispatch = useDispatch();
   const userSelect = useSelector((state) => state.users.user)
-
-  useEffect(() => {
-    // dispatch(setNewsList());
-  },[dispatch])
-
   
   return (
     <div>
@@ -38,8 +39,6 @@ export default function Dashboard() {
             </Box>
           </Grid>
         </Grid>
-      
-
     </div>
   )
 };;
