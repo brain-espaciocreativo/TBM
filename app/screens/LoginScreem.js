@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet,View, Text,TextInput, TouchableOpacity, Image} from 'react-native';
-import Button from 'react-native-vector-icons/MaterialCommunityIcons'
-// import { TextInput } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneUser } from '../redux/slices/userSlice';
+import Button from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+
+
+
 
 export default function LoginScreen () {
+
+    const navigation = useNavigation();
+    const dispatch  = useDispatch();
+
+    const [ email, setEmail ] = useState("");
+    const [ password , setPassword ] = useState("");
+    const [ show, setShow ] = useState(true);
+
+    const loggedSubmit =  () =>{
+        dispatch(getOneUser({email, password}));
+        navigation.navigate('Profile');
+    }
+    
   return (
     <View style={style.container}>
         <Text style={style.title}>
@@ -15,18 +33,24 @@ export default function LoginScreen () {
             <TextInput
                 placeholderTextColor={'gray'}
                 style={style.input}
+                value={email}
+                onChangeText={text => setEmail(text)}
                 underlineColorAndroid='transparet'
                 placeholder="Email"
+                keyboardType='email-address'
             />
             <Button style={style.box} name="email-outline" />
             <TextInput
             style={style.input}
+            value={password}
+            onChangeText={text => setPassword(text)}
             placeholderTextColor={'gray'}
             placeholder="Password"
-            secureTextEntry={true}
+            secureTextEntry={show}
             />
             <Button style={style.lock} name="lock" />
-            <TouchableOpacity style={style.containerButton}> 
+            <Button style={style.eye} name={show ? "eye-off" : "eye"} onPress={ () => setShow(!show)} />
+            <TouchableOpacity style={style.containerButton}  onPress={loggedSubmit} > 
                 <Text style={style.buttonText}>
                     Inicia Sesión
                 </Text>
@@ -83,14 +107,21 @@ const style = StyleSheet.create({
         fontSize: 20,
         color: 'gray',
         left: 30,
-        top: 520,
+        top: 545,
     },
     lock:{
         position:'absolute',
         fontSize: 20,
         color: 'gray',
         left: 30,
-        top: 588,
+        top: 613,
+    },
+    eye:{
+        position:'absolute',
+        fontSize: 20,
+        color: 'gray',
+        left: 310,
+        top: 616,
     },
     imgLogo:{
         width: 300,
