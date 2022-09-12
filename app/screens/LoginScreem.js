@@ -5,9 +5,6 @@ import { getOneUser } from '../redux/slices/userSlice';
 import Button from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 
-
-
-
 export default function LoginScreen () {
 
     const navigation = useNavigation();
@@ -58,10 +55,6 @@ export default function LoginScreen () {
     </View>
   )
 }
-
-
-
-
 
 const style = StyleSheet.create({
     container:{

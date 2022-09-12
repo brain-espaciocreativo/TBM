@@ -84,7 +84,6 @@ export const getOneUser = (payload) => {
         await axios.post('http://localhost:3000/auth/login', payload)
         .then(res => {
             dispatch(user(res.data.user));
-            console.log(res.data.user);
         })
         .catch((error) => console.log(error));
     }
