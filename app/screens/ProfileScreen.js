@@ -9,7 +9,7 @@ export default function HomeScreen() {
   return (
     <View>
         <Text>
-          <Text>Home</Text>
+          <Text>Profile</Text>
         </Text>
     </View>
   )

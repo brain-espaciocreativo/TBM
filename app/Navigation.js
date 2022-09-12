@@ -1,77 +1,43 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { Entypo } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
-import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreem";
+import HomeScreen from "./screens/HomeScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
-const HomeStack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
-function MyStack() {
-    return (
-        <HomeStack.Navigator
-            initialRouteName="Login"
-        >
-            {/* <HomeStack.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{
-                    headerShown: false,
+const Navigator = () =>{
+
+    return(
+        <Stack.Navigator
+                screenOptions={{
+                    headerStyle:{
+                        backgroundColor:"transparent"
+                    },
+                    headerTintColor: 'red',
+                    headerTransparent: true,
+                    headerTitle:'',
+                    headerLeftContainerStyle:{
+                        paddingLeft: 20
+                    }
                 }}
-                />
-            <HomeStack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{
-                    headerBackTitleVisible: false,
-                    navigationBarHidden:true,
-                }}
-            /> */}
-        </HomeStack.Navigator>
+                initialRouteName="Login"
+            >
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Home" component={HomeScreen} />
+            </Stack.Navigator>
     )
 }
 
-const Tab = createBottomTabNavigator();
-
-function MyTabs() {
-    return (
-        <Tab.Navigator
-            initialRouteName="Login"
-            screenOptions={{
-                tabBarActiveTintColor: 'red',
-            }}
-        >
-            {/* <Tab.Screen 
-                name="Home" 
-                component={MyStack} 
-                options={{
-                    tabBarIcon: ({ color, size}) => (
-                        <Entypo name="home" size={30} color={color} />
-                    ),
-                    headerShown: false
-                }}
-            /> */}
-            <Tab.Screen 
-                name="Login" 
-                component={LoginScreen} 
-                options={{
-                    tabBarIcon: ({ color, size}) => (
-                        <AntDesign name="user" size={24} color={color} />
-                    ),
-                    headerShown: false,
-                }}
-            />
-        </Tab.Navigator>
-    )
-}
-
-export default function Navigation() {
+const Navigation = () => {
     return (
         <NavigationContainer>
-            <MyTabs />
+            <Navigator/>
         </NavigationContainer>
     )
 }
+
+export default Navigation;
