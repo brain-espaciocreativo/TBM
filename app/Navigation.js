@@ -13,9 +13,9 @@ const HomeStack = createNativeStackNavigator();
 function MyStack() {
     return (
         <HomeStack.Navigator
-            initialRouteName="Login"
+            initialRouteName="HomeScreen"
         >
-            {/* <HomeStack.Screen
+            <HomeStack.Screen
                 name="HomeScreen"
                 component={HomeScreen}
                 options={{
@@ -29,7 +29,7 @@ function MyStack() {
                     headerBackTitleVisible: false,
                     navigationBarHidden:true,
                 }}
-            /> */}
+            />
         </HomeStack.Navigator>
     )
 }
@@ -44,7 +44,7 @@ function MyTabs() {
                 tabBarActiveTintColor: 'red',
             }}
         >
-            {/* <Tab.Screen 
+            <Tab.Screen 
                 name="Home" 
                 component={MyStack} 
                 options={{
@@ -53,10 +53,10 @@ function MyTabs() {
                     ),
                     headerShown: false
                 }}
-            /> */}
+            />
             <Tab.Screen 
                 name="Login" 
-                component={LoginScreen} 
+                component={MyStack} 
                 options={{
                     tabBarIcon: ({ color, size}) => (
                         <AntDesign name="user" size={24} color={color} />
