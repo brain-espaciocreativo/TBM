@@ -1,4 +1,5 @@
 import React from "react";
+import { View, Text } from "react-native";
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';

@@ -6,10 +6,7 @@ import LoginScreen from "./screens/LoginScreem";
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
-const Stack = createNativeStackNavigator();
-
 const Navigator = () =>{
-
     return(
         <Stack.Navigator
                 screenOptions={{
