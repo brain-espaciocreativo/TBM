@@ -1,8 +1,12 @@
-const {News} = require('../models/index'); 
+const {News, Progress} = require('../models/index'); 
 
 const getAllNews = async(req, res)=>{
     try {
-        const data = await News.findAll();
+        const data = await News.findAll({
+            include: {
+                model: Progress
+              }
+            });
         res.status(201).send({status: "OK", data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró novedades"}));
