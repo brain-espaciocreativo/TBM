@@ -1,8 +1,16 @@
-const {Works} =  require('../models');
+const {Works, News, Progress} =  require('../models');
 
 const getAllWork = async(req, res)=>{
     try {
-        const data = await Works.findAll();
+        const data = await Works.findAll({
+            include: [
+                {
+                  model: News
+                },
+                {
+                  model: Progress
+                }]
+        });
         res.status(201).send({status: "OK", data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró trabajos"}));

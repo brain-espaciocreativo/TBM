@@ -1,8 +1,13 @@
-const {Progress} = require('../models');
+const {Progress, Works, Categories, News} = require('../models');
 
 const getAllProgress = async(req, res)=>{
     try {
-        const data = await Progress.findAll();
+        const data = await Progress.findAll({
+            include: 
+                {
+                  model: Categories
+                }
+            });
         res.status(201).send({status: "OK", data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró progresos"}));

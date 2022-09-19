@@ -23,7 +23,7 @@ const User = (conn) => conn.define('user', {
   },
   role: {
     type: DataTypes.STRING
-  },
+  }
 }, {
   timestamps: false
 });

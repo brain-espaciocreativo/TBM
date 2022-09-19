@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const Categories = (conn) => conn.define('categories', {
   id: {
-    type:DataTypes.INTEGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
