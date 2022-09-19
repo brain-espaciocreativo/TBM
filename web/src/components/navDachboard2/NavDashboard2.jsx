@@ -1,14 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material/';
+import { Link } from 'react-router-dom';
+import { Grid, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material/';
+import { cleanOneUser } from '../../redux/slices/userSlice';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
-import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import './NavDas.css';
-import { cleanOneUser } from '../../redux/slices/userSlice';
 
 export default function NavDashboard2() {
 
@@ -38,18 +38,22 @@ export default function NavDashboard2() {
                 boxShadow: '1px 4px 17px -10px #000000'
               }}
             >
+            <Link to='/admin'>
             <ListItem button className='boton'>
                 <ListItemIcon>
                     <BarChartIcon />
                 </ListItemIcon>
                 <ListItemText primary='Home'/>
             </ListItem>
-            <ListItem button className='boton'>
-                <ListItemIcon>
-                    <HomeWorkIcon />
-                </ListItemIcon>
-                <ListItemText primary='Obras' />
-            </ListItem>
+            </Link>
+            <Link to='/work'>
+                <ListItem button className='boton'>
+                    <ListItemIcon>
+                        <HomeWorkIcon />
+                    </ListItemIcon>
+                    <ListItemText primary='Obras' />
+                </ListItem>
+            </Link>
             <ListItem button className='boton'>
                 <ListItemIcon>
                     <PersonIcon />
