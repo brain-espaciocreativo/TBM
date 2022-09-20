@@ -22,29 +22,38 @@ const getOneNews = async(req, res)=>{
     }
 }
 const createOneNews = async (req, res) => {
-    const { description,video, workId,categoriesId,date} = req.body; 
+    const { name, description, video, date, workId} = req.body; 
     try {
-        if(!description || !video || !workId || !categoriesId || !date  ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
-        const data = await News.create({
-            description,video,workId,categoriesId,date
-        });
-        res.status(201).send({status: "OK", data: data });
+        if( !name || !description || !date  ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(workId){
+            const data = await News.create({
+                name, description, video, date, workId
+            });
+            res.status(201).send({status: "OK", data: data });
+        }else{
+            const data = await News.create({
+                name, description,video,workId, date
+            });
+            res.status(201).send({status: "OK", data: data });
+        }
+        
     } catch (error) {
+        console.log(error)
         throw Error(res.status(500).send({status:500, data:"no se creo ninguna novedad"}));
     }
 }
 const updateOneNews = async(req, res)=>{
     const { id } = req.params;
-    const {description,video,date,workId,categoriesId} = req.body;
+    const { name, description, video, date, workId } = req.body;
     
     try {
-        if(!description || !video || !workId || !categoriesId || !date  ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(!description || !video || !workId || !date  ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
         const data = await News.update({
+            name: name,
             description:description,
             video:video,
-            workId:workId,
-            categoriesId:categoriesId,
             date:date,
+            workId:workId,
         }, {
         where: {
             id: id

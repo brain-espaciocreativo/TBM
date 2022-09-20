@@ -12,7 +12,6 @@ const getAllUser = async(req, res)=>{
               }
             }
           });
-
         res.status(201).send({status: "OK", data: data});
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data: "No hay ningun usuarios"}));
@@ -65,7 +64,7 @@ const updateOneUser =  async(req, res)=>{
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data: "No se puede actualizar usuario, revisar datos"}));
     }
-} 
+}
 const deleteOneUser = async(req, res)=>{
     const { id } = req.params;
     try {

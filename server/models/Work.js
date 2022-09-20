@@ -10,13 +10,9 @@ const Work = (conn) => conn.define('works', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    progress: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    novedades: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, {
     timestamps: false
