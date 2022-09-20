@@ -60,9 +60,7 @@ export const createOneWork = (payload) => {
     }
 }
 
-
 export const updateOneWork = (payload) => {
-    
     return async (dispatch) => {
         await axios.put('http://localhost:3000/work/'+payload.id, payload)
         .then(res => {
