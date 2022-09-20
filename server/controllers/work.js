@@ -26,26 +26,35 @@ const getOneWork = async(req, res)=>{
     }
 }
 const createOneWork = async(req, res)=>{
-    const { name, novedades, progress } = req.body;
+    const { name, description, userId } = req.body;
     try {
-        if(!name || !novedades || !progress ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
-        const data = await Works.create({
-            name,novedades,progress
-        });
-        res.status(201).send({status: "OK", data: data });
+        if(!name || !description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(userId) {
+            const data = await Works.create({
+                name, description, userId
+            });
+            res.status(201).send({status: "OK", data: data });
+        }else{
+            const data = await Works.create({
+                name, description
+            });
+            res.status(201).send({status: "OK", data: data });
+        }
+        
     } catch (error) {
+        console.log(error);
         throw Error(res.status(500).send({status:500, data:"no se creo ningun trabajo"}));
     }
 }
 const updateOneWork = async(req, res)=>{
     const { id } = req.params;
-    const { name, novedades, progress } = req.body;
+    const { name, novedades, userId } = req.body;
 try {
-    if(!name || !novedades || !progress ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+    if(!name || !novedades ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
         const data = await Works.update({
             name:name,
             novedades:novedades,
-            progress:progress
+            userId: userId
         }, {
             where: {
                 id: id

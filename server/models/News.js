@@ -6,6 +6,9 @@ const News = (conn) => conn.define('news', {
     primaryKey: true,
     autoIncrement: true
   },
+  name: {
+    type: DataTypes.STRING
+  },
   date: {
     type: DataTypes.DATE
   },
