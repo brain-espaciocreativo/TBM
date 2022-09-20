@@ -48,13 +48,16 @@ const createOneWork = async(req, res)=>{
 }
 const updateOneWork = async(req, res)=>{
     const { id } = req.params;
-    const { name, novedades, userId } = req.body;
+    const { name, description  } = req.body;
 try {
-    if(!name || !novedades ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+    if(!name || !description ){
+        
+        res.status(402).send({status:402, data: "Datos obligatorios"});
+        return;
+    } 
         const data = await Works.update({
             name:name,
-            novedades:novedades,
-            userId: userId
+            description:description
         }, {
             where: {
                 id: id

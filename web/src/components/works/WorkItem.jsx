@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import { Button, Grid, Typography} from '@mui/material/';
+import { Button, Card, CardActions, CardContent, Grid, Typography} from '@mui/material/';
 import { useDispatch, useSelector } from 'react-redux';
 import { Delete, Edit ,Visibility} from '@mui/icons-material';
 import { deleteOneWork, getAllWorks } from "../../redux/slices/workSlice";
@@ -18,18 +18,18 @@ export default function WorkItem() {
         dispatch(getAllWorks());
     }, [dispatch])
 
-    const deleteWork = (id) => {
-        Swal.fire({
-          title: 'Desea eliminar este obra?',
-          showCancelButton: true,
-          confirmButtonText: 'Aceptar',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            dispatch(deleteOneWork(id));
-            Swal.fire('Eliminado!', '', 'success')}
-            dispatch(getAllWorks())
-        })
-      }
+     const deleteWork = (id) => {
+         Swal.fire({
+           title: 'Desea eliminar este obra?',
+           showCancelButton: true,
+           confirmButtonText: 'Aceptar',
+         }).then((result) => {
+           if (result.isConfirmed) {
+             dispatch(deleteOneWork(id));
+             Swal.fire('Eliminado!', '', 'success')}
+             dispatch(getAllWorks())
+         })
+       }
       
     return (
         <div>
@@ -44,23 +44,36 @@ export default function WorkItem() {
                       transition: '.5s'
                     }}
 
-                    onClick={(e) =>navigate("/work/create")}
+                    onClick={(e, i) =>navigate("/work/create")}
                     >Crear Obra</Button>
               </Grid>
-              <Grid item xs={12} columns={1}>
-                  {works && works.length ? works.map((e) =>
+              <Grid item xs={12} columns={2} sx={{display:'flex', gap:'2rem', flexWrap:'wrap'}}>
+                  {works && works.length ? works.map((e, i) =>
                   ( 
-                  <>
-                      <Typography>{e.name}</Typography>
-                      <Typography>{e.novedades}</Typography>
-                      <Typography>{e.progress}</Typography>
-                      <Edit onClick={() => navigate('/work/edit/'+ e.id)}/>
-                      <Visibility onClick={()=> navigate('/work/'+ e.id)}/>
-                      <Delete onClick={() => deleteWork(e.id)} />
-                  </>
+                    <Card key={i} sx={{ minWidth: 275,boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', margin:'20px 0', width:'20%' }}>
+                      <CardContent>
+                        <Typography key={i} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                          Nombre de la Obra
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                        {e.name}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          Descripcion
+                        </Typography>
+                        <Typography variant="body2">
+                        {e.description}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Edit sx={{cursor:'pointer', margin:'0 10px'}}  onClick={() => navigate('/work/edit/'+ e.id)}/>
+                        <Visibility sx={{cursor:'pointer', margin:'0 10px'}}  onClick={()=> navigate('/work/'+ e.id)}/>
+                        <Delete sx={{cursor:'pointer', margin:'0 10px'}}  onClick={() => deleteWork(e.id)} />
+                      </CardActions>
+                </Card>
                   )) 
                   : <WorkUI/>
-                  } 
+                } 
                 </Grid>
             </Grid>
         </div>
