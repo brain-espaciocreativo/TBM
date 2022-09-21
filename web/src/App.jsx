@@ -10,6 +10,7 @@ import Work from './container/work/WorkContainer';
 import WorkForm from './components/works/WorkForm';
 import WorkEdit from './components/works/WorkEdit';
 import WorkId from './components/works/WorkId';
+import Users from './container/users/Users';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/' element={<Login/>} />
         <Route path='/home' element={<Home />} />
         <Route path='/admin' element={<Dashboard />} />
+        <Route path='/users' element={<Users />} />
         <Route path='/work' element={<Work/>}/>
         <Route path='/work/create' element={<WorkForm/>}/>
         <Route path='/work/:id' element={<WorkId/>}/>
