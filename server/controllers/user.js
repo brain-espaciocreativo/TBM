@@ -1,10 +1,18 @@
-const {Users} = require('../models');
+const {Users, Works, News, Progress, Categories} = require('../models');
 const hash = require('object-hash');
 
 const getAllUser = async(req, res)=>{
     try {
-        const data = await Users.findAll();
-        res.status(201).send({status: "OK", data});
+
+        const data = await Users.findAll({
+            include: {
+              model: Works,
+              include: {
+                model: News
+              }
+            }
+          });
+        res.status(201).send({status: "OK", data: data});
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data: "No hay ningun usuarios"}));
     }
@@ -30,7 +38,7 @@ const createOneUser = async (req, res) => {
             password: hashPass,
             phone:phone,
             role:role
-        })
+        });
         res.status(201).send({status: "OK", data: data });
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data:"No se creo usuario, verifique los datos"}));
@@ -56,7 +64,7 @@ const updateOneUser =  async(req, res)=>{
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data: "No se puede actualizar usuario, revisar datos"}));
     }
-} 
+}
 const deleteOneUser = async(req, res)=>{
     const { id } = req.params;
     try {

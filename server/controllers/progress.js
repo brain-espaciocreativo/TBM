@@ -1,8 +1,13 @@
-const {Progress} = require('../models');
+const {Progress, Works, Categories, News} = require('../models');
 
 const getAllProgress = async(req, res)=>{
     try {
-        const data = await Progress.findAll();
+        const data = await Progress.findAll({
+            include: 
+                {
+                  model: Categories
+                }
+            });
         res.status(201).send({status: "OK", data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró progresos"}));
@@ -18,27 +23,46 @@ const getOnePorgress = async(req, res)=>{
     }
 }
 const createOneProgress = async (req, res) => {
-    const {workId,categoriesId,value} = req.body; 
+    const { value, work_progress, newsId } = req.body; 
     try {
-        if(!workId || !categoriesId || !value ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
-        const data = await Progress.create({
-            workId, categoriesId, value
-        });
-        console.log('este es el body', req.body);
-        res.status(201).send({status: "OK", data: data });
+        if( !value ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        
+        if(newsId && work_progress){
+            const data = await Progress.create({
+                value, work_progress, newsId
+            });
+            res.status(201).send({status: "OK", data: data });
+        }
+        else if(work_progress){
+            const data = await Progress.create({
+                value, work_progress
+            });
+            res.status(201).send({status: "OK", data: data });
+        }else if(newsId){
+            const data = await Progress.create({
+                value, newsId
+            });
+            res.status(201).send({status: "OK", data: data });
+        }else{
+            const data = await Progress.create({
+                value
+            });
+            res.status(201).send({status: "OK", data: data });
+        }
+        
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se creo ningun progreso"}));
     }
 }
 const updateOneProgress = async(req, res)=>{
     const { id } = req.params;
-    const {workId, categoriesId, value} = req.body;
+    const { value, workId, work_progress } = req.body;
     try {
         if(!workId || !categoriesId || !value ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
         const data = await Progress.update({
+            value: value,
             workId: workId,
-            categoriesId: categoriesId,
-            value: value
+            work_progress: work_progress
         }, {
         where: {
             id: id

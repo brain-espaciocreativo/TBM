@@ -6,15 +6,8 @@ const News = (conn) => conn.define('news', {
     primaryKey: true,
     autoIncrement: true
   },
-  categoriesId: {
-    field: 'categories_id',
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  workId: {
-    field: 'work_id',
-    type: DataTypes.INTEGER,
-    allowNull: false
+  name: {
+    type: DataTypes.STRING
   },
   date: {
     type: DataTypes.DATE

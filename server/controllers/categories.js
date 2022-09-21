@@ -18,13 +18,21 @@ const getOneCategories = async(req, res)=>{
     }
 }
 const createOneCategories = async (req, res) => {
-    const {name} = req.body; 
+    const { name, progressId } = req.body; 
     try {
         if(!name ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
-        const data = await Categories.create({
-            name
-        });
-        res.status(201).send({status: "OK", data: data });
+        if(progressId){
+            const data = await Categories.create({
+                name, progressId
+            });
+            res.status(201).send({status: "OK", data: data });
+        }else{
+            const data = await Categories.create({
+                name
+            });
+            res.status(201).send({status: "OK", data: data });
+        }
+        
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data:"No se creo categoria"}));
     }

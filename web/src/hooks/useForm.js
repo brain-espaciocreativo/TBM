@@ -5,7 +5,7 @@ import { createOneUser, getOneUser } from '../redux/slices/userSlice';
 import Swal from 'sweetalert2'
 
 
-export const useForm = (initialForm, validationsForm) =>{
+export const useForm = (initialForm, validationsForm,initialWork) =>{
     const [ user, setUser] = useState(initialForm);
     const [ err, setErr] = useState({});
 
@@ -23,6 +23,7 @@ export const useForm = (initialForm, validationsForm) =>{
             navigate('/admin')
         }
     },[userSelect])
+
 
     const handleChange = (e) =>{
         const {name, value} = e.target;
@@ -48,12 +49,7 @@ export const useForm = (initialForm, validationsForm) =>{
      const loggedSubmit = async (e) =>{
         e.preventDefault();
         await dispatch(getOneUser(user))
-            //  if(userSelect.role === undefined){
-            //     return console.log('usuario no existe');
-            //  }
-        console.log(userSelect.role);
     }
-
 
 return {
     user,
@@ -61,6 +57,5 @@ return {
     handleBlur,
     handleChange,
     handleSubmit,
-    loggedSubmit
-    
+    loggedSubmit  
 }}
