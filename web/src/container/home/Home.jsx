@@ -7,6 +7,7 @@ const linksArray = ['Charts', 'Users'];
 import NavDashboard from '../../components/navDashboard/NavDashboard';
 import ReactPlayer from 'react-player/youtube'
 import HomeUI from './HomeUI';
+import CardNews from '../../components/cardNews/CardNews';
 
 const useStyle = makeStyles({
   btn: {
@@ -58,41 +59,9 @@ export default function Dashboard() {
         }} item>
                 {news && news.length ? news.map((e) =>
                 ( 
-                    <Card className={styles.root} key={e.id}>
-                    <CardActionArea className='player-wrapper' >
-                      <CardContent>
-                        <Typography 
-                        gutterBottom variant="h6" 
-                        component="h6"
-                        sx={{
-                          color: '#000',
-                          fontWeight: '600',
-                          display: 'flex',
-                          justifyContent: 'end'
-                        }}
-                        >
-                          Novedad Nueva
-                        </Typography>
-                        <Typography variant='body2' color="textSecondary" component="p">
-                          {e.description}
-                        </Typography>
-                      </CardContent>
-                      <Typography 
-                        gutterBottom variant="h6" 
-                        component="h6"
-                        sx={{
-                          color: '#000',
-                          fontWeight: '600',
-                          display: 'flex',
-                          justifyContent: 'end'
-                        }}
-                        >
-                          Video
-                        </Typography>
-                      <ReactPlayer url={e.video} controls loop width='100%' height='100%'  />
-                    </CardActionArea>
-                  </Card>
-                 )) : <HomeUI/>
+                    <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
+
+                 )) : ""
                 } 
               </Grid> 
         </Grid>

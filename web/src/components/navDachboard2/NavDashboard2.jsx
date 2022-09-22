@@ -43,7 +43,7 @@ export default function NavDashboard2() {
                 <ListItemIcon>
                     <BarChartIcon />
                 </ListItemIcon>
-                <ListItemText primary='Home'/>
+                <ListItemText primary='Inicio'/>
             </ListItem>
             </Link>
             <Link to='/work'>
@@ -54,12 +54,14 @@ export default function NavDashboard2() {
                     <ListItemText primary='Obras' />
                 </ListItem>
             </Link>
+            <Link to='/users'>
             <ListItem button className='boton'>
                 <ListItemIcon>
                     <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary='Usuarios' />
             </ListItem>
+            </Link>
             <ListItem onClick={handleClean} button className='boton'>
                 <ListItemIcon>
                     <LogoutIcon />
