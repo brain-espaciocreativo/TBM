@@ -19,7 +19,7 @@ export default newSlide.reducer;
 
 export const getAllNews = () => {
     return async (dispatch) => {
-        await axios('http://localhost:3000/news')
+        await axios('http://10.0.2.2:3000/news')
         .then((res) => {
             dispatch(setNewList(res.data.data));
         })

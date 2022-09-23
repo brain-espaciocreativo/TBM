@@ -24,7 +24,7 @@ export default function LoginScreen () {
         setLoading(true);
         setTimeout(() => {
             dispatch(getOneUser({email, password}));
-            navigation.navigate('Profile');
+            navigation.navigate('Home');
             setLoading(false);
         }, 3000);
     }

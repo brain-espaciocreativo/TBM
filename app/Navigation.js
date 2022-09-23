@@ -20,6 +20,7 @@ const Navigator = () =>{
                     headerTintColor: 'red',
                     headerTransparent: true,
                     headerTitle:'',
+                    headerShown:false,
                     headerLeftContainerStyle:{
                         paddingLeft: 20
                     }
@@ -29,7 +30,7 @@ const Navigator = () =>{
                 <Stack.Screen name="Loading" component={Loading} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Profile" component={ProfileScreen} />
-                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Home" component={HomeScreen}/>
             </Stack.Navigator>
     )
 }
