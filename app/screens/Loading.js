@@ -1,12 +1,22 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { Dimensions, Image, ImageBackground, StyleSheet, View } from 'react-native'
+import { useEffect } from 'react';
+import { Dimensions, Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 export default function Loading() {
+  const navigation = useNavigation();
+  let ScreenHeight = Dimensions.get("window").height;
 
-    let ScreenHeight = Dimensions.get("window").height;
+    useEffect(()=>{
+      setTimeout(()=>{
+        navigation.navigate('Login');        
+      },3000)
+    },[]);
 
   return (
     <View style={{
+      backgroundColor: 'white',
       width: '100%', 
       height: '100%',
       flex: 1,
@@ -21,6 +31,7 @@ export default function Loading() {
                   height: 66
                 }}
             />
+            <ActivityIndicator animating={true} color={'red'} />
     </View>
   )
 }

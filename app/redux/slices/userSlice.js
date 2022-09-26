@@ -81,7 +81,7 @@ export const deleteOneUser = (payload) => {
 export const getOneUser = (payload) => {
 
     return async (dispatch) => {
-        await axios.post('http://localhost:3000/auth/login', payload)
+        await axios.post('http://10.0.2.2:3000/auth/login', payload)
         .then(res => {
             dispatch(user(res.data.user));
         })
