@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 import LoginScreen from "./screens/LoginScreem";
 import HomeScreen from "./screens/HomeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
 import Loading from "./screens/Loading";
 
 const Navigator = () =>{
@@ -17,7 +16,7 @@ const Navigator = () =>{
                     headerStyle:{
                         backgroundColor:"transparent"
                     },
-                    headerTintColor: 'red',
+                    headerTintColor: 'blue',
                     headerTransparent: true,
                     headerTitle:'',
                     headerShown:false,
@@ -29,7 +28,6 @@ const Navigator = () =>{
             >
                 <Stack.Screen name="Loading" component={Loading} />
                 <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
                 <Stack.Screen name="Home" component={HomeScreen}/>
             </Stack.Navigator>
     )
