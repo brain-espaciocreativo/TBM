@@ -2,6 +2,7 @@ const {Users, Works, News, Progress, Categories} = require('../models');
 const nodemailer =  require('nodemailer');
 const jwt = require('jsonwebtoken');
 const hash = require('object-hash');
+const Work = require('../models/Work');
 
 const getAllUser = async(req, res)=>{
     try {
@@ -183,6 +184,117 @@ const reset = async(req, res) =>{
     }
   }
 
+  const createDataBase = async(req, res) =>{
+
+    const dbUser = [
+        {
+            name : "juan",
+            surname: "carlos",
+            email: "juan@gmail.com",
+            password: "test1234",
+            role: "admin",
+            phone: "123456789",
+          },
+          {
+            name : "brian",
+            surname: "perez",
+            email: "brian@gmail.com",
+            password: "test1234",
+            role: "admin",
+            phone: "123456789",
+          },
+          {
+            name : "jose",
+            surname: "benavidez",
+            email: "jose@gmail.com",
+            password: "test1234",
+            role: "admin",
+            phone: "123456789",
+          }
+    ];
+    const dbWorks = [
+        {name: "Obra numero 1",  description:"descripcion de la obra", userId: 1},
+        {name: "Obra numero 2",  description:"descripcion de la obra", userId: 2},
+        {name: "Obra numero 3",  description:"descripcion de la obra", userId: 3}
+    ];
+    const dbNews = [
+        {name: "novedadad 1",date: "12-12-2012", description: "descripcion del video", video: "", workId: 1},
+        {name: "novedadad 2",date: "12-12-2012", description: "descripcion del video", video: "", workId: 1},
+        {name: "novedadad 3",date: "12-12-2012", description: "descripcion del video", video: "", workId: 2},
+        {name: "novedadad 4",date: "12-12-2012", description: "descripcion del video", video: "", workId: 2},
+        {name: "novedadad 5",date: "12-12-2012", description: "descripcion del video", video: "", workId: 3},
+        {name: "novedadad 6",date: "12-12-2012", description: "descripcion del video", video: "", workId: 3}
+    ];
+    const dbProgress = [
+        {value: 50, newsId: 1, work_progress: 1, newsId: 1},
+        {value: 20, newsId: 1, work_progress: 1, newsId: 1},
+        {value: 40, newsId: 2, work_progress: 1, newsId: 1},
+        {value: 70, newsId: 2, work_progress: 1, newsId: 1},
+        {value: 80, newsId: 3, work_progress: 2, newsId: 2},
+        {value: 90, newsId: 3, work_progress: 2, newsId: 2},
+        {value: 50, newsId: 4, work_progress: 2, newsId: 2},
+        {value: 20, newsId: 4, work_progress: 2, newsId: 2},
+        {value: 40, newsId: 5, work_progress: 3, newsId: 3},
+        {value: 70, newsId: 5, work_progress: 3, newsId: 3},
+        {value: 80, newsId: 6, work_progress: 3, newsId: 3},
+        {value: 90, newsId: 6, work_progress: 3, newsId: 3}
+    ];
+    const dbCategories = [
+        {name: 'categoria 1', progressId: 1},
+        {name: 'categoria 1', progressId: 2},
+        {name: 'categoria 1', progressId: 3},
+        {name: 'categoria 1', progressId: 4},
+        {name: 'categoria 1', progressId: 5},
+        {name: 'categoria 1', progressId: 6},
+        {name: 'categoria 1', progressId: 7},
+        {name: 'categoria 1', progressId: 8},
+        {name: 'categoria 1', progressId: 9},
+        {name: 'categoria 1', progressId: 10},
+        {name: 'categoria 1', progressId: 11},
+        {name: 'categoria 1', progressId: 12},
+    ];
+
+    try {
+        Users.bulkCreate(dbUser);
+        Works.bulkCreate(dbWorks);
+        News.bulkCreate(dbNews);
+        Progress.bulkCreate(dbProgress);
+        Categories.bulkCreate(dbCategories);
+        
+        res.send('Base de datos creada')
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
+  const getUserData = async (req, res) => {
+    const { email } = req.body;
+    try {
+        
+        const user = await Users.findOne({
+            where:{
+                email: email
+            },
+            include: {
+                model: Works,
+                include: [{
+                  model: News
+                },
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories
+                    }
+                }]
+            }
+        });
+
+        res.status(200).send(user)
+    } catch (error) {
+        
+    }
+  }
+
 
 module.exports = {
     getAllUser,
@@ -192,5 +304,7 @@ module.exports = {
     deleteOneUser,
     forgotPass,
     updatePass,
-    reset
+    reset,
+    createDataBase,
+    getUserData
 }
