@@ -1,6 +1,5 @@
 const e = require('express');
 const { Router } = require('express');
-const USERS_BBDD = require('./DDBB');
 const authSessionRouter =  Router();
 const hash = require('object-hash');
 // const nanoid = require('nanoid');
@@ -35,13 +34,15 @@ authSessionRouter.post('/login', async (req, res)=>{
 
     const user = data.get({ plain: true });
 
-        const progress = user.works[0].progresses[0]
+        const progress = user.works[0].progresses
         delete user.works[0].progresses
-        const news =  user.works[0].news[0]
+        const news =  user.works[0].news
         delete user.works[0].news
         const works = user.works[0]
         delete user.works;
         const userData = user;
+
+
 
         result.push(userData);
         result.push(works);
