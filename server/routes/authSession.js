@@ -4,36 +4,57 @@ const USERS_BBDD = require('./DDBB');
 const authSessionRouter =  Router();
 const hash = require('object-hash');
 // const nanoid = require('nanoid');
-const { Users} = require('../models/index');
+const { Users, Works, News, Progress, Categories} = require('../models/index');
 
 const sessions = [];
 
 authSessionRouter.post('/login', async (req, res)=>{
 
     const {email, password} = req.body;
+    const result = [];
+
     if(!email || !password) return res.status(400);
 
-    const user = await Users.findOne({
+    const data = await Users.findOne({
         where:{
             email:email
+        },
+        include: {
+            model: Works,
+            include: [{
+              model: News
+            },
+            {
+                model: Progress,
+                include: {
+                    model: Categories
+                }
+            }]
         }
     })
-    console.log('este es el user',user.dataValues);
+
+    const user = data.get({ plain: true });
+
+        const progress = user.works[0].progresses[0]
+        delete user.works[0].progresses
+        const news =  user.works[0].news[0]
+        delete user.works[0].news
+        const works = user.works[0]
+        delete user.works;
+        const userData = user;
+
+        result.push(userData);
+        result.push(works);
+        result.push(news);
+        result.push(progress);
+
+        console.log(result);
 
     const pass = hash.MD5(password)
     if(!user) return res.status(401).send('datos incorrectos'); 
-    if(user.password !== pass) return res.status(401);
+    // if(user.password !== pass) return res.status(401).send('constraseña invalida');
 
-    // const sessionId = nanoid();
-    const { guid } = user;
-
-    const sessionId = '1233456789';
-    sessions.push({sessionId, guid});
-
-    res.cookie('sessionId', sessionId, {
-        httpOnly: true
-    });
-    res.status(201).send({data:`Usuario ${user} autenticado`, user: user.dataValues});
+    res.status(201).send({data:`Usuario ${user} autenticado`, data: result});
 });
 
 authSessionRouter.get('/profile', (req, res)=>{
