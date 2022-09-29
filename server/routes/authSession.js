@@ -32,6 +32,12 @@ authSessionRouter.post('/login', async (req, res)=>{
         }
     })
 
+    const pass = hash.MD5(password)
+    console.log(pass)
+    if(!data) return res.status(401).send('datos incorrectos');
+
+    if(data.password !== pass) return res.status(401).send('constraseña invalida');
+
     const user = data.get({ plain: true });
 
         const progress = user.works[0].progresses
@@ -48,12 +54,6 @@ authSessionRouter.post('/login', async (req, res)=>{
         result.push(works);
         result.push(news);
         result.push(progress);
-
-        console.log(result);
-
-    const pass = hash.MD5(password)
-    if(!user) return res.status(401).send('datos incorrectos'); 
-    // if(user.password !== pass) return res.status(401).send('constraseña invalida');
 
     res.status(201).send({data:`Usuario ${user} autenticado`, data: result});
 });
