@@ -18,6 +18,7 @@ authSessionRouter.post('/login', async (req, res)=>{
             email:email
         }
     })
+    console.log('este es el user',user.dataValues);
 
     const pass = hash.MD5(password)
     if(!user) return res.status(401).send('datos incorrectos'); 
@@ -32,7 +33,7 @@ authSessionRouter.post('/login', async (req, res)=>{
     res.cookie('sessionId', sessionId, {
         httpOnly: true
     });
-    res.status(201).send({data:`Usuario ${user} autenticado`, user: user});
+    res.status(201).send({data:`Usuario ${user} autenticado`, user: user.dataValues});
 });
 
 authSessionRouter.get('/profile', (req, res)=>{
