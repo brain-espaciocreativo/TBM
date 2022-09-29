@@ -39,6 +39,8 @@ authSessionRouter.post('/login', async (req, res)=>{
 
     const user = data.get({ plain: true });
 
+    console.log(user);
+
         const progress = user.works[0].progresses
         delete user.works[0].progresses
         const news =  user.works[0].news

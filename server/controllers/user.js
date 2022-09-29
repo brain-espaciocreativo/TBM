@@ -255,11 +255,11 @@ const reset = async(req, res) =>{
     ];
 
     try {
-        Users.bulkCreate(dbUser);
-        Works.bulkCreate(dbWorks);
-        News.bulkCreate(dbNews);
-        Progress.bulkCreate(dbProgress);
-        Categories.bulkCreate(dbCategories);
+        await Users.bulkCreate(dbUser);
+        await Works.bulkCreate(dbWorks);
+        await News.bulkCreate(dbNews);
+        await Progress.bulkCreate(dbProgress);
+        await Categories.bulkCreate(dbCategories);
         
         res.send('Base de datos creada')
     } catch (error) {
