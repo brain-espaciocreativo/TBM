@@ -15,6 +15,6 @@ router.use('/news', news);
 router.use('/work', work);
 router.use('/progress', progress);
 router.use('/auth', authSesion);
-router.use('/email', sendMail);
+router.use('/send-email', sendMail);
 
 module.exports = router

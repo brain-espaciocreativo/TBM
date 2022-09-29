@@ -5,7 +5,9 @@ const { google } = require('googleapis');
 
 router.post('/', (req, res) => {
 
-    const { to, subject, html } = req.body;
+    const { mailOptions } = req.body;
+
+    // Estructura del mailOptions = {"mailOptions": {"from", "to", "subject", "html"}}
   
     const CLIENT_ID = '1090339452314-a0cmi0ghmef7smtcp3ksnst6od3gv40s.apps.googleusercontent.com';
     const SECRET = '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';
@@ -19,17 +21,7 @@ router.post('/', (req, res) => {
         SECRET,
         URI
       );
-  
-      contentHtml = `
-              <h1>Hola Brayan</h1>
-              <ul>
-                  <li>adidas</li>
-                  <li>rebook</li>
-                  <li>nike</li>
-                  <li>pumas</li>
-              </ul>
-              `
-  
+
       try {
   
         oAuthClient.setCredentials({ refresh_token: REFRESH });
@@ -46,12 +38,6 @@ router.post('/', (req, res) => {
             accessToken: accessToken
           }
         })
-        const mailOptions = {
-          from: "Pagina web",
-          to: to,
-          subject: subject,
-          html: contentHtml
-        };
   
         const result = await tranporter.sendMail(mailOptions)
   
