@@ -49,8 +49,6 @@ authSessionRouter.post('/login', async (req, res)=>{
         result.push(news);
         result.push(progress);
 
-        console.log(result);
-
     const pass = hash.MD5(password)
     if(!user) return res.status(401).send('datos incorrectos'); 
     // if(user.password !== pass) return res.status(401).send('constraseña invalida');
