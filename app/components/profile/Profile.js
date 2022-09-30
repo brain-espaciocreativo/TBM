@@ -8,12 +8,9 @@ export default function Profile() {
     const dispatch =  useDispatch();
     const user = useSelector((state) => state.users.user);
 
-    console.log(user);
-
     useEffect( () =>{
         dispatch(getOneUser())
     }, [])
-
 
     return (
         <SafeAreaView style={style.container}>
@@ -26,9 +23,11 @@ export default function Profile() {
             </View>
                 <View style={{flexDirection: 'row', justifyContent:'flex-end', alignItems:'center'}}>
                 <View style={{marginLeft: 20}}>
-                    <Title style={[style.title, {
-                        marginTop:0
-                    }]}>!Hola {user.name}¡</Title>
+                    {
+                        user && <Title style={[style.title, {
+                            letterSpacing:1
+                        }]}>!Hola {user.name}¡</Title> 
+                    }
                     <Caption style={style.caption}>22 de noviembre de 2022</Caption>
                 </View>
                 <Avatar.Image 
@@ -62,7 +61,7 @@ const style = StyleSheet.create({
     fontSize: 9,
     lineHeight: 15,
     fontWeight: 'normal',
-    color:'#12100b'
+    color:'#12100b',
     },
     infoBoxWrapper: {
     borderBottomColor: '#dddddd',

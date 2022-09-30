@@ -191,7 +191,7 @@ const reset = async(req, res) =>{
             name : "juan",
             surname: "carlos",
             email: "juan@gmail.com",
-            password: "test1234",
+            password: "4f1ff3fa42c8182ddfb792e8d48e498d",
             role: "admin",
             phone: "123456789",
           },
@@ -199,7 +199,7 @@ const reset = async(req, res) =>{
             name : "brian",
             surname: "perez",
             email: "brian@gmail.com",
-            password: "test1234",
+            password: "4f1ff3fa42c8182ddfb792e8d48e498d",
             role: "admin",
             phone: "123456789",
           },
@@ -207,7 +207,7 @@ const reset = async(req, res) =>{
             name : "jose",
             surname: "benavidez",
             email: "jose@gmail.com",
-            password: "test1234",
+            password: "4f1ff3fa42c8182ddfb792e8d48e498d",
             role: "admin",
             phone: "123456789",
           }
@@ -255,11 +255,11 @@ const reset = async(req, res) =>{
     ];
 
     try {
-        Users.bulkCreate(dbUser);
-        Works.bulkCreate(dbWorks);
-        News.bulkCreate(dbNews);
-        Progress.bulkCreate(dbProgress);
-        Categories.bulkCreate(dbCategories);
+        await Users.bulkCreate(dbUser);
+        await Works.bulkCreate(dbWorks);
+        await News.bulkCreate(dbNews);
+        await Progress.bulkCreate(dbProgress);
+        await Categories.bulkCreate(dbCategories);
         
         res.send('Base de datos creada')
     } catch (error) {

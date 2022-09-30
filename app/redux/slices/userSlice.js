@@ -4,8 +4,10 @@ import axios from 'axios';
 export const userSlice = createSlice({
     name: 'users',
     initialState: {
-        list: [],
-        user: {},
+        user: null,
+        works: null,
+        news: null,
+        progresses: null
     },
     reducers: {
         setUserList: (state, action) => {
@@ -25,7 +27,13 @@ export const userSlice = createSlice({
             state
         },
         user:(state, action) =>{
-            state.user = action.payload
+            return {
+                ...state,
+                user: action.payload[0],
+                works: action.payload[1],
+                news: action.payload[2],
+                progresses: action.payload[3]
+        }
         },
         cleanUser:(state,action) =>{
             state.user = ''
@@ -82,7 +90,7 @@ export const getOneUser = (payload) => {
     return async (dispatch) => {
         await axios.post('http://10.0.2.2:3000/auth/login', payload)
         .then(res => {
-            dispatch(user(res.data.user));
+            dispatch(user(res.data.data))
         })
         .catch((error) => console.log(error));
     }

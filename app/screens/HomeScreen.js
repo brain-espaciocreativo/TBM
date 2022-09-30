@@ -1,46 +1,43 @@
 import React, { useEffect } from 'react';
 import { Searchbar } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import {StyleSheet,Text,FlatList, SafeAreaView, View, Image } from 'react-native';
+import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Cards from '../components/card/Cards';
-import { getAllNews } from '../redux/slices/newSlice';
 import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
+import { getOneUser } from '../redux/slices/userSlice';
 
 export default function HomeScreen() {
 
   const dispatch  = useDispatch();
-  const news = useSelector((state) => state.news.newList);
-  const navigation = useNavigation();
+  const news = useSelector((state) => state.users.news);
+  const progresses = useSelector((state) => state.users.progresses);
 
   useEffect(() => {
-    dispatch(getAllNews())
+    dispatch(getOneUser())
     return() =>{
     }
   }, [dispatch])
-
+  
+const  numColumns = 2
   return (
     
     <FlatList ListHeaderComponent={
       <SafeAreaView>
         <Profile />
-      <Progreso/>
-      <View style={style.grid}>
-        <View>
-            <ProgresItem/>
-        </View>
-        <View>
-            <ProgresItem/>
-        </View>
-        <View>
-            <ProgresItem/>
-        </View>
-        <View>
-            <ProgresItem/>
-        </View>
-        
+        {
+          progresses && <Progreso progreso={progresses}/>
+        }
+      <View >
+        <FlatList 
+        numColumns={numColumns}
+          data={progresses}
+          renderItem={(item) =>{
+            return <ProgresItem items={item}/>
+          }}
+          listKey={(progresses, index) => index.toString()}
+        />
       </View>
       <Text style={style.novedades}>Novedades</Text>
           <Searchbar
@@ -53,11 +50,10 @@ export default function HomeScreen() {
       renderItem={({item}) =>{
         return <Cards info={item}/>;
       }}
-      keyExtractor={(news) => news.id.toString()}
+      listKey={(news, index) => index.toString()}
       />
     </SafeAreaView>
     } 
-    
     />
   )
 }
@@ -77,11 +73,6 @@ const style = StyleSheet.create({
       margin:20
     },
     grid:{
-      flex:1,
-      flexDirection:'row',
-      alignItems:'center',
-      justifyContent:'center',
-      flexWrap:'wrap',
+        width:'100%',
     }
 })
-
