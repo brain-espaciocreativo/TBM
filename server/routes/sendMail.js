@@ -22,6 +22,7 @@ router.post('/', (req, res) => {
         URI
       );
 
+  
       try {
   
         oAuthClient.setCredentials({ refresh_token: REFRESH });
@@ -39,6 +40,7 @@ router.post('/', (req, res) => {
           }
         })
   
+
         const result = await tranporter.sendMail(mailOptions)
   
         res.send(result)

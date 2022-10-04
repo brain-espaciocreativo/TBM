@@ -83,7 +83,6 @@ export default function Login() {
                 margin="normal"
                 required
                 fullWidth
-                autoFocus
                 id="email"
                 label="Email"
                 name="email"
@@ -138,7 +137,7 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2" color="error" >
+                  <Link href="/resset-password" variant="body2" color="error" >
                     Olvidaste la contraseña?
                   </Link>
                 </Grid>
