@@ -1,4 +1,4 @@
-import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from "sweetalert2";
@@ -19,24 +19,24 @@ export default function WorkForm () {
   const [ createWorkState, setCreateWorkState ] = useState({
     name: "" ,
     description: ""
-});
+  });
 
-const [ categoria, setCategoria] = useState("");
-const [ progreso, setProgreso] = useState("");
-const [ ship, setShip] = useState([]);
+  const [ categoria, setCategoria] = useState("");
+  const [ progreso, setProgreso] = useState("");
+  const [ ship, setShip] = useState([]);
 
-const handleSelectCategoria = (e) =>{
-  setCategoria(e.target.value);
-}
+  const handleSelectCategoria = (e) =>{
+    setCategoria(e.target.value);
+  }
 
-const handleProgreso = (e) =>{
-  setProgreso(e.target.value)
-}
+  const handleProgreso = (e) =>{
+    setProgreso(e.target.value)
+  }
 
   const handleAdd = () =>{
      setShip(state => [...state, {categoria:categoria,progreso: progreso}])
      
-}
+  }
 
   const handleChipDelete = () =>{
    console.log('se borró');
@@ -51,24 +51,32 @@ const handleProgreso = (e) =>{
   const handleCreateWork = (e) => {
     const { name, value} = e.target;
     setCreateWorkState(state => ({...state, [name]: value}));
-}
+  }
 
-const createWork = async () => {
-  await dispatch(createOneWork(createWorkState));
-  Swal.fire({
-    title: 'Obra creada!',
-  })
- navigate('/work')
-}
+  const createWork = async () => {
+    await dispatch(createOneWork(createWorkState));
+    Swal.fire({
+      title: 'Obra creada!',
+    })
+  navigate('/work')
+  }
+
+  const theme = useTheme();
+
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+
 return (
         <>
        
        <NavDashboard/>
             <Grid container>
-                <Grid item xs={2}>
-                    <NavDashboard2 />
-                </Grid>
-                <Grid item xs={10} sx={{
+            {
+              !isMatch &&
+              <Grid  xs={3} columns={1}>
+                <NavDashboard2/>
+              </Grid>
+            }
+                <Grid item xs={9} sx={{
                     width: '70%',
                     height: '80vh',
                     marginTop: '9rem',
@@ -97,39 +105,41 @@ return (
                       style={{ width: '100%', height:150, marginTop:'2rem', border:'none', 
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
                     />
-                  <FormControl fullWidth sx={{marginTop:'2rem'}} >
+                    <div>
+                    <FormControl fullWidth sx={{marginTop:'2rem'}} >
                     <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={categoria}
-                        onChange={handleSelectCategoria}
-                        label="Categoria"
-                        sx={{border:'none', 
-                  boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
-                    >
-                      <MenuItem value='Redes Cloacales'>Redes Cloacales</MenuItem>
-                      <MenuItem value='Electricidad'>Electricidad</MenuItem>
-                      <MenuItem value='Agua'>Agua</MenuItem>
-                    </Select>
-                  </FormControl>
+                      <Select
+                          labelId="demo-simple-select-autowidth-label"
+                          id="demo-simple-select-autowidth"
+                          value={categoria}
+                          onChange={handleSelectCategoria}
+                          label="Categoria"
+                          sx={{border:'none', 
+                          boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
+                      >
+                        <MenuItem value='Redes Cloacales'>Redes Cloacales</MenuItem>
+                        <MenuItem value='Electricidad'>Electricidad</MenuItem>
+                        <MenuItem value='Agua'>Agua</MenuItem>
+                      </Select>
+                    </FormControl>
                   <TextField  
-                  onChange={handleProgreso}
-                  value={progreso}
-                  label="Progreso"
-                  name='progress'
-                  InputLabelProps={{
-                              style:{
-                                textTransform: "uppercase",
-                                fontSize:".8rem",
-                              }
-                            }} 
-                  sx={{marginTop:'2rem',border:'none', 
-                  boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
-                  />
+                    onChange={handleProgreso}
+                    value={progreso}
+                    label="Progreso"
+                    name='progress'
+                    InputLabelProps={{
+                                      style:{
+                                        textTransform: "uppercase",
+                                        fontSize:".8rem",
+                                      }
+                                    }} 
+                    sx={{marginTop:'2rem',border:'none', 
+                    boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                    />
                   <Box sx={{marginTop:'2rem'}}>
                       <Add onClick={handleAdd}/>
-                    </Box>
+                  </Box>
+                  </div>
                    <Stack direction="row" spacing={1}>
                     { ship && ship.length > 0 ? ship.map( (e, i) =>(
                       <Chip key={i} label={`${e.categoria} ${e.progreso}%`} onDelete={handleChipDelete}/>
