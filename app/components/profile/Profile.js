@@ -18,7 +18,7 @@ export default function Profile() {
             <View style={style.containerImage}>
                 <Image 
                     style={style.image}
-                    source={require('../../assets/logoApp.jpg')}
+                    source={require('../../assets/logoOficial.png')}
                 />
             </View>
                 <View style={{flexDirection: 'row', justifyContent:'flex-end', alignItems:'center'}}>
@@ -26,7 +26,7 @@ export default function Profile() {
                     {
                         user && <Title style={[style.title, {
                             letterSpacing:1
-                        }]}>!Hola {user.name}¡</Title> 
+                        }]}>¡Hola {user.name}!</Title> 
                     }
                     <Caption style={style.caption}>22 de noviembre de 2022</Caption>
                 </View>
@@ -55,7 +55,8 @@ const style = StyleSheet.create({
         fontSize:18,
         marginBottom:-6,
         fontWeight:'bold',
-        color:'#db0007'
+        color:'#db0007',
+        textTransform:'capitalize'
     },
     caption: {
     fontSize: 9,
@@ -77,6 +78,6 @@ const style = StyleSheet.create({
     image:{
         width:150,
         height:33,
-        backgroundColor:'red',
+        // backgroundColor:'red',
     }
 })
