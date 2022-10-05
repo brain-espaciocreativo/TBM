@@ -1,4 +1,4 @@
-import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from "sweetalert2";
@@ -60,15 +60,23 @@ export default function WorkForm () {
     })
   navigate('/work')
   }
+
+  const theme = useTheme();
+
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+
 return (
         <>
        
        <NavDashboard/>
             <Grid container>
-                <Grid item xs={2}>
-                    <NavDashboard2 />
-                </Grid>
-                <Grid item xs={10} sx={{
+            {
+              !isMatch &&
+              <Grid  xs={3} columns={1}>
+                <NavDashboard2/>
+              </Grid>
+            }
+                <Grid item xs={9} sx={{
                     width: '70%',
                     height: '80vh',
                     marginTop: '9rem',
@@ -97,76 +105,60 @@ return (
                       style={{ width: '100%', height:150, marginTop:'2rem', border:'none', 
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
                     />
-                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                      <FormControl fullWidth sx={{marginTop:'2rem'}} >
-                      <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
+                    <div>
+                    <FormControl fullWidth sx={{marginTop:'2rem'}} >
+                    <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
                       <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={categoria}
-                        onChange={handleSelectCategoria}
-                        label="Categoria"
-                        sx={{border:'none', 
-                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                          labelId="demo-simple-select-autowidth-label"
+                          id="demo-simple-select-autowidth"
+                          value={categoria}
+                          onChange={handleSelectCategoria}
+                          label="Categoria"
+                          sx={{border:'none', 
+                          boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
                       >
-                      {
-                        categories && categories.length ? 
-                          categories.map(e=>{
-                            return <MenuItem value={e.name}>{e.name}</MenuItem>
-                          }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
-                      }
+                        <MenuItem value='Redes Cloacales'>Redes Cloacales</MenuItem>
+                        <MenuItem value='Electricidad'>Electricidad</MenuItem>
+                        <MenuItem value='Agua'>Agua</MenuItem>
                       </Select>
-                      </FormControl>
-                      <TextField  
-                        onChange={handleProgreso}
-                        value={progreso}
-                        label="% Avance"
-                        name='progress'
-                        InputLabelProps={{
-                                    style:{
-                                      textTransform: "uppercase",
-                                      fontSize:".8rem",
-                                    }
-                                  }} 
-                        sx={{marginTop:'2rem',border:'none', 
-                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
-                        />
-                      <TextField  
-                      // onChange={handleProgreso}
-                      // value={progreso}
-                      label="% Peso de la categoria"
-                      name='peso'
-                      InputLabelProps={{
-                                  style:{
-                                    textTransform: "uppercase",
-                                    fontSize:".8rem",
-                                  }
-                                }} 
-                      sx={{marginTop:'2rem',border:'none', 
-                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
-                      />
-                      <Box sx={{marginTop:'2rem'}}>
-                        <Add onClick={handleAdd}/>
-                      </Box>
-                    </Box>
-                    <Stack direction="row" spacing={1}>
-                      { ship && ship.length > 0 ? ship.map( (e, i) =>(
-                        <Chip key={i} label={`${e.categoria} ${e.progreso}%`} onDelete={handleChipDelete}/>
-                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
-                    </Stack>
-                    <Grid  item xs={2}>
-                      <Button 
-                        sx={{
-                          backgroundColor: 'rgb(160, 7, 7) ',
-                          color: 'white',
-                          padding: '10px',
-                          border:'1px solid rgb(160, 7, 7) ',
-                          transition: '.5s',
-                          width:'200px'
-                        }}
-                        onClick={createWork}
-                        >Crear Obra</Button>
-                    </Grid>
+                    </FormControl>
+                  <TextField  
+                    onChange={handleProgreso}
+                    value={progreso}
+                    label="Progreso"
+                    name='progress'
+                    InputLabelProps={{
+                                      style:{
+                                        textTransform: "uppercase",
+                                        fontSize:".8rem",
+                                      }
+                                    }} 
+                    sx={{marginTop:'2rem',border:'none', 
+                    boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                    />
+                  <Box sx={{marginTop:'2rem'}}>
+                      <Add onClick={handleAdd}/>
+                  </Box>
+                  </div>
+                   <Stack direction="row" spacing={1}>
+                    { ship && ship.length > 0 ? ship.map( (e, i) =>(
+                      <Chip key={i} label={`${e.categoria} ${e.progreso}%`} onDelete={handleChipDelete}/>
+                    )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
+                  </Stack>
+                  <Grid  item xs={2}>
+                    <Button 
+                      sx={{
+                        backgroundColor: 'rgb(160, 7, 7) ',
+                        color: 'white',
+                        padding: '10px',
+                        border:'1px solid rgb(160, 7, 7) ',
+                        transition: '.5s',
+                        width:'200px'
+                      }}
+                      onClick={createWork}
+                      >Crear Obra</Button>
+                  </Grid>
+
                   </Grid> 
                 </Grid>
             </Grid>

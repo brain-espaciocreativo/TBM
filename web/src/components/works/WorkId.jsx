@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,8 +6,6 @@ import { getOneWork } from "../../redux/slices/workSlice";
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import KeyboardBackspace from '@mui/icons-material/KeyboardBackspace';
-
-
 
 export default function WorkId () {
 
@@ -19,26 +17,33 @@ export default function WorkId () {
 
     const {id} = useParams();
 
-useEffect(() => {
-    dispatch(getOneWork(id))
-}, [id, dispatch])
+    useEffect(() => {
+        dispatch(getOneWork(id))
+    }, [id, dispatch])
 
-useEffect(() => {
-    if(work){
-        setData({
-        name: work.name,
-        description: work.description})
-      }
-  }, [work])
+    useEffect(() => {
+        if(work){
+            setData({
+            name: work.name,
+            description: work.description})
+        }
+    }, [work]);
+
+    const theme = useTheme();
+
+    const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
     return(
         <>
         <NavDashboard/>
-        <Grid container spacing={9}>
-                <Grid item xs={2}>
-                    <NavDashboard2 />
+        <Grid container >
+            {
+                !isMatch &&
+                <Grid  xs={3} columns={1}>
+                    <NavDashboard2/>
                 </Grid>
-            <Grid item xs={10} columns={1} sx={{ marginTop:'10rem'}}>
+            }
+            <Grid item xs={9} columns={1} sx={{ marginTop:'10rem'}}>
                     <KeyboardBackspace sx={{color:'red', cursor:'pointer'}} onClick={()=>navigate('/work')}/>
                 <Card sx={{ minWidth: 275,boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', margin:'20px 0', width:'20%' }}>
                         <CardContent>

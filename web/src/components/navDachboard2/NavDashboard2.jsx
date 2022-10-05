@@ -21,8 +21,6 @@ export default function NavDashboard2() {
         navigate('/')
     }
 
-
-
   return (
     <>
         <Grid container>
