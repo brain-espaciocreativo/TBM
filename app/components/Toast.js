@@ -5,7 +5,7 @@ import { SHOW_TOAST_MESSAGE } from '../helpers/constants/toast';
 const colors ={
     info: '#343a40',
     success: '#28a745',
-    danger: '#dc3545'
+    danger: '#db0007'
 }
 const Toast = () => {
     const [ messageType, setMessageType ] = useState(null);
