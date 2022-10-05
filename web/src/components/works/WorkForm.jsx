@@ -7,12 +7,13 @@ import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
 import { Add} from '@mui/icons-material';
+import { getAllCategories } from "../../redux/slices/categoriesSlice";
 
 
 
 export default function WorkForm () {
   const dispatch = useDispatch();
-  const works = useSelector(state => state.works.workList);
+  const categories = useSelector(state => state.categories.categories);
 
   const navigate = useNavigate();
 
@@ -34,8 +35,7 @@ export default function WorkForm () {
   }
 
   const handleAdd = () =>{
-     setShip(state => [...state, {categoria:categoria,progreso: progreso}])
-     
+     setShip(state => [...state, {categoria:categoria,progreso: progreso}]) 
   }
 
   const handleChipDelete = () =>{
@@ -43,7 +43,7 @@ export default function WorkForm () {
   }
 
   useEffect(() => {
-    dispatch(getAllWorks());
+    dispatch(getAllCategories())
     setCreateWorkState('')
   }, [dispatch])
 
@@ -158,10 +158,10 @@ return (
                       onClick={createWork}
                       >Crear Obra</Button>
                   </Grid>
+
                   </Grid> 
                 </Grid>
             </Grid>
-          
         </>
     )
 }
