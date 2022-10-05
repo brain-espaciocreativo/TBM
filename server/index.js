@@ -3,8 +3,9 @@ require('dotenv').config();
 const { conn } = require('./models');
 const PORT = process.env.PORT || 3000;
 
-conn.sync({force: true}).then(() => {
+conn.sync({force: false}).then(() => {
   server.listen(PORT, () => {
+    // eslint-disable-next-line
     console.log(`Servidor corriendo en el puerto ${PORT}`);
   });
 });
