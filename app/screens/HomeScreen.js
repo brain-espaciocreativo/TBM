@@ -13,7 +13,7 @@ export default function HomeScreen() {
   const progresses = useSelector((state) => state.users.progresses);
   const user = useSelector((state) => state.users.user);
 
-  // TODO: cuando ingresa con las credenciales incorrectas muestra el componente de error , pero cuando ingresa las credenciales correctas , primero se muestra el componente de error y luego el de HOMESCREEM , intente poner un useEffect pero nada.....
+ 
   const numColumns = 2
   return (
     <>
