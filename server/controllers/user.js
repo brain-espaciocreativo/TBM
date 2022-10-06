@@ -226,40 +226,40 @@ const reset = async(req, res) =>{
         {name: "novedadad 6",date: "12-12-2012", description: "descripcion del video", video: "", workId: 3}
     ];
     const dbProgress = [
-        {value: 50, newsId: 1, work_progress: 1, newsId: 1},
-        {value: 20, newsId: 1, work_progress: 1, newsId: 1},
-        {value: 40, newsId: 2, work_progress: 1, newsId: 1},
-        {value: 70, newsId: 2, work_progress: 1, newsId: 1},
-        {value: 80, newsId: 3, work_progress: 2, newsId: 2},
-        {value: 90, newsId: 3, work_progress: 2, newsId: 2},
-        {value: 50, newsId: 4, work_progress: 2, newsId: 2},
-        {value: 20, newsId: 4, work_progress: 2, newsId: 2},
-        {value: 40, newsId: 5, work_progress: 3, newsId: 3},
-        {value: 70, newsId: 5, work_progress: 3, newsId: 3},
-        {value: 80, newsId: 6, work_progress: 3, newsId: 3},
-        {value: 90, newsId: 6, work_progress: 3, newsId: 3}
+        {value: 50, height_value: 70, newsId: 1, work_progress: 1, newsId: 1, categoryId: 1},
+        {value: 20, height_value: 30, newsId: 1, work_progress: 1, newsId: 1, categoryId: 2},
+        {value: 40, height_value: 40, newsId: 2, work_progress: 1, newsId: 1, categoryId: 3},
+        {value: 70, height_value: 70, newsId: 2, work_progress: 1, newsId: 1, categoryId: 4},
+        {value: 80, height_value: 100, newsId: 3, work_progress: 2, newsId: 2, categoryId: 5},
+        {value: 90, height_value: 60, newsId: 3, work_progress: 2, newsId: 2, categoryId: 6},
+        {value: 50, height_value: 80, newsId: 4, work_progress: 2, newsId: 2, categoryId: 7},
+        {value: 20, height_value: 60, newsId: 4, work_progress: 2, newsId: 2, categoryId: 8},
+        {value: 40, height_value: 70, newsId: 5, work_progress: 3, newsId: 3, categoryId: 9},
+        {value: 70, height_value: 10, newsId: 5, work_progress: 3, newsId: 3, categoryId: 10},
+        {value: 80, height_value: 70, newsId: 6, work_progress: 3, newsId: 3, categoryId: 11},
+        {value: 90, height_value: 20, newsId: 6, work_progress: 3, newsId: 3, categoryId: 12}
     ];
     const dbCategories = [
-        {name: 'categoria 1', progressId: 1},
-        {name: 'categoria 1', progressId: 2},
-        {name: 'categoria 1', progressId: 3},
-        {name: 'categoria 1', progressId: 4},
-        {name: 'categoria 1', progressId: 5},
-        {name: 'categoria 1', progressId: 6},
-        {name: 'categoria 1', progressId: 7},
-        {name: 'categoria 1', progressId: 8},
-        {name: 'categoria 1', progressId: 9},
-        {name: 'categoria 1', progressId: 10},
-        {name: 'categoria 1', progressId: 11},
-        {name: 'categoria 1', progressId: 12},
+        {name: 'categoria 1'},
+        {name: 'categoria 2'},
+        {name: 'categoria 3'},
+        {name: 'categoria 4'},
+        {name: 'categoria 5'},
+        {name: 'categoria 6'},
+        {name: 'categoria 7'},
+        {name: 'categoria 8'},
+        {name: 'categoria 9'},
+        {name: 'categoria 10'},
+        {name: 'categoria 11'},
+        {name: 'categoria 12'},
     ];
 
     try {
         await Users.bulkCreate(dbUser);
         await Works.bulkCreate(dbWorks);
         await News.bulkCreate(dbNews);
-        await Progress.bulkCreate(dbProgress);
         await Categories.bulkCreate(dbCategories);
+        await Progress.bulkCreate(dbProgress);
         
         res.send('Base de datos creada')
     } catch (error) {

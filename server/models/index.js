@@ -24,8 +24,8 @@ News.hasOne(Progress, { foreignKey: 'newsId', sourceKey: 'id' });
 Progress.belongsTo(News, {foreignKey: 'newsId', targetId: 'id'});
 
 // Relacion progreso a categorias (1 a 1)
-Progress.hasOne(Categories, { foreignKey: 'progressId', sourceKey: 'id' });
-Categories.belongsTo(Progress, { foreignKey: 'progressId', sourceKey: 'id' })
+Categories.hasOne(Progress, { foreignKey: 'categoryId', sourceKey: 'id' });
+Progress.belongsTo(Categories, { foreignKey: 'categoryId', sourceKey: 'id' })
 
 module.exports = {
     Users,

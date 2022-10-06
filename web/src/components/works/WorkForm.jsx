@@ -8,6 +8,7 @@ import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
 import { Add} from '@mui/icons-material';
 import { getAllCategories } from "../../redux/slices/categoriesSlice";
+import { lightGreen } from "@mui/material/colors";
 
 
 
@@ -22,20 +23,33 @@ export default function WorkForm () {
     description: ""
   });
 
-  const [ categoria, setCategoria] = useState("");
-  const [ progreso, setProgreso] = useState("");
+  const [ selectedCategory, SetSelectedCategory] = useState({
+    id: "",
+    name: ""
+  })
+
+  const [ progress, setProgress] = useState({
+    value: "",
+    height_value: ""
+  });
   const [ ship, setShip] = useState([]);
 
   const handleSelectCategoria = (e) =>{
-    setCategoria(e.target.value);
+    console.log(e.target.value)
+    SetSelectedCategory(e.target.value);
+    console.log(selectedCategory)
   }
 
-  const handleProgreso = (e) =>{
-    setProgreso(e.target.value)
-  }
+  const handleChange = (e) =>{
+    const {name, value} = e.target;
+    setProgress({
+        ...progress,[name]:value
+    });
+}
 
   const handleAdd = () =>{
-     setShip(state => [...state, {categoria:categoria,progreso: progreso}]) 
+     setShip(state => [...state, {category: selectedCategory, progress: progress}]);
+     console.log(ship)
   }
 
   const handleChipDelete = () =>{
@@ -45,8 +59,7 @@ export default function WorkForm () {
   useEffect(() => {
     dispatch(getAllCategories())
     setCreateWorkState('')
-  }, [dispatch])
-
+  }, [dispatch]);
 
   const handleCreateWork = (e) => {
     const { name, value} = e.target;
@@ -54,11 +67,11 @@ export default function WorkForm () {
   }
 
   const createWork = async () => {
-    await dispatch(createOneWork(createWorkState));
+    dispatch(createOneWork({work: createWorkState, ships: ship}));
     Swal.fire({
       title: 'Obra creada!',
     })
-  navigate('/work')
+    navigate('/work');
   }
 return (
         <>
@@ -103,7 +116,8 @@ return (
                       <Select
                         labelId="demo-simple-select-autowidth-label"
                         id="demo-simple-select-autowidth"
-                        value={categoria}
+                        name="name"
+                        // value={selectedCategory}
                         onChange={handleSelectCategoria}
                         label="Categoria"
                         sx={{border:'none', 
@@ -112,16 +126,16 @@ return (
                       {
                         categories && categories.length ? 
                           categories.map(e=>{
-                            return <MenuItem value={e.name}>{e.name}</MenuItem>
+                            return <MenuItem value={{name: e.name, id: e.id}}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
                       </FormControl>
                       <TextField  
-                        onChange={handleProgreso}
-                        value={progreso}
+                        onChange={handleChange}
+                        value={progress.value}
                         label="% Avance"
-                        name='progress'
+                        name='value'
                         InputLabelProps={{
                                     style:{
                                       textTransform: "uppercase",
@@ -132,10 +146,10 @@ return (
                         boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                         />
                       <TextField  
-                      // onChange={handleProgreso}
-                      // value={progreso}
+                      onChange={handleChange}
+                      value={progress.height_value}
                       label="% Peso de la categoria"
-                      name='peso'
+                      name='height_value'
                       InputLabelProps={{
                                   style:{
                                     textTransform: "uppercase",
@@ -149,11 +163,13 @@ return (
                         <Add onClick={handleAdd}/>
                       </Box>
                     </Box>
+                    <Box sx={{width: '100%'}}>
                     <Stack direction="row" spacing={1}>
                       { ship && ship.length > 0 ? ship.map( (e, i) =>(
-                        <Chip key={i} label={`${e.categoria} ${e.progreso}%`} onDelete={handleChipDelete}/>
+                        <Chip key={i} label={`${e.category.name} ${e.progress.value}% ${e.progress.height_value}%`} onDelete={handleChipDelete}/>
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
+                    </Box>
                     <Grid  item xs={2}>
                       <Button 
                         sx={{
