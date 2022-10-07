@@ -25,7 +25,6 @@ export default function Cards(props) {
   moment.locale('es')
    const newDate = moment(props.info.date).format('LLLL');
   
-  console.log(newDate);
 
   return (
     <>

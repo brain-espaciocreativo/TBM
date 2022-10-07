@@ -14,6 +14,7 @@ export default function HomeScreen() {
   const user = useSelector((state) => state.users.user);
 
  
+ 
   const numColumns = 2
   return (
     <>
@@ -23,10 +24,10 @@ export default function HomeScreen() {
             <SafeAreaView>
               <Profile />
               {
-                progresses.length > 0 && <Progreso progreso={progresses} />
+                progresses !== null && progresses.length > 0 ? <Progreso progreso={progresses}/> : <Text>No hay progreso general</Text>
               }
               {
-                progresses.length > 0 && <View >
+               progresses !== null && progresses.length > 0 ? <View >
                   <FlatList
                     numColumns={numColumns}
                     data={progresses}
@@ -34,8 +35,8 @@ export default function HomeScreen() {
                       return <ProgresItem items={item} />
                     }}
                     listKey={(progresses, index) => index.toString()}
-                  />
-                </View>
+                  /> 
+                </View> : <Text>no hay progresos asignados</Text>
               }
               <Text style={style.novedades}>Novedades</Text>
               <Searchbar
@@ -44,13 +45,13 @@ export default function HomeScreen() {
                 style={style.search}
               />
               {
-                news.length > 0 && <FlatList
+                news !== null && news.length > 0 ? <FlatList
                   data={news}
                   renderItem={({ item }) => {
                     return <Cards info={item} />;
                   }}
                   listKey={(news, index) => index.toString()}
-                />
+                /> : <Text>no hay novedades asignados</Text>
               }
             </SafeAreaView>
           }

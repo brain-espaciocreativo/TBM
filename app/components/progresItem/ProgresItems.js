@@ -5,7 +5,7 @@ import { ProgressBar, Text } from "react-native-paper";
 
 export default function ProgresItem(props) {
 
-
+    console.log('esto es la la categoria desde progresItems',props);
     return(
         <SafeAreaView style={style.cont}>
             <View  style={style.progreso}>
