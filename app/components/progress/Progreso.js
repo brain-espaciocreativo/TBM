@@ -50,8 +50,7 @@ const style = StyleSheet.create({
     titles:{
         marginLeft: 10,
         fontSize:20,
-        fontWeight:"bold",
-        textTransform:'capitalize'
+        fontWeight:"bold"
     },
     bar:{
         margin: 5,
