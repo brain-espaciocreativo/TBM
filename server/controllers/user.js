@@ -215,6 +215,14 @@ const deleteOneUser = async(req, res)=>{
             password: "4f1ff3fa42c8182ddfb792e8d48e498d",
             role: "admin",
             phone: "123456789",
+          },
+          {
+            name : "luis",
+            surname: "benavidez",
+            email: "luis@gmail.com",
+            password: "4f1ff3fa42c8182ddfb792e8d48e498d",
+            role: "admin",
+            phone: "123456789",
           }
     ];
     const dbWorks = [
