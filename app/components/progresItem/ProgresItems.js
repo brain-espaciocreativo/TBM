@@ -35,7 +35,8 @@ const style = StyleSheet.create({
     titles:{
         marginLeft: 10,
         fontSize:14,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        textTransform:'capitalize'
     },
     bar:{
         margin: 5,
