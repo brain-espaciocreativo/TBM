@@ -14,58 +14,48 @@ export default function HomeScreen() {
   const dispatch  = useDispatch();
   const news = useSelector((state) => state.users.news);
   const progresses = useSelector((state) => state.users.progresses);
-  const user = useSelector((state) => state.users.user);
-
 
   useEffect(() => {
     dispatch(getOneUser())
     return() =>{
     }
   }, [dispatch])
-
-  // TODO: cuando ingresa con las credenciales incorrectas muestra el componente de error , pero cuando ingresa las credenciales correctas , primero se muestra el componente de error y luego el de HOMESCREEM , intente poner un useEffect pero nada.....
+  
 const  numColumns = 2
   return (
-      <>
-        {
-          user ? 
-          <FlatList ListHeaderComponent={
-            <SafeAreaView>
-              <Profile />
-              {
-                progresses && <Progreso progreso={progresses}/>
-              }
-            <View >
-              <FlatList 
-              numColumns={numColumns}
-                data={progresses}
-                renderItem={(item) =>{
-                  return <ProgresItem items={item}/>
-                }}
-                listKey={(progresses, index) => index.toString()}
-              />
-            </View>
-            <Text style={style.novedades}>Novedades</Text>
-                <Searchbar
-                placeholder='Buscar'
-                fontSize='2'
-                style={style.search}
-                />
-            <FlatList 
-            data={news}
-            renderItem={({item}) =>{
-              return <Cards info={item}/>;
-            }}
-            listKey={(news, index) => index.toString()}
-            />
-          </SafeAreaView>
-          } 
-          /> 
-          :
-          <Error/>
-        }
-      </>
     
+    <FlatList ListHeaderComponent={
+      <SafeAreaView>
+        <Profile />
+        {
+          progresses && <Progreso progreso={progresses}/>
+        }
+      <View >
+        <FlatList 
+        numColumns={numColumns}
+          data={progresses}
+          renderItem={(item) =>{
+            return <ProgresItem items={item}/>
+          }}
+          listKey={(progresses, index) => index.toString()}
+        />
+      </View>
+      <Text style={style.novedades}>Novedades</Text>
+          <Searchbar
+          placeholder='Buscar'
+          fontSize='2'
+          style={style.search}
+          />
+      <FlatList 
+      data={news}
+      renderItem={({item}) =>{
+        return <Cards info={item}/>;
+      }}
+      listKey={(news, index) => index.toString()}
+      />
+    </SafeAreaView>
+    } 
+    />
   )
 }
 

@@ -82,6 +82,9 @@ export default function LoginScreen () {
             <View style={style.footer}>
                 <Text style={{ color: "#f19ea0" }}>Términos de uso | Políca de privacidad</Text>
             </View>
+            {/* <View style={{flex:1, backgroundColor:'red', width:'100%', marginTop: '10%',display:'flex'}}>
+                <Text>footer</Text>
+            </View> */}
     </View>
   )
 }
