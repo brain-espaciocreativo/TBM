@@ -47,7 +47,7 @@ export default userSlice.reducer;
 
 export const getAllUsers = () => {
     return (dispatch) => {
-        axios('http://localhost:3000/user')
+        axios('http://10.0.2.2:3000/user')
         .then((res) => {
             dispatch(setUserList(res.data.data));
         })
@@ -57,7 +57,7 @@ export const getAllUsers = () => {
 
 export const createOneUser = (payload) => {
     return async (dispatch) => {
-        await axios.post('http://localhost:3000/user', payload)
+        await axios.post('http://10.0.2.2:3000/user', payload)
         .then((res) => {
             dispatch(createUser(payload))
         })
@@ -68,7 +68,7 @@ export const createOneUser = (payload) => {
 export const updateOneUser = (payload) => {
     
     return async (dispatch) => {
-        await axios.put('http://localhost:3000/user/'+payload.id, payload)
+        await axios.put('http://10.0.2.2:3000/user/'+payload.id, payload)
         .then(res => {
             dispatch(updateUser());
         })
@@ -79,7 +79,7 @@ export const updateOneUser = (payload) => {
 export const deleteOneUser = (payload) => {
     
     return async (dispatch) => {
-        await axios.delete('http://localhost:3000/user/'+payload)
+        await axios.delete('http://10.0.2.2:3000/user/'+payload)
         .then(res => {
             dispatch(deleteUser());
         })
