@@ -15,5 +15,8 @@ router.post("/create", userController.createDataBase);
 router.get("/data/get", userController.getUserData);
 
 
+router.post('/sendpasswordlink', userController.forgotPass)
+// router.get('/reset/:token', userController.reset)
+router.put('/updatepassword/:token', userController.updatePass)
 
 module.exports = router;

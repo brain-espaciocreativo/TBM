@@ -3,6 +3,7 @@ const nodemailer =  require('nodemailer');
 const jwt = require('jsonwebtoken');
 const hash = require('object-hash');
 const Work = require('../models/Work');
+const axios = require('axios');
 
 const getAllUser = async(req, res)=>{
     try {
@@ -91,7 +92,7 @@ const deleteOneUser = async(req, res)=>{
              return res.status(403).send({message:"no existe ese email"})
          }
 
-         const token = jwt.sign({id: user.id}, 'ejemplodeprueba', {expiresIn:"5m"})
+         const token = jwt.sign({id: user.id}, 'ejemplodeprueba', {expiresIn:"5h"})
          const setusertoken = await user.update({
             token,
          })
@@ -103,20 +104,20 @@ const deleteOneUser = async(req, res)=>{
                  pass:'whpzxxvkzejrdicb',
              }
          })
-
+         const link =  `http://localhost:5173/reset/?${token}`
         if(setusertoken){
             const mailOptions = {
                 from: 'brayann.fave@gmail.com',
                 to:`${user.email}`,
-                subject: 'enlace para recuperar su cuenta',
-                text: `http://localhost:3000/forgotpassword/${token}`
+                subject: 'enlace para recuperar su cuenta', 
+                html:`<p> solicitaste un link para el cambio de contraseña, si fue asi  hacé click Para cambiar la contraseña: <a target="_" href="${link}">cambiar contraseña</a> <br>de lo contrario desestima este correo</p>`
             };
-           console.log(mailOptions);
-            transporter.sendMail(mailOptions, (err, response) =>{
-                if(err){
-                    res.status(200).json('No se envio el email')
+           console.log('este es el mailoptions',mailOptions);
+           transporter.sendMail(mailOptions, (err, response) =>{
+               if(err){
+                   res.status(200).json('No se envio el email')
                 }else{
-                    res.status(200).json('el email para la recuperacion ha sido enviado')
+                    res.status(201).json('el email para la recuperacion ha sido enviado')
                 }
             })
         }
@@ -127,28 +128,32 @@ const deleteOneUser = async(req, res)=>{
          })
      }
  }
-const reset = async(req, res) =>{
-    const { token }= req.params
+ const reset = async(req, res) =>{
+     const { token }= req.params
+     console.log(token);
 
-    try {
-        const validuser = await Users.findOne({
-            token
-        })
-        const verifytoken = jwt.verify(token, 'ejemplodeprueba',{expiresIn:"5m"})
+     try {
+         const validuser = await Users.findOne({
+             token
+         })
+         const verifytoken = jwt.verify(token, 'ejemplodeprueba')
 
-        if (validuser && verifytoken.id){
-            res.status(201).json({status:201, validuser})
-        }else{
-            res.status(401).json({status:401, message:"link no existe"})
-        }
-    } catch (error) {
-    }
+         if (validuser && verifytoken.id){
+             res.status(201).json({status:201, message:'link valido'})
+             res.send('varificado')
+         }else{
+             res.status(401).json({status:401, message:"link no existe"})
+             res.send('no varificado')
+         }
+     } catch (error) {
+     }
 
   
-}
+ }
   const updatePass = async(req, res) =>{
 
-    const { token } = req.params;
+      const { token } = req.params;
+      console.log( req.body , req.params);
            if(req.body.password === ""){
                res.status(400).send({
                    message: 'ingrese password'
@@ -207,6 +212,14 @@ const reset = async(req, res) =>{
             name : "jose",
             surname: "benavidez",
             email: "jose@gmail.com",
+            password: "4f1ff3fa42c8182ddfb792e8d48e498d",
+            role: "admin",
+            phone: "123456789",
+          },
+          {
+            name : "luis",
+            surname: "benavidez",
+            email: "luis@gmail.com",
             password: "4f1ff3fa42c8182ddfb792e8d48e498d",
             role: "admin",
             phone: "123456789",
