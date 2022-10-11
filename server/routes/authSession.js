@@ -41,13 +41,13 @@ authSessionRouter.post('/login', async (req, res)=>{
 
     console.log(user);
 
-        const progress = user.works[0].progresses
-        delete user.works[0].progresses
-        const news =  user.works[0].news
-        delete user.works[0].news
-        const works = user.works[0]
-        delete user.works;
-        const userData = user;
+    const progress = user.works[0]?.progresses || [];
+    delete user.works[0]?.progresses
+    const news = user.works[0]?.news || [];
+    delete user.works[0]?.news
+    const works = user.works[0] || [];
+    delete user.works;
+    const userData = user;
 
 
 
