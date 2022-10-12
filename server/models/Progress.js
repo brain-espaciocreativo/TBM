@@ -9,6 +9,10 @@ const Progress = (conn) => conn.define('progress', {
     value: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    height_value: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     timestamps: false
