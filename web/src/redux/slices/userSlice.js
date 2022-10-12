@@ -25,7 +25,7 @@ export const userSlice = createSlice({
             state
         },
         user:(state, action) =>{
-            state.user = action.payload
+            state.user = action.payload[0]
         },
         cleanUser:(state,action) =>{
             state.user = ''
@@ -83,7 +83,7 @@ export const getOneUser = (payload) => {
     return async (dispatch) => {
         await axios.post('http://localhost:3000/auth/login', payload)
         .then(res => {
-            dispatch(user(res.data.user));
+            dispatch(user(res.data.data));
         })
         .catch((error) => console.log(error));
     }

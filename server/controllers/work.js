@@ -1,4 +1,4 @@
-const {Works, News, Progress} =  require('../models');
+const {Works, News, Progress, Categories} =  require('../models');
 
 const getAllWork = async(req, res)=>{
     try {
@@ -26,20 +26,54 @@ const getOneWork = async(req, res)=>{
     }
 }
 const createOneWork = async(req, res)=>{
-    const { name, description, userId } = req.body;
+    const { work, ships } = req.body;
+    console.log(req.body);
     try {
-        if(!name || !description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
-        if(userId) {
-            const data = await Works.create({
-                name, description, userId
-            });
-            res.status(201).send({status: "OK", data: data });
+        if(!work.name || !work.description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(ships){
+            if(work.userId) {
+                const data = await Works.create({
+                    name: work.name,
+                    description: work.description,
+                    userId: work.userId
+                });
+                res.status(201).send({status: "OK", data: data });
+            }else{
+                const workCreated = await Works.create({
+                    name: work.name,
+                    description: work.description
+                });
+                const currentWork = workCreated.get({ plain: true });
+                ships.map(e=> {
+                    const createdProgress = Progress.create({
+                        value: `${e.progress.value}`,
+                        height_value: `${e.progress.height_value}`,
+                        work_progress: currentWork.id,
+                        categoryId: e.category.id
+                    });
+                    // const currentProgress = createdProgress.get({ plain: true });
+                    const categoria = Categories.create({
+                        name: `${e.category.name}`,
+                        progressId: 1
+                    })
+                });
+                res.status(201).send({status: "OK", data: workCreated });
+            }
         }else{
-            const data = await Works.create({
-                name, description
-            });
-            res.status(201).send({status: "OK", data: data });
-        }
+            if(work.userId) {
+                const data = await Works.create({
+                    name: work.name,
+                    description: work.description,
+                    userId: work.userId
+                });
+                res.status(201).send({status: "OK", data: data });
+            }else{
+                const data = await Works.create({
+                    name: work.name,
+                    description: work.description
+                });
+                res.status(201).send({status: "OK", data: data });
+            }}
         
     } catch (error) {
         console.log(error);

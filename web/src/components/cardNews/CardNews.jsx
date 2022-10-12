@@ -22,7 +22,6 @@ const useStyle = makeStyles({
 
 export default function CardNews( { id, name, description, video, date } ) {
 
-    console.log('vairable de news'+id, name, description, video, date);
     const styles = useStyle();
     
   return (
