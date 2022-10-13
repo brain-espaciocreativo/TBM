@@ -308,6 +308,27 @@ const deleteOneUser = async(req, res)=>{
     }
   }
 
+  const sendNotification = async (req, res) => {
+
+    try {
+        const result = await axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+        subID: '1',
+        appId: 4286,
+        appToken: 'aXYeglLuQBXrczxaW5H8wf',
+        title: 'Notificacion enviada con desde el backend',
+        message: 'Esta es na notificacion'
+        });
+
+        console.log(result);
+
+        res.send('Se envio correctamente');
+
+    } catch (error) {
+        console.log(error)
+    }
+    
+  }
+
 
 module.exports = {
     getAllUser,
@@ -319,5 +340,6 @@ module.exports = {
     updatePass,
     reset,
     createDataBase,
-    getUserData
+    getUserData,
+    sendNotification
 }
