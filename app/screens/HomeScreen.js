@@ -7,14 +7,12 @@ import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
 import { getOneUser } from '../redux/slices/userSlice';
-import Error from '../components/error/Error';
 
 export default function HomeScreen() {
 
   const dispatch  = useDispatch();
   const news = useSelector((state) => state.users.news);
   const progresses = useSelector((state) => state.users.progresses);
-  const user = useSelector((state) => state.users.user);
 
   useEffect(() => {
     dispatch(getOneUser())
@@ -25,8 +23,6 @@ export default function HomeScreen() {
 const  numColumns = 2
   return (
     <>
-      {
-        user ? 
         <FlatList ListHeaderComponent={
           <SafeAreaView>
             <Profile />
@@ -77,10 +73,7 @@ const  numColumns = 2
           }
         </SafeAreaView>
         } 
-        /> 
-        : 
-        <Error />
-      }
+        />
     </>
   )
 }
