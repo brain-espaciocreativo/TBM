@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet,View, Text,TextInput, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getOneUser } from '../redux/slices/userSlice';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getOneUser } from '../redux/slices/userSlice';
 import Button from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import toast from '../helpers/toast';
 import { RadioButton } from 'react-native-paper';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 export default function LoginScreen () {
 
-    const navigation = useNavigation();
-    const dispatch  = useDispatch();
-    const userSelect = useSelector((state) => state.users.user);
+    
+    // const dispatch  = useDispatch();
+    // const userSelect = useSelector((state) => state.users.user);
 
-    const [ email, setEmail ] = useState("");
-    const [ password , setPassword ] = useState("");
+    const [ email, setEmail ] = useState(null);
+    const [ password , setPassword ] = useState(null);
     const [ show, setShow ] = useState(true);
     const [ loading , setLoading ] = useState(false);
 
-    const loggedSubmit =  () =>{
-        if( (email === '') || (password === '')){
-            return toast.danger({message:"Los campos no pueden estar vacios"})
-        }
-        setLoading(true);
-        setTimeout(() => {
-            dispatch(getOneUser({email, password}));
-            navigation.navigate('Home');
-            setLoading(false);
-        }, 3000);
-    }
+    const { login } = useContext(AuthContext);
+
+    // const loggedSubmit =  () =>{
+    //     if( (email === '') || (password === '')){
+    //         return toast.danger({message:"Los campos no pueden estar vacios"})
+    //     }
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         dispatch(getOneUser({email, password}));
+    //         navigation.navigate('Home');
+    //         setLoading(false);
+    //     }, 3000);
+    // }
 
   return (
     <View style={style.container}>
@@ -69,7 +73,7 @@ export default function LoginScreen () {
                 <RadioButton.Item value="first" />
                 <Text style={style.text}>Mantener sesion iniciada</Text>
             </View>
-            <TouchableOpacity style={style.containerButton}  onPress={loggedSubmit} > 
+            <TouchableOpacity style={style.containerButton} onPress={ () => {login(email, password)}} > 
             {!loading ? 
                     <Text style={style.buttonText}>
                     Ingresar

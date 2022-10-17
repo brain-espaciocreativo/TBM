@@ -307,8 +307,6 @@ const deleteOneUser = async(req, res)=>{
         
     }
   }
-
-
 module.exports = {
     getAllUser,
     getOneUser,
