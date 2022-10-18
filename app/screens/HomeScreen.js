@@ -7,12 +7,29 @@ import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
 import { getOneUser } from '../redux/slices/userSlice';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import registerNNPushToken from 'native-notify';
+import { registerIndieID } from 'native-notify';
 
 export default function HomeScreen() {
 
   const dispatch  = useDispatch();
   const news = useSelector((state) => state.users.news);
   const progresses = useSelector((state) => state.users.progresses);
+  const { userInfo } = useContext(AuthContext);
+
+  registerNNPushToken(4286, 'aXYeglLuQBXrczxaW5H8wf');
+
+  const yourLoginFunction = () => {
+    // Native Notify Indie Push Registration Code
+    registerIndieID(userInfo.toString(), 4286, 'aXYeglLuQBXrczxaW5H8wf');
+    // End of Native Notify Code
+  }
+  useEffect(()=>{
+    yourLoginFunction()
+  },[]);
+
 
   useEffect(() => {
     dispatch(getOneUser())

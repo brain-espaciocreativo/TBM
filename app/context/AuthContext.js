@@ -13,11 +13,10 @@ export const AuthProvider = ({children}) =>{
     // const navigation = useNavigation()
 
     const login = ( email , password) =>{
-        axios.post('http://10.0.2.2:3000/auth/login',{
+        axios.post('http://localhost:3000/auth/login',{
             email, password
         }).then( res =>{
             let userInfo = res.data.data[0];
-            console.log('este es el user desde context',userInfo);
             setUserInfo(userInfo);
             if(userInfo === null){
                 console.log('datos incorrectos');
