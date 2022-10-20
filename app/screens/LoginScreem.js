@@ -20,7 +20,8 @@ export default function LoginScreen () {
     const [ show, setShow ] = useState(true);
     const [ loading , setLoading ] = useState(false);
 
-    const { login } = useContext(AuthContext);
+    const { login , userInfo } = useContext(AuthContext);
+
 
     // const loggedSubmit =  () =>{
     //     if( (email === '') || (password === '')){
@@ -33,6 +34,16 @@ export default function LoginScreen () {
     //         setLoading(false);
     //     }, 3000);
     // }
+
+    const handleLogin = () =>{
+        login (email , password);
+        if(email == null){
+            console.log('email no puede estar vacio');
+            return toast.danger({message:"El campo email no puede estar vacio"})
+        }else if(password === null){
+            return toast.danger({message:"El campo password no puede estar vacio"})
+        }
+    }
 
   return (
     <View style={style.container}>
@@ -73,7 +84,7 @@ export default function LoginScreen () {
                 <RadioButton.Item value="first" />
                 <Text style={style.text}>Mantener sesion iniciada</Text>
             </View>
-            <TouchableOpacity style={style.containerButton} onPress={ () => {login(email, password)}} > 
+            <TouchableOpacity style={style.containerButton} onPress={ () => {handleLogin()}} > 
             {!loading ? 
                     <Text style={style.buttonText}>
                     Ingresar
