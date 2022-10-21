@@ -7,6 +7,7 @@ import Toast from "./components/Toast";
 import { AuthProvider } from "./context/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef,isReadyRef} from './RootNavigation';
+import { registerRootComponent } from 'expo';
 
 export default function App() {
   React.useEffect(() => {
@@ -33,3 +34,4 @@ export default function App() {
   );
 }
 
+registerRootComponent(App);
