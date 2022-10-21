@@ -1,6 +1,5 @@
 import React , { useState,createContext, useEffect} from "react";
 import axios from 'axios';
-// import { useNavigation } from "@react-navigation/native";
 import * as RootNavigation from '../RootNavigation'
 import { Alert } from "react-native";
 import toast from "../helpers/toast";
@@ -12,9 +11,9 @@ export const AuthProvider = ({children}) =>{
     
     const [ userInfo , setUserInfo] = useState();
     const [ loading , setLoading ] = useState(false);
-    // const navigation = useNavigation()
 
     const login = ( email , password) =>{
+        setLoading(true)
         axios.post('http://10.0.2.2:3000/auth/login',{
             email, password
         }).then( res =>{
@@ -30,6 +29,13 @@ export const AuthProvider = ({children}) =>{
                 console.log('datos incorrectos');
                 return toast.danger({message:"Datos incorrectos, verifique informacion"})
             }
+            setTimeout(() => {
+            setLoading(false)
+            RootNavigation.navigate('Home')
+            }, 3000);
+        }).catch( e =>{
+            console.log(e);
+            setLoading(false)
         })
     }
     
@@ -40,7 +46,8 @@ export const AuthProvider = ({children}) =>{
         <AuthContext.Provider
          value={{
             userInfo,
-            login
+            login,
+            loading
          }}
          >
          {children}

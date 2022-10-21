@@ -18,10 +18,8 @@ export default function LoginScreen () {
     const [ email, setEmail ] = useState(null);
     const [ password , setPassword ] = useState(null);
     const [ show, setShow ] = useState(true);
-    const [ loading , setLoading ] = useState(false);
 
-    const { login , userInfo } = useContext(AuthContext);
-
+    const { login, loading } = useContext(AuthContext);
 
     // const loggedSubmit =  () =>{
     //     if( (email === '') || (password === '')){
