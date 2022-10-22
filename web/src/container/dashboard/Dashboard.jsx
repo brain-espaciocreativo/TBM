@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { Grid, Typography} from '@mui/material/';
+import { Grid, Typography, useMediaQuery, useTheme} from '@mui/material/';
 import NavDashboard from '../../components/navDashboard/NavDashboard';
 import { makeStyles } from '@mui/styles';
-import ListUserDashboard from '../../components/listUserDashboard/ListUserDashboard';
 const linksArray = ['Charts', 'Users'];
 import NavDashboard2 from '../../components/navDachboard2/NavDashboard2';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,22 +21,27 @@ export default function Dashboard() {
   const dispatch = useDispatch();
 
   const news = useSelector(state => state.news.newList);
+
+  const theme = useTheme();
+
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
   
   useEffect(()=>{
     dispatch(getAllNews());
-},[dispatch]);
+  },[dispatch]);
   
   return (
     <div>
       <NavDashboard 
       links={linksArray}
        />
-
-      
       <Grid container>
-          <Grid item xs={3} columns={1}>
-            <NavDashboard2 />
+          {
+            !isMatch &&
+            <Grid  xs={3} columns={1}>
+            <NavDashboard2/>
           </Grid>
+          }
           <Grid item xs={9} columns={2}>
           <Typography sx={{marginTop:'8rem', color: 'rgb(142, 7, 7)'}} variant='h5'>Novedades</Typography>
             <Box p={5} sx={{display: 'flex', flexWrap: 'wrap', gap: '2rem', marginBottom: '10rem'}}>

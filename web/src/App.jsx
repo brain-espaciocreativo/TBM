@@ -11,6 +11,8 @@ import WorkForm from './components/works/WorkForm';
 import WorkEdit from './components/works/WorkEdit';
 import WorkId from './components/works/WorkId';
 import Users from './container/users/Users';
+import PasswordReset from './components/forgotPassword/PasswordReset';
+import ForgotPassword from './components/forgotPassword/ForgotPassword';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path='/work/create' element={<WorkForm/>}/>
         <Route path='/work/:id' element={<WorkId/>}/>
         <Route path='/work/edit/:id' element={<WorkEdit/>}/>
+        <Route path='/resset-password' element={<PasswordReset/>}/>
+        <Route path='/reset' element={<ForgotPassword/>}/>
       </Routes>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
@@ -92,14 +92,21 @@ export default function WorkEdit () {
     console.log(ship)
  }
 
+  const theme = useTheme();
+
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+
     return (
         <>
         <NavDashboard/>
             <Grid container> 
-                <Grid item xs={2}>
-                    <NavDashboard2 />
-                </Grid>
-                <Grid item xs={10} sx={{
+            {
+              !isMatch &&
+              <Grid  xs={3} columns={1}>
+                <NavDashboard2/>
+              </Grid>
+            }
+                <Grid item xs={9} sx={{
                     width: '70%',
                     height: '80vh',
                     marginTop: '9rem',

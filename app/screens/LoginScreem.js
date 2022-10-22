@@ -1,33 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet,View, Text,TextInput, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getOneUser } from '../redux/slices/userSlice';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getOneUser } from '../redux/slices/userSlice';
 import Button from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import toast from '../helpers/toast';
 import { RadioButton } from 'react-native-paper';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 export default function LoginScreen () {
 
-    const navigation = useNavigation();
-    const dispatch  = useDispatch();
-    const userSelect = useSelector((state) => state.users.user);
+    
+    // const dispatch  = useDispatch();
+    // const userSelect = useSelector((state) => state.users.user);
 
-    const [ email, setEmail ] = useState("");
-    const [ password , setPassword ] = useState("");
+    const [ email, setEmail ] = useState(null);
+    const [ password , setPassword ] = useState(null);
     const [ show, setShow ] = useState(true);
-    const [ loading , setLoading ] = useState(false);
 
-    const loggedSubmit =  () =>{
-        if( (email === '') || (password === '')){
-            return toast.danger({message:"Los campos no pueden estar vacios"})
+    const { login, loading } = useContext(AuthContext);
+
+    // const loggedSubmit =  () =>{
+    //     if( (email === '') || (password === '')){
+    //         return toast.danger({message:"Los campos no pueden estar vacios"})
+    //     }
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         dispatch(getOneUser({email, password}));
+    //         navigation.navigate('Home');
+    //         setLoading(false);
+    //     }, 3000);
+    // }
+
+    const handleLogin = () =>{
+        login (email , password);
+        if(email == null){
+            console.log('email no puede estar vacio');
+            return toast.danger({message:"El campo email no puede estar vacio"})
+        }else if(password === null){
+            return toast.danger({message:"El campo password no puede estar vacio"})
         }
-        setLoading(true);
-        setTimeout(() => {
-            dispatch(getOneUser({email, password}));
-            navigation.navigate('Home');
-            setLoading(false);
-        }, 3000);
     }
 
   return (
@@ -69,7 +82,7 @@ export default function LoginScreen () {
                 <RadioButton.Item value="first" />
                 <Text style={style.text}>Mantener sesion iniciada</Text>
             </View>
-            <TouchableOpacity style={style.containerButton}  onPress={loggedSubmit} > 
+            <TouchableOpacity style={style.containerButton} onPress={ () => {handleLogin()}} > 
             {!loading ? 
                     <Text style={style.buttonText}>
                     Ingresar

@@ -1,60 +1,77 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Searchbar } from 'react-native-paper';
 import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import Cards from '../components/card/Cards';
 import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
-import { getOneUser } from '../redux/slices/userSlice';
+import { AuthContext } from '../context/AuthContext';
 
 export default function HomeScreen() {
 
-  const dispatch  = useDispatch();
-  const news = useSelector((state) => state.users.news);
-  const progresses = useSelector((state) => state.users.progresses);
+export default function HomeScreen() {
 
-  useEffect(() => {
-    dispatch(getOneUser())
-    return() =>{
-    }
-  }, [dispatch])
+  const { userInfo} = useContext(AuthContext);
+  const news = userInfo[2];
+  const progresses = userInfo[3];
+
+
   
 const  numColumns = 2
   return (
-    
-    <FlatList ListHeaderComponent={
-      <SafeAreaView>
-        <Profile />
-        {
-          progresses && <Progreso progreso={progresses}/>
-        }
-      <View >
-        <FlatList 
-        numColumns={numColumns}
-          data={progresses}
-          renderItem={(item) =>{
-            return <ProgresItem items={item}/>
+    <>
+        <FlatList ListHeaderComponent={
+          <SafeAreaView>
+            <Profile />
+            {
+              progresses && progresses.length > 0 ? 
+              <Progreso progreso={progresses}/>
+              :
+              <Text>no hay progreso de obra general</Text>
+            }
+            {
+              progresses && progresses.length > 0 ? 
+              <View >
+                <FlatList 
+                numColumns={numColumns}
+                data={progresses}
+                renderItem={(item) =>{
+                  return <ProgresItem items={item}/>
+                }}
+                listKey={(progresses, index) => index.toString()}
+                />
+              </View> 
+              :
+              <Text>No hay obras asociadas</Text>
+          }
+          {
+            news && news.length > 0 ? 
+            <>
+            <Text style={style.novedades}>Novedades</Text>
+            <Searchbar
+            placeholder='Buscar'
+            fontSize='2'
+            style={style.search}
+            />
+            </>
+            :
+            <Text>no hay novedades para buscar</Text>
+          }
+          {
+            news && news.length > 0 ? 
+          <FlatList 
+          data={news}
+          renderItem={({item}) =>{
+            return <Cards info={item}/>;
           }}
-          listKey={(progresses, index) => index.toString()}
+          listKey={(news, index) => index.toString()}
+          />: 
+          <Text>no hay novedades</Text>
+          }
+        </SafeAreaView>
+        } 
         />
-      </View>
-      <Text style={style.novedades}>Novedades</Text>
-          <Searchbar
-          placeholder='Buscar'
-          fontSize='2'
-          style={style.search}
-          />
-      <FlatList 
-      data={news}
-      renderItem={({item}) =>{
-        return <Cards info={item}/>;
-      }}
-      listKey={(news, index) => index.toString()}
-      />
-    </SafeAreaView>
-    } 
-    />
+    </>
   )
 }
 

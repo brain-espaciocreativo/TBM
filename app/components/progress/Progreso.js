@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { ProgressBar, Text, Title } from "react-native-paper";
+import { AuthContext } from "../../context/AuthContext";
 
 
 
 export default function Progreso({progreso}) {
 
-        const [result, setResult] = useState(0)
+    const { userInfo} = useContext(AuthContext);
+
+    const [result, setResult] = useState(0)
+    const obra = userInfo[1]
 
 
     useEffect( () =>{
@@ -26,7 +30,7 @@ export default function Progreso({progreso}) {
     return(
         <SafeAreaView style={style.progreso}>
             <View >
-                <Text style={style.titles}>obra</Text>
+                <Text style={style.titles}>{obra.name}</Text>
                 <Text style={style.texto}>Progreso </Text>
                 <View style={style.bar}>
                     <ProgressBar progress={result} color='red' />
@@ -50,7 +54,8 @@ const style = StyleSheet.create({
     titles:{
         marginLeft: 10,
         fontSize:20,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        textTransform:'capitalize'
     },
     bar:{
         margin: 5,
