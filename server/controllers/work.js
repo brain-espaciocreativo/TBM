@@ -8,7 +8,10 @@ const getAllWork = async(req, res)=>{
                   model: News
                 },
                 {
-                  model: Progress
+                  model: Progress,
+                  include: {
+                    model: Categories
+                }
                 }]
         });
         res.status(201).send({status: "OK", data});
@@ -19,7 +22,21 @@ const getAllWork = async(req, res)=>{
 const getOneWork = async(req, res)=>{
     const { id } = req.params;
     try {
-        const data = await Works.findByPk(id);
+        const data = await Works.findOne({
+            where:{
+                id: id
+            },
+                include: [{
+                  model: News
+                },
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories
+                    }
+                }]
+            
+        });
         res.status(201).send({data: data });
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró trabajos con ese ID"}));
