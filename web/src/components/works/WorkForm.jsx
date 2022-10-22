@@ -35,9 +35,7 @@ export default function WorkForm () {
   const [ ship, setShip] = useState([]);
 
   const handleSelectCategoria = (e) =>{
-    console.log(e.target.value)
     SetSelectedCategory(e.target.value);
-    console.log(selectedCategory)
   }
 
   const handleChange = (e) =>{
