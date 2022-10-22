@@ -1,4 +1,3 @@
-import { useForm } from '../../hooks/useForm';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +11,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import './Login.css';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/AuthContext';
+import { useNavigate} from 'react-router-dom'
 
 
 
@@ -27,28 +29,37 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-const initialForm ={
-  email:'',
-  password:''
-}
- const validationsForm = (user) =>{
-
-   let errors = {};
-   let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-
-   if(!user.email.trim()){
-      errors.email = "Campo  requerido*"
-   }else if(!regexEmail.test(user.email.trim())){
-     errors.email="formato inválido";
-   }
-    if(!user.password.trim()){ errors.password = "Campo  requerido*"}
-   return errors;
- }
 export default function Login() {
 
-  const {user,handleChange,loggedSubmit} = useForm(initialForm, validationsForm)
+  const [ email, setEmail ] = useState('');
+	const [ password, setPassword ] = useState('');
 
+  const [ loading , setLoading] = useState(false);
+
+  const navigate = useNavigate()
+
+  const onChangeEmail = (e) => {
+		setEmail(e.target.value);
+	};
+
+	const onChangePassword = (e) => {
+		setPassword(e.target.value);
+	};
+
+  const { login, userInfo } = useContext(UserContext);
+
+  useEffect ( () =>{
+    if(userInfo.role === 'admin'){
+      navigate('/admin')
+    }else if(userInfo.role === 'usuario'){
+      navigate('/home')
+    }
+},[userInfo])
+
+  const onSubmit =  (e) => {
+		e.preventDefault();
+    login(email, password);
+	}
 
   return (
    
@@ -77,7 +88,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Ingresar
             </Typography>
-            <Box component="form"  onSubmit={loggedSubmit} sx={{ mt: 3 }}>
+            <Box component="form"  onSubmit={onSubmit} sx={{ mt: 3 }}>
               <Box>
               <TextField
                 margin="normal"
@@ -89,9 +100,8 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 className='input'
-                value={user.email}
-                onChange={handleChange}
-                // onBlur={handleBlur}
+                value={email}
+                onChange={onChangeEmail}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -99,7 +109,6 @@ export default function Login() {
                   }
                 }}
               />
-              {/* {err.email && <Typography className="error">{err.email}</Typography>} */}
               <TextField
                 margin="normal"
                 required
@@ -109,10 +118,9 @@ export default function Login() {
                 label="Contraseña"
                 type="password"
                 id="password"
-                value={user.password}
+                value={password}
                 autoComplete="current-password"
-                onChange={handleChange}
-                // onBlur={handleBlur}
+                onChange={onChangePassword}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -120,12 +128,12 @@ export default function Login() {
                   }
                 }}
               />
-              {/* {err.password && <Typography className="error">{err.password}</Typography>} */}
               </Box>
               <FormControlLabel
                 control={<Checkbox value="remember" color="error" />}
                 label="Recordarme"
               />
+              
               <Button
                 type="submit"
                 fullWidth
