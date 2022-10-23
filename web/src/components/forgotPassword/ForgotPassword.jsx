@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCallback } from 'react';
+import './ForgotPassword.css';
 
 
 const ForgotPassword = () => {
@@ -74,15 +75,17 @@ const userValid = async () =>{
      tokenParams(search)
     }, [search])
   return (
-    <div>
-      <section>
-        <div>
-          <div>
-            <h1>ingrese su nueva contraseña</h1>
-          </div>
-          <form>
-              <label htmlFor="password">nueva contraseña</label>
+    <div className='container'>
+        <div className="container-logo">
+          <Link to='/'>
+              <img src={"./logo.jpg"} width='250' className="img" alt="logo" />
+          </Link>
+        </div>
+          <form className="form">
+            <h3 className="contraseña">Actualizar contraseña</h3>
+            <p className="text">Ingrese una nueva contraseña para actualizar</p>
               <input 
+              className="input"
               type="password"
               value={password}
               onChange={selVel}
@@ -90,10 +93,9 @@ const userValid = async () =>{
               placeholder='password'/>
               <button 
               onClick={(e)=>handletoken(e)}
+              className="enviar"
               >enviar</button>
           </form>
-        </div>
-      </section>
     </div>
   )
 }

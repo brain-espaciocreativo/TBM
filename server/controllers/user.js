@@ -104,7 +104,7 @@ const deleteOneUser = async(req, res)=>{
                  pass:'whpzxxvkzejrdicb',
              }
          })
-         const link =  `http://localhost:5173/reset/?${token}`
+         const link =  `http://localhost:5174/reset/?${token}`
         if(setusertoken){
             const mailOptions = {
                 from: 'brayann.fave@gmail.com',
@@ -195,7 +195,7 @@ const deleteOneUser = async(req, res)=>{
         {
             name : "juan",
             surname: "carlos",
-            email: "juan@gmail.com",
+            email: "stuverona@gmail.com",
             password: "4f1ff3fa42c8182ddfb792e8d48e498d",
             role: "admin",
             phone: "123456789",
