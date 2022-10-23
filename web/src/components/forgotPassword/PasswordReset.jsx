@@ -1,6 +1,8 @@
 import { useState} from "react";
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import './PasswordReset.css';
+import { Link } from "react-router-dom";
 
 const ForgotPassword = () =>{
 
@@ -28,14 +30,18 @@ const ForgotPassword = () =>{
     }
 
     return (
-        <div>
-
-            <form onSubmit={handleSubmit}>
-                    <h3>recuperar contraseña</h3>
-                    <div>correo electorino</div>
-                    <input type="email" name="email" placeholder="ingresar email" required />
+        <div className="container">
+            <div className="container-logo">
+                <Link to='/'>
+                    <img src={"./logo.jpg"} width='250' className="img" alt="" />
+                </Link>
+            </div>
+            <form className="form" onSubmit={handleSubmit}>
+                    <h3 className="contraseña">recuperar contraseña</h3>
+                    <p className="text">Para poder recuper su contraseña por favor ingrese su Email</p>
+                    <input className="input" type="email" name="email" placeholder="ingresar email" required />
                     <div>
-                        <button>enviar</button>
+                        <button className="enviar">enviar</button>
                     </div>
             </form>
         </div>
