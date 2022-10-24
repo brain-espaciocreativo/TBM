@@ -1,10 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { AppBar, Button,Toolbar, Typography, Box, useTheme, useMediaQuery } from '@mui/material/';
 import { makeStyles } from '@mui/styles';
 import DrawerDashboard from '../drawerDashboard/DrawerDashboard';
-import { cleanOneUser } from '../../redux/slices/userSlice';
 import './NavDashboard.css';
 
 const useStyle = makeStyles(theme=>({
@@ -20,12 +18,11 @@ const useStyle = makeStyles(theme=>({
 export default function NavDashboard({links}) {
 
  
-    const dispatch = useDispatch();
 
     const navigate = useNavigate()
 
     const handleClean = () =>{
-        dispatch(cleanOneUser())
+        localStorage.removeItem('user');
         navigate('/')
     }
 

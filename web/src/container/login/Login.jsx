@@ -11,9 +11,11 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import './Login.css';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/AuthContext';
+import { useState } from 'react';
 import { useNavigate} from 'react-router-dom'
+import axios from 'axios';
+import Swal from 'sweetalert2'
+
 
 
 
@@ -34,7 +36,6 @@ export default function Login() {
   const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
-  const [ loading , setLoading] = useState(false);
 
   const navigate = useNavigate()
 
@@ -46,19 +47,34 @@ export default function Login() {
 		setPassword(e.target.value);
 	};
 
-  const { login, userInfo } = useContext(UserContext);
 
-  useEffect ( () =>{
-    if(userInfo.role === 'admin'){
-      navigate('/admin')
-    }else if(userInfo.role === 'usuario'){
-      navigate('/home')
-    }
-},[userInfo])
+  const user = localStorage.getItem('user')
 
-  const onSubmit =  (e) => {
+  const onSubmit = async (e) => {
 		e.preventDefault();
-    login(email, password);
+    const peticion = await axios.post('http://localhost:3000/auth/login',{
+      email,
+      password
+      }).then( res =>
+          {
+            if(res.data.data[0].role === 'admin'){
+              navigate('/admin')
+            }else if(res.data.data[0].role === 'usuario'){
+              navigate('/home')
+            }
+            localStorage.setItem('user', JSON.stringify(res.data.data[0]))
+            console.log(res.data.data[0]);
+          }
+      ).catch( err =>{
+          console.log(err)
+          if(err.response.status === 401){
+              Swal.fire({
+                  text: "Datos incorrectos!",
+                  icon: 'error'
+                })
+          }
+      })
+
 	}
 
   return (

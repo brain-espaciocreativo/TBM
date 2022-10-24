@@ -1,24 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Grid, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material/';
-import { cleanOneUser } from '../../redux/slices/userSlice';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import './NavDas.css';
+import  { UserContext }  from '../../context/AuthContext';
 
 export default function NavDashboard2() {
 
-    const dispatch = useDispatch();
-
-    const navigate = useNavigate()
 
     const handleClean = () =>{
-        dispatch(cleanOneUser())
-        navigate('/')
+        localStorage.setItem('user', '');
     }
 
   return (
