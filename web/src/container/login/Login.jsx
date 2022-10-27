@@ -1,4 +1,3 @@
-import { useForm } from '../../hooks/useForm';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +11,11 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import './Login.css';
+import { useState } from 'react';
+import { useNavigate} from 'react-router-dom'
+import axios from 'axios';
+import Swal from 'sweetalert2'
+
 
 
 
@@ -27,28 +31,51 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-const initialForm ={
-  email:'',
-  password:''
-}
- const validationsForm = (user) =>{
-
-   let errors = {};
-   let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-
-   if(!user.email.trim()){
-      errors.email = "Campo  requerido*"
-   }else if(!regexEmail.test(user.email.trim())){
-     errors.email="formato inválido";
-   }
-    if(!user.password.trim()){ errors.password = "Campo  requerido*"}
-   return errors;
- }
 export default function Login() {
 
-  const {user,handleChange,loggedSubmit} = useForm(initialForm, validationsForm)
+  const [ email, setEmail ] = useState('');
+	const [ password, setPassword ] = useState('');
 
+
+  const navigate = useNavigate()
+
+  const onChangeEmail = (e) => {
+		setEmail(e.target.value);
+	};
+
+	const onChangePassword = (e) => {
+		setPassword(e.target.value);
+	};
+
+
+  const user = localStorage.getItem('user')
+
+  const onSubmit = async (e) => {
+		e.preventDefault();
+    const peticion = await axios.post('http://localhost:3000/auth/login',{
+      email,
+      password
+      }).then( res =>
+          {
+            if(res.data.data[0].role === 'admin'){
+              navigate('/admin')
+            }else if(res.data.data[0].role === 'usuario'){
+              navigate('/home')
+            }
+            localStorage.setItem('user', JSON.stringify(res.data.data[0]))
+            console.log(res.data.data[0]);
+          }
+      ).catch( err =>{
+          console.log(err)
+          if(err.response.status === 401){
+              Swal.fire({
+                  text: "Datos incorrectos!",
+                  icon: 'error'
+                })
+          }
+      })
+
+	}
 
   return (
    
@@ -77,7 +104,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Ingresar
             </Typography>
-            <Box component="form"  onSubmit={loggedSubmit} sx={{ mt: 3 }}>
+            <Box component="form"  onSubmit={onSubmit} sx={{ mt: 3 }}>
               <Box>
               <TextField
                 margin="normal"
@@ -89,9 +116,8 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 className='input'
-                value={user.email}
-                onChange={handleChange}
-                // onBlur={handleBlur}
+                value={email}
+                onChange={onChangeEmail}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -99,7 +125,6 @@ export default function Login() {
                   }
                 }}
               />
-              {/* {err.email && <Typography className="error">{err.email}</Typography>} */}
               <TextField
                 margin="normal"
                 required
@@ -109,10 +134,9 @@ export default function Login() {
                 label="Contraseña"
                 type="password"
                 id="password"
-                value={user.password}
+                value={password}
                 autoComplete="current-password"
-                onChange={handleChange}
-                // onBlur={handleBlur}
+                onChange={onChangePassword}
                 InputLabelProps={{
                   style:{
                     textTransform: "uppercase",
@@ -120,12 +144,12 @@ export default function Login() {
                   }
                 }}
               />
-              {/* {err.password && <Typography className="error">{err.password}</Typography>} */}
               </Box>
               <FormControlLabel
                 control={<Checkbox value="remember" color="error" />}
                 label="Recordarme"
               />
+              
               <Button
                 type="submit"
                 fullWidth

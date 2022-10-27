@@ -17,18 +17,18 @@ import ForgotPassword from './components/forgotPassword/ForgotPassword';
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path='/' element={<Login/>} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/admin' element={<Dashboard />} />
-        <Route path='/users' element={<Users />} />
-        <Route path='/work' element={<Work/>}/>
-        <Route path='/work/create' element={<WorkForm/>}/>
-        <Route path='/work/:id' element={<WorkId/>}/>
-        <Route path='/work/edit/:id' element={<WorkEdit/>}/>
-        <Route path='/resset-password' element={<PasswordReset/>}/>
-        <Route path='/reset' element={<ForgotPassword/>}/>
-      </Routes>
+        <Routes>
+          <Route path='/' element={<Login/>} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/admin' element={<Dashboard />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/work' element={<Work/>}/>
+          <Route path='/work/create' element={<WorkForm/>}/>
+          <Route path='/work/:id' element={<WorkId/>}/>
+          <Route path='/work/edit/:id' element={<WorkEdit/>}/>
+          <Route path='/resset-password' element={<PasswordReset/>}/>
+          <Route path='/reset' element={<ForgotPassword/>}/>
+        </Routes>
     </div>
   )
 }
