@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as RootNavigation from '../RootNavigation'
 import { Alert } from "react-native";
 import toast from "../helpers/toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AuthContext = createContext();
 
@@ -19,7 +20,9 @@ export const AuthProvider = ({children}) =>{
         }).then( res =>{
             let userInfo = res.data.data;
             setUserInfo(userInfo);
+            AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
             RootNavigation.navigate('Home')
+            setLoading(false)
             if(email && password == null){
                 console.log('llene los datos por favor');
             }
@@ -32,22 +35,28 @@ export const AuthProvider = ({children}) =>{
             setTimeout(() => {
             setLoading(false)
             RootNavigation.navigate('Home')
+            setLoading(false)
             }, 3000);
+
         }).catch( e =>{
             console.log(e);
             setLoading(false)
         })
     }
     
-    // TODO : la validacion está, tanto si resonde datos incorrectos o si los campos estan vacios, pero no logro hacer que se ejecute ambos, o es uno o es otro.
-
+    const logout = () =>{
+        AsyncStorage.removeItem('userInfo')
+        setUserInfo(null)
+        RootNavigation.navigate('Login')
+    }
 
     return (
         <AuthContext.Provider
          value={{
             userInfo,
             login,
-            loading
+            loading,
+            logout
          }}
          >
          {children}

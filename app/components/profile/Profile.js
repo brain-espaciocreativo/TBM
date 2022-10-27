@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
-import { StyleSheet, View, SafeAreaView, Image } from "react-native"
+import { StyleSheet, View, SafeAreaView, Image, Button } from "react-native"
 import { Avatar, Caption, Title } from "react-native-paper"
 import { AuthContext } from '../../context/AuthContext' 
 import moment from 'moment'
 
 export default function Profile() {
 
-    const { userInfo} = useContext(AuthContext);
+    const { userInfo , logout} = useContext(AuthContext);
     const user = userInfo[0]
 
     moment.updateLocale('es', {
@@ -43,6 +43,7 @@ export default function Profile() {
                 <View style={{marginLeft: 20}}>
                 <Title style={[style.title, {letterSpacing:1}]}>¡Hola {user.name}!</Title> 
                 <Caption style={style.caption}>{date}</Caption>
+                <Button title="Logout" color='red' onPress={logout}></Button>
                 </View>
                 <Avatar.Image 
                 source={{
