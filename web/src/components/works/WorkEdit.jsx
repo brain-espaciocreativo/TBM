@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextareaAutosize, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,17 +6,33 @@ import Swal from "sweetalert2";
 import { getOneWork, updateOneWork} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
+import { Add} from '@mui/icons-material';
+import { getAllCategories } from "../../redux/slices/categoriesSlice";
 
 
 export default function WorkEdit () {
     const dispatch = useDispatch();
     const work = useSelector(state => state.works.work);
+    const categories = useSelector(state => state.categories.categories);
 
     const navigate = useNavigate();
     
     const [ createWorkState, setCreateWorkState ] = useState({
       name: "" ,
-      description: ""
+      description: "",
+      
+  });
+
+  const [ ship, setShip] = useState([]);
+
+  const [ selectedCategory, SetSelectedCategory] = useState({
+    id: "",
+    name: ""
+  })
+
+  const [ progress, setProgress] = useState({
+    value: "",
+    height_value: ""
   });
 
     // const [ categoria, setCategoria] = useState(null);
@@ -35,6 +51,7 @@ export default function WorkEdit () {
     
     useEffect(()=>{
       dispatch(getOneWork(id))
+      dispatch(getAllCategories())
     }, []);
             
     useEffect(() => {
@@ -56,6 +73,24 @@ export default function WorkEdit () {
       })
       navigate('/work')
   }
+
+  const handleSelectCategoria = (e) =>{
+    console.log(e.target.value)
+    SetSelectedCategory(e.target.value);
+    console.log(selectedCategory)
+  }
+
+  const handleChange = (e) =>{
+    const {name, value} = e.target;
+    setProgress({
+        ...progress,[name]:value
+    });
+  }
+
+  const handleAdd = () =>{
+    setShip(state => [...state, {category: selectedCategory, progress: progress}]);
+    console.log(ship)
+ }
 
   const theme = useTheme();
 
@@ -100,6 +135,66 @@ export default function WorkEdit () {
                       style={{ width: '100%', height:150, marginTop:'2rem', border:'none', 
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
                     />
+                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                      <FormControl fullWidth sx={{marginTop:'2rem'}} >
+                      <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        name="name"
+                        // value={selectedCategory}
+                        onChange={handleSelectCategoria}
+                        label="Categoria"
+                        sx={{border:'none', 
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                      >
+                      {
+                        categories && categories.length ? 
+                          categories.map(e=>{
+                            return <MenuItem value={{name: e.name, id: e.id}}>{e.name}</MenuItem>
+                          }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
+                      }
+                      </Select>
+                      </FormControl>
+                      <TextField  
+                        onChange={handleChange}
+                        value={progress.value}
+                        label="% Avance"
+                        name='value'
+                        InputLabelProps={{
+                                    style:{
+                                      textTransform: "uppercase",
+                                      fontSize:".8rem",
+                                    }
+                                  }} 
+                        sx={{marginTop:'2rem',border:'none', 
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                        />
+                      <TextField  
+                      onChange={handleChange}
+                      value={progress.height_value}
+                      label="% Peso de la categoria"
+                      name='height_value'
+                      InputLabelProps={{
+                                  style:{
+                                    textTransform: "uppercase",
+                                    fontSize:".8rem",
+                                  }
+                                }} 
+                      sx={{marginTop:'2rem',border:'none', 
+                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                      />
+                      <Box sx={{marginTop:'2rem'}}>
+                        <Add onClick={handleAdd}/>
+                      </Box>
+                    </Box>
+                    <Box sx={{width: '100%'}}>
+                    <Stack direction="row" spacing={1}>
+                      { ship && ship.length > 0 ? ship.map( (e, i) =>(
+                        <Chip key={i} label={`${e.category.name} ${e.progress.value}% ${e.progress.height_value}%`} />
+                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
+                    </Stack>
+                    </Box>
                     {/* <FormControl fullWidth sx={{marginTop:'2rem'}} >
                     <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
                     <Select

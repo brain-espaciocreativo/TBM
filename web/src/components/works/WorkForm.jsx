@@ -12,7 +12,6 @@ import { lightGreen } from "@mui/material/colors";
 
 
 
-
 export default function WorkForm () {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
@@ -23,6 +22,7 @@ export default function WorkForm () {
     name: "" ,
     description: ""
   });
+
   const [ selectedCategory, SetSelectedCategory] = useState({
     id: "",
     name: ""
@@ -35,9 +35,7 @@ export default function WorkForm () {
   const [ ship, setShip] = useState([]);
 
   const handleSelectCategoria = (e) =>{
-    console.log(e.target.value)
     SetSelectedCategory(e.target.value);
-    console.log(selectedCategory)
   }
 
   const handleChange = (e) =>{

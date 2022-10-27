@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import { Button, Card, CardActions, CardContent, Grid, Typography} from '@mui/material/';
+import { Button, Card, CardActions, CardContent, Chip, Grid, Typography} from '@mui/material/';
 import { useDispatch, useSelector } from 'react-redux';
 import { Delete, Edit ,Visibility} from '@mui/icons-material';
 import { deleteOneWork, getAllWorks } from "../../redux/slices/workSlice";
@@ -64,6 +64,11 @@ export default function WorkItem() {
                         <Typography variant="body2">
                         {e.description}
                         </Typography>
+                        {
+                          e.progresses.map(element=>{
+                            return <Chip key={i} label={`${element.category.name} ${element.value}% ${element.height_value}%`}/>
+                          })
+                        }
                       </CardContent>
                       <CardActions>
                         <Edit sx={{cursor:'pointer', margin:'0 10px'}}  onClick={() => navigate('/work/edit/'+ e.id)}/>
