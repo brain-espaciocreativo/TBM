@@ -1,5 +1,5 @@
 import { useEffect,useState } from 'react'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField,Typography } from '@mui/material'
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField,Typography, InputLabel, Select, MenuItem, FormControl } from '@mui/material'
 import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOneUser, deleteOneUser, getAllUsers, updateOneUser } from '../../redux/slices/userSlice';
@@ -8,6 +8,7 @@ import { useForm} from '../../hooks/useForm';
 import './ListUserDas.css';
 import ListUI from './ListUI';
 import Swal from 'sweetalert2';
+import { Box } from '@mui/system';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,36 +46,36 @@ const useStyles = makeStyles((theme) => ({
    phone:'',
    role:''
  }
-const validationsForm = (user) =>{
+// const validationsForm = (user) =>{
 
-   let errors = {};
-   let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-   let regexphone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+//    let errors = {};
+//    let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+//    let regexphone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 
   
-   if(!user.email.trim()){
-      errors.email = "Campo  requerido*"
-   }else if(!regexEmail.test(user.email.trim())){
-     errors.email="formato inválido";
-   }
-  if(!user.phone.trim()){
-    errors.phone = "Campo  requerido*"
-  }else if(!regexphone.test(user.phone.trim())){
-    errors.phone="formato inválido";
-  }
+//    if(!user.email.trim()){
+//       errors.email = "Campo  requerido*"
+//    }else if(!regexEmail.test(user.email.trim())){
+//      errors.email="formato inválido";
+//    }
+//   if(!user.phone.trim()){
+//     errors.phone = "Campo  requerido*"
+//   }else if(!regexphone.test(user.phone.trim())){
+//     errors.phone="formato inválido";
+//   }
   
   
-   if(!user.name.trim()){ errors.name = "Campo es requerido*"}
-   if(!user.surname.trim()){ errors.surname = "Campo  requerido*"}
-    if(!user.password.trim()){ errors.password = "Campo  requerido*"}
-    if(!user.role.trim()){ errors.role = "Campo  requerido*"}
+//    if(!user.name.trim()){ errors.name = "Campo es requerido*"}
+//    if(!user.surname.trim()){ errors.surname = "Campo  requerido*"}
+//     if(!user.password.trim()){ errors.password = "Campo  requerido*"}
+//     if(!user.role.trim()){ errors.role = "Campo  requerido*"}
 
-   return errors;
- }
+//    return errors;
+//  }
 
 export default function ListUserDashboard() {
 
-  const {err,handleBlur} = useForm(initialForm, validationsForm)
+  const {} = useForm(initialForm)
 
   const styles= useStyles();
   const [ modal, setModal ] = useState(false);
@@ -85,7 +86,7 @@ export default function ListUserDashboard() {
      email: "",
      phone: "",
      password: "",
-     role: ""  
+     role: '' 
    });
   const [ editState, setEditState ] = useState({
     name: "",
@@ -181,9 +182,10 @@ export default function ListUserDashboard() {
         className={styles.inputs}
         label="Nombre"
         name='name'
+        required
         onChange={handleCreateUser}
         value={createUserState.name}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         InputLabelProps={{
                     style:{
                       textTransform: "uppercase",
@@ -191,12 +193,13 @@ export default function ListUserDashboard() {
                     }
                   }} 
         />
-        {err.name && <Typography className="error">{err.name}</Typography>}
+        {/* {err.name && <Typography className="error">{err.name}</Typography>} */}
         <TextField className={styles.inputs}
          label="Apellido" 
          name='surname' 
+         required
          onChange={handleCreateUser}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         value={createUserState.surname}
          InputLabelProps={{
           style:{
@@ -205,15 +208,15 @@ export default function ListUserDashboard() {
           }
         }}
         />
-        {err.surname && <Typography className="error">{err.surname}</Typography>}
+        {/* {err.surname && <Typography className="error">{err.surname}</Typography>} */}
         <TextField 
         className={styles.inputs}
         required
-         label="Email" 
-         name='email'
-         type='email'
+        label="Email"
+        name='email'
+        type='email'
           onChange={handleCreateUser}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
         value={createUserState.email}
           InputLabelProps={{
             style:{
@@ -222,14 +225,15 @@ export default function ListUserDashboard() {
             }
           }}
         />
-        {err.email && <Typography className="error">{err.email}</Typography>}
+        {/* {err.email && <Typography className="error">{err.email}</Typography>} */}
         <TextField 
         className={styles.inputs} 
         label="Contraseña" 
         type='password'
         name='password' 
+        required
         onChange={handleCreateUser} 
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         value={createUserState.password}
         InputLabelProps={{
           style:{
@@ -238,13 +242,16 @@ export default function ListUserDashboard() {
           }
         }}
         />
-        {err.password && <Typography className="error">{err.password}</Typography>}
-        <TextField 
+        {/* {err.password && <Typography className="error">{err.password}</Typography>} */}
+        {/* <InputLabel id="demo-simple-select-label">Rol</InputLabel>
+        <Select 
+        labelId="demo-simple-select-label"
+        id="demo-simple-select-label"
         className={styles.inputs} 
         label="Role" 
         name='role'
         onChange={handleCreateUser} 
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         value={createUserState.role}
          InputLabelProps={{
           style:{
@@ -252,14 +259,32 @@ export default function ListUserDashboard() {
             fontSize:".8rem"
           }
         }}
-         />
-         {err.role && <Typography className="error">{err.role}</Typography>}
+         >
+          <MenuItem value='admin'>Admin</MenuItem>
+          <MenuItem value='usuario'>Usuario</MenuItem>
+        </Select> */}
+        <FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Role</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={createUserState.role}
+    label="Role"
+    name='role'
+    onChange={handleCreateUser}
+  >
+          <MenuItem value='admin'>Admin</MenuItem>
+          <MenuItem value='usuario'>Usuario</MenuItem>
+  </Select>
+</FormControl>
+         {/* {err.role && <Typography className="error">{err.role}</Typography>} */}
         <TextField 
         className={styles.inputs} 
         label="Telefono" 
         name='phone' 
+        required
         value={createUserState.phone}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         onChange={handleCreateUser}
         InputLabelProps={{
           style:{
@@ -268,7 +293,7 @@ export default function ListUserDashboard() {
           }
         }}
         />
-        {err.phone && <Typography className="error">{err.phone}</Typography>}
+        {/* {err.phone && <Typography className="error">{err.phone}</Typography>} */}
         <div >
           <Button onClick={createUser}
            sx={{
