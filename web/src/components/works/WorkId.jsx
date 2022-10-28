@@ -16,6 +16,8 @@ export default function WorkId () {
 
     const {id} = useParams();
 
+    const [ data , setData] = useState()
+
     useEffect(() => {
         dispatch(getOneWork(id))
     }, [id, dispatch])

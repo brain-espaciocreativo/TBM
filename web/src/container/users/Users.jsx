@@ -27,7 +27,7 @@ export default function Users() {
       <Grid container>
          {
             !isMatch &&
-            <Grid  xs={3} columns={1}>
+            <Grid item xs={3} columns={1}>
               <NavDashboard2/>
             </Grid>
           }
