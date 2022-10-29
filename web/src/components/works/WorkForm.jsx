@@ -50,7 +50,6 @@ const createOneCategory =  (payload) => {
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
     setCategoriaUnica(e.target.value.name)
-    console.log(categoriaUnica);
   }
   const handleCategoriaChip = (e) =>{
     setCategoriaChip(e.target.value)
@@ -74,13 +73,11 @@ const handleAdd = () =>{
       console.log('no se puede agregar');
     }
     setArray([...array, selectedCategory])
-    console.log(selectedCategory);
   }
 
   const handleChipDelete = (chipToDelete) =>{
     setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
     setArray((e) => e.filter( (array) => array !== chipToDelete ) )
-
   }
 
   const handleCreateCategoria  = (e) =>{

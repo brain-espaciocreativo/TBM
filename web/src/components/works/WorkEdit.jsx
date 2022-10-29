@@ -24,7 +24,6 @@ export default function WorkEdit () {
     const work = useSelector(state => state.works.work);
     const categories = useSelector(state => state.categories.categories);
 
-
     const navigate = useNavigate();
     
     const [ createWorkState, setCreateWorkState ] = useState({
@@ -51,31 +50,21 @@ export default function WorkEdit () {
   const handleCategoriaChip = (e) =>{
     setCategoriaChip(e.target.value)
   }
-    // const [ categoria, setCategoria] = useState(null);
-    // const [ progreso, setProgreso] = useState(null);
-    // const [ ship, setShip] = useState([]);
-
-    // const handleSelectCategoria = (e) =>{
-    //   setCategoria(e.target.value);
-    // }
-
-    // const handleProgreso = (e) =>{
-    //   setProgreso(e.target.value)
-    // }
-
     const {id} = useParams();
     
     useEffect(()=>{
       dispatch(getOneWork(id))
       dispatch(getAllCategories())
     }, []);
+
+
             
-    useEffect(() => {
-      if(work){
-        setCreateWorkState({
-          ...work})
-        }
-    }, [work])
+   useEffect(() => {
+     if(work){
+       setCreateWorkState({
+         ...work})
+       }
+   }, [work])
 
   const handleCreateWork = (e) => {
     const { name, value} = e.target;
@@ -90,11 +79,6 @@ export default function WorkEdit () {
       navigate('/work')
   }
 
-  // const handleSelectCategoria = (e) =>{
-  //   console.log(e.target.value)
-  //   SetSelectedCategory(e.target.value);
-  //   console.log(selectedCategory)
-  // }
 
   const handleChange = (e) =>{
     const {name, value} = e.target;
@@ -105,24 +89,20 @@ export default function WorkEdit () {
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
     setCategoriaUnica(e.target.value.name)
-    console.log(categoriaUnica);
   }
-//   const handleAdd = () =>{
-//     setShip(state => [...state, {category: selectedCategory, progress: progress}]);
-//     console.log(ship)
-//  }
+
 const [ array , setArray] = useState([])
 const [ categoriachip, setCategoriaChip] = useState(null)
 
 const handleAdd = () =>{
   console.log(array);
-  if(!array.includes(selectedCategory.name)){
+  if(!array.includes(selectedCategory)){
     setShip(state => [...state, {category: selectedCategory, progress: progress }]);
+
   }else{
     console.log('no se puede agregar');
   }
-  setArray([...array, selectedCategory.name])
-  console.log(selectedCategory);
+  setArray([...array, selectedCategory])
 }
 
 const handleCreateCategoria  = (e) =>{
@@ -225,7 +205,7 @@ const handleChipDelete = (chipToDelete) =>{
                       {
                         categories && categories.length ? 
                           categories.map((e, i)=>{
-                            return <MenuItem key={i}value={{name: e.name, id: e.id}}>{e.name}</MenuItem>
+                            return <MenuItem key={i}value={e.name}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
@@ -259,13 +239,15 @@ const handleChipDelete = (chipToDelete) =>{
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                       />
                       <Box sx={{marginTop:'2rem'}}>
-                      <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
+                      <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory)}>crear</Button>
                       </Box>
                     </Box>
                     <Box sx={{width: '100%'}}>
                     <Stack direction="row" spacing={1}>
                       { ship && ship.length > 0 ? ship.map( (e, i) =>(
-                        <Chip key={i} label={`${e.category.name} ${e.progress.value}% ${e.progress.height_value}%`} />
+                        <Chip key={i} label={`${e.category} ${e.progress.value}% ${e.progress.height_value}%`} 
+                        onDelete={ () => handleChipDelete(`${e.category}`)}
+                        />
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
                     </Box>
@@ -274,9 +256,8 @@ const handleChipDelete = (chipToDelete) =>{
                     <Stack direction="row" spacing={1}>
                       { work && typeof work === 'object'? work.progresses.map( (e, i) =>(
                         <Chip key={i} label={`${e.category.name} ${e.value}% ${e.height_value}%`}
-                         onDelete={() => console.log('borrado')} 
+                        onDelete={ () => handleChipDelete(`${e.category.name}`)}
                          />
-                        // setShip(state => [...state, {category: e.category.name, progress: {value:e.value , height_value:e.height_value}}])
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>
                       }
                     </Stack>
