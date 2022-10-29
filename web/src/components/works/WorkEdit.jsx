@@ -11,9 +11,19 @@ import { getAllCategories } from "../../redux/slices/categoriesSlice";
 
 
 export default function WorkEdit () {
+
+
+  const createOneCategory =  (payload) => {
+    axios.post('http://localhost:3000/categories', {name: payload})
+   .then((res) => {
+       console.log(res.data.data)
+   })
+   .catch(error => console.log(error));
+}
     const dispatch = useDispatch();
     const work = useSelector(state => state.works.work);
     const categories = useSelector(state => state.categories.categories);
+
 
     const navigate = useNavigate();
     
@@ -35,6 +45,12 @@ export default function WorkEdit () {
     height_value: ""
   });
 
+  const [ categoriaUnica , setCategoriaUnica] = useState({
+    name:"name"
+  })
+  const handleCategoriaChip = (e) =>{
+    setCategoriaChip(e.target.value)
+  }
     // const [ categoria, setCategoria] = useState(null);
     // const [ progreso, setProgreso] = useState(null);
     // const [ ship, setShip] = useState([]);
@@ -74,11 +90,11 @@ export default function WorkEdit () {
       navigate('/work')
   }
 
-  const handleSelectCategoria = (e) =>{
-    console.log(e.target.value)
-    SetSelectedCategory(e.target.value);
-    console.log(selectedCategory)
-  }
+  // const handleSelectCategoria = (e) =>{
+  //   console.log(e.target.value)
+  //   SetSelectedCategory(e.target.value);
+  //   console.log(selectedCategory)
+  // }
 
   const handleChange = (e) =>{
     const {name, value} = e.target;
@@ -86,11 +102,49 @@ export default function WorkEdit () {
         ...progress,[name]:value
     });
   }
+  const handleSelectCategoria = (e) =>{
+    SetSelectedCategory(e.target.value);
+    setCategoriaUnica(e.target.value.name)
+    console.log(categoriaUnica);
+  }
+//   const handleAdd = () =>{
+//     setShip(state => [...state, {category: selectedCategory, progress: progress}]);
+//     console.log(ship)
+//  }
+const [ array , setArray] = useState([])
+const [ categoriachip, setCategoriaChip] = useState(null)
 
-  const handleAdd = () =>{
-    setShip(state => [...state, {category: selectedCategory, progress: progress}]);
-    console.log(ship)
- }
+const handleAdd = () =>{
+  console.log(array);
+  if(!array.includes(selectedCategory.name)){
+    setShip(state => [...state, {category: selectedCategory, progress: progress }]);
+  }else{
+    console.log('no se puede agregar');
+  }
+  setArray([...array, selectedCategory.name])
+  console.log(selectedCategory);
+}
+
+const handleCreateCategoria  = (e) =>{
+  let array = []
+  e.preventDefault();
+  categories.map( (e) =>{
+    array.push( e.name)
+  })
+  if(!array.includes(categoriachip)){
+    createOneCategory(categoriachip)
+    dispatch(getAllCategories())
+  }else{
+    console.log('no se creo');
+    dispatch(getAllCategories())
+  }
+}
+
+const handleChipDelete = (chipToDelete) =>{
+  setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
+  setArray((e) => e.filter( (array) => array !== chipToDelete ) )
+
+}
 
   const theme = useTheme();
 
@@ -102,7 +156,7 @@ export default function WorkEdit () {
             <Grid container> 
             {
               !isMatch &&
-              <Grid  xs={3} columns={1}>
+              <Grid item xs={3} columns={1}>
                 <NavDashboard2/>
               </Grid>
             }
@@ -135,6 +189,26 @@ export default function WorkEdit () {
                       style={{ width: '100%', height:150, marginTop:'2rem', border:'none', 
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
                     />
+                    <Box sx={{marginTop: '2rem'}}>
+                      <Typography >
+                        crea una nueva categoria...
+                      </Typography>
+                      <TextField 
+                      value={categoriachip}
+                      onChange={handleCategoriaChip}
+                      label="Categoria"
+                      name='name'
+                      InputLabelProps={{
+                          style:{
+                              textTransform: "uppercase",
+                              fontSize:".8rem"
+                            }
+                        }}
+                      sx={{border:'none', 
+                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',width:'400px'}} 
+                      />
+                        <Button sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={handleCreateCategoria}>crear categoria</Button>
+                    </Box>
                     <Box sx={{display: 'flex', flexDirection: 'row'}}>
                       <FormControl fullWidth sx={{marginTop:'2rem'}} >
                       <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
@@ -142,7 +216,7 @@ export default function WorkEdit () {
                         labelId="demo-simple-select-autowidth-label"
                         id="demo-simple-select-autowidth"
                         name="name"
-                        // value={selectedCategory}
+                        value={selectedCategory}
                         onChange={handleSelectCategoria}
                         label="Categoria"
                         sx={{border:'none', 
@@ -150,8 +224,8 @@ export default function WorkEdit () {
                       >
                       {
                         categories && categories.length ? 
-                          categories.map(e=>{
-                            return <MenuItem value={{name: e.name, id: e.id}}>{e.name}</MenuItem>
+                          categories.map((e, i)=>{
+                            return <MenuItem key={i}value={{name: e.name, id: e.id}}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
@@ -185,7 +259,7 @@ export default function WorkEdit () {
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                       />
                       <Box sx={{marginTop:'2rem'}}>
-                        <Add onClick={handleAdd}/>
+                      <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
                       </Box>
                     </Box>
                     <Box sx={{width: '100%'}}>
@@ -195,36 +269,21 @@ export default function WorkEdit () {
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
                     </Box>
-                    {/* <FormControl fullWidth sx={{marginTop:'2rem'}} >
-                    <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={categoria}
-                        onChange={handleSelectCategoria}
-                        label="Categoria"
-                        sx={{border:'none', 
-                  boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
-                    >
-                      <MenuItem value='Redes Cloacales'>Redes Cloacales</MenuItem>
-                      <MenuItem value='Electricidad'>Electricidad</MenuItem>
-                      <MenuItem value='Agua'>Agua</MenuItem>
-                    </Select>
-                    </FormControl>
-                    <TextField  
-                    onChange={handleProgreso}
-                    value={progreso}
-                    label="Progreso"
-                    name='progress'
-                    InputLabelProps={{
-                                style:{
-                                  textTransform: "uppercase",
-                                  fontSize:".8rem",
-                                }
-                              }} 
-                    sx={{marginTop:'2rem',border:'none', 
-                    boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
-                    /> */}
+                    <p> categorias existentes</p>
+
+                    <Stack direction="row" spacing={1}>
+                      { work && typeof work === 'object'? work.progresses.map( (e, i) =>(
+                        <Chip key={i} label={`${e.category.name} ${e.value}% ${e.height_value}%`}
+                         onDelete={() => console.log('borrado')} 
+                         />
+                        // setShip(state => [...state, {category: e.category.name, progress: {value:e.value , height_value:e.height_value}}])
+                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>
+                      }
+                    </Stack>
+
+
+
+
                   <Grid sx={{display:'flex', gap:'5rem'}} item xs={2}>
                       <Button 
                         sx={{

@@ -31,7 +31,7 @@ export default function Users() {
               <NavDashboard2/>
             </Grid>
           }
-          <Grid item xs={9} columns={2}>
+          <Grid item xs={9} columns={2} sx={{marginTop:'7rem'}}>
             <ListUserDashboard />
           </Grid>
         </Grid>

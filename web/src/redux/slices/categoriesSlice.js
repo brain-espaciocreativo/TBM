@@ -11,7 +11,12 @@ export const categoriesSlide = createSlice({
             state.categories = action.payload;
         },
         createCategory:(state, action) =>{
-            state.categories = action.payload.concat(action.payload)
+            // return state.categories.push(action.payload);
+            console.log(action.payload);
+            return {
+                ...state,
+                categories: state.categories.concat(action.payload),
+              };
         }
     }
 })
@@ -36,7 +41,7 @@ export const createOneCategory = (payload) => {
          await axios.post('http://localhost:3000/categories', payload)
         .then((res) => {
             console.log(res.data.data),
-            dispatch(createCategory(payload))
+            dispatch(createCategory(res.data.data))
         })
         .catch(error => console.log(error));
     }

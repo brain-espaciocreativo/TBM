@@ -21,6 +21,15 @@ const createOneCategories = async (req, res) => {
     const { name, progressId } = req.body; 
     try {
         if(!name ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        const categoriaData = await Categories.findOne({
+            where:{
+                name: name
+            }
+        })
+        console.log(categoriaData);
+        if(categoriaData && categoriaData.datavalues.name === name){
+            throw Error(res.status(402).send({status:402, data:"la categoria ya existe"}))
+        }
         if(progressId){
             const data = await Categories.create({
                 name, progressId

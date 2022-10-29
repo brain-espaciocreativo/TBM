@@ -11,10 +11,7 @@ import { getAllCategories } from "../../redux/slices/categoriesSlice";
 import { lightGreen } from "@mui/material/colors";
 import axios from "axios";
 
-
-
 export default function WorkForm () {
-
 
 const createOneCategory =  (payload) => {
          axios.post('http://localhost:3000/categories', {name: payload})
@@ -23,9 +20,6 @@ const createOneCategory =  (payload) => {
         })
         .catch(error => console.log(error));
 }
-
-
-
 
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
@@ -41,6 +35,7 @@ const createOneCategory =  (payload) => {
     id: "",
     name: ""
   })
+
   const [ categoriachip, setCategoriaChip] = useState(null)
 
   const [ progress, setProgress] = useState({
@@ -48,9 +43,14 @@ const createOneCategory =  (payload) => {
     height_value: ""
   });
   const [ ship, setShip] = useState([]);
-
+  const [ categoriaUnica , setCategoriaUnica] = useState({
+    name:"name"
+  })
+  
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
+    setCategoriaUnica(e.target.value.name)
+    console.log(categoriaUnica);
   }
   const handleCategoriaChip = (e) =>{
     setCategoriaChip(e.target.value)
@@ -63,32 +63,47 @@ const createOneCategory =  (payload) => {
     });
 }
 
-const [ index , setIndex ] = useState(0)
+const [ array , setArray] = useState([])
 
-  const handleAdd = () =>{
-     setShip(state => [...state, {key: index ,category: selectedCategory, progress: progress }]);
-     setIndex(index + 1 )
-    console.log(ship);
+
+const handleAdd = () =>{
+
+    if(!array.includes(selectedCategory)){
+      setShip(state => [...state, {category: selectedCategory, progress: progress }]);
+    }else{
+      console.log('no se puede agregar');
+    }
+    setArray([...array, selectedCategory])
+    console.log(selectedCategory);
   }
 
   const handleChipDelete = (chipToDelete) =>{
-    console.log(chipToDelete);
-    setShip((chips) => chips.filter((chip) => chip.key !== chipToDelete))
-    setIndex(index -1)
+    setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
+    setArray((e) => e.filter( (array) => array !== chipToDelete ) )
+
   }
 
-
   const handleCreateCategoria  = (e) =>{
+    let array = []
     e.preventDefault();
-    createOneCategory(categoriachip)
+    categories.map( (e) =>{
+      array.push( e.name)
+    })
+    if(!array.includes(categoriachip)){
+      createOneCategory(categoriachip)
+      dispatch(getAllCategories())
+    }else{
+      console.log('no se creo');
+      dispatch(getAllCategories())
+    }
 }
+
 
   useEffect(() => {
     dispatch(getAllCategories())
     setCreateWorkState('')
   }, [dispatch]);
 
-  
 
   const handleCreateWork = (e) => {
     const { name, value} = e.target;
@@ -148,8 +163,6 @@ return (
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
                     />
 
-
-
                     <Box sx={{marginTop: '2rem'}}>
                       <Typography >
                         crea una nueva categoria...
@@ -171,10 +184,6 @@ return (
                         <Button sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={handleCreateCategoria}>crear categoria</Button>
                     </Box>
 
-
-
-
-
                     <Box sx={{width: '100%',display: 'flex', flexDirection: 'row', gap: '1rem', justifyContent:'center', alignItems:'center'}}>
                     
                       <FormControl  sx={{marginTop:'2rem'}} >
@@ -183,7 +192,7 @@ return (
                         labelId="demo-simple-select-autowidth-label"
                         id="demo-simple-select-autowidth"
                         name="name"
-                        value={selectedCategory.name}
+                        value={selectedCategory}
                         onChange={handleSelectCategoria}
                         label="Categoria"
                         sx={{border:'none', 
@@ -192,7 +201,7 @@ return (
                       {
                         categories && categories.length ? 
                           categories.map((e ,i )=>{
-                            return <MenuItem key= {i} value={{name: e.name, id: e.id}}>{e.name}</MenuItem>
+                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
@@ -226,13 +235,13 @@ return (
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                       />
                       <Box sx={{marginTop:'2rem'}}>
-                        <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={handleAdd}>crear</Button>
+                        <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
                       </Box>
                     </Box>
                     <Box sx={{width: '100%'}}>
                     <Stack direction="row" spacing={1}>
                       { ship && ship.length > 0 ? ship.map( (e, i) =>(
-                        <Chip key={i} label={` ${e.category.name} ${e.progress.value}% ${e.progress.height_value}%`} onDelete={ e => handleChipDelete(i)}/>
+                        <Chip key={i} label={` ${e.category} ${e.progress.value}% ${e.progress.height_value}%`} onDelete={ () => handleChipDelete(`${e.category}`)}/>
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
                     </Box>

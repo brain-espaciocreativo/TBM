@@ -34,7 +34,7 @@ export default function WorkItem() {
     return (
         <div>
             <Grid container>
-              <Grid item>
+              <Grid item >
               <Button 
                     sx={{
                       backgroundColor: 'rgb(160, 7, 7) ',
