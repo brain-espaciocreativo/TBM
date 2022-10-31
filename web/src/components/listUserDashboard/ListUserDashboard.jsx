@@ -130,7 +130,6 @@ export default function ListUserDashboard() {
     const handleChangeEdit = (e) => {
       const { name, value} = e.target;
       setEditState(state => ({...state, [name]: value}));
-      console.log(editState)
     }
 
     const createUser = async () => {
@@ -242,41 +241,20 @@ export default function ListUserDashboard() {
           }
         }}
         />
-        {/* {err.password && <Typography className="error">{err.password}</Typography>} */}
-        {/* <InputLabel id="demo-simple-select-label">Rol</InputLabel>
-        <Select 
-        labelId="demo-simple-select-label"
-        id="demo-simple-select-label"
-        className={styles.inputs} 
-        label="Role" 
-        name='role'
-        onChange={handleCreateUser} 
-        // onBlur={handleBlur}
-        value={createUserState.role}
-         InputLabelProps={{
-          style:{
-            textTransform: "uppercase",
-            fontSize:".8rem"
-          }
-        }}
-         >
-          <MenuItem value='admin'>Admin</MenuItem>
-          <MenuItem value='usuario'>Usuario</MenuItem>
-        </Select> */}
         <FormControl fullWidth>
-  <InputLabel id="demo-simple-select-label">Role</InputLabel>
-  <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    value={createUserState.role}
-    label="Role"
-    name='role'
-    onChange={handleCreateUser}
-  >
-          <MenuItem value='admin'>Admin</MenuItem>
-          <MenuItem value='usuario'>Usuario</MenuItem>
-  </Select>
-</FormControl>
+          <InputLabel id="demo-simple-select-label">Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={createUserState.role}
+            label="Role"
+            name='role'
+            onChange={handleCreateUser}
+          >
+                  <MenuItem value='admin'>Admin</MenuItem>
+                  <MenuItem value='usuario'>Usuario</MenuItem>
+          </Select>
+      </FormControl>
          {/* {err.role && <Typography className="error">{err.role}</Typography>} */}
         <TextField 
         className={styles.inputs} 
@@ -368,7 +346,21 @@ export default function ListUserDashboard() {
         label="Contraseña" 
         className={styles.inputs}
         />
-        <TextField 
+         <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={editState.role}
+            label="Role"
+            name='role'
+            onChange={handleChangeEdit}
+          >
+                  <MenuItem value='admin'>Admin</MenuItem>
+                  <MenuItem value='usuario'>Usuario</MenuItem>
+          </Select>
+      </FormControl>
+        {/* <TextField 
         onChange={handleChangeEdit}
          InputLabelProps={{
           style:{
@@ -380,7 +372,7 @@ export default function ListUserDashboard() {
         value={editState.role}
         label="Role"
          className={styles.inputs}
-          />
+          /> */}
         <TextField 
         onChange={handleChangeEdit} 
         InputLabelProps={{
@@ -389,6 +381,7 @@ export default function ListUserDashboard() {
             fontSize:".8rem"
           }
         }} 
+        value={editState.phone}
         label="Telefono"  
         className={styles.inputs}  
         />
