@@ -1,5 +1,6 @@
 const {News, Progress} = require('../models/index'); 
 
+
 const getAllNews = async(req, res)=>{
     try {
         const data = await News.findAll({
@@ -22,24 +23,43 @@ const getOneNews = async(req, res)=>{
     }
 }
 const createOneNews = async (req, res) => {
-    const { name, description, video, date, workId} = req.body; 
+
+    const { name, description, workId} = req.body; 
+    const { filename } = req.file
+
+    const fileCurrent =  'http://localhost:5173/uploads/' + filename
+
+
+
+    console.log('---> esto es el body', req.body)
+    console.log('-------------------------------');
+    console.log('---> esto es el file', req.file)
+
     try {
-        if( !name || !description || !date  ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+
+        if( !name || !description ) res.status(402).send({status:402, data: "Datos obligatorios"});
+
+        if(req.file === null) res.status(402).send({status:402, data: "No existe archivo para subir"})
+
         if(workId){
             const data = await News.create({
-                name, description, video, date, workId
+                name,
+                description,
+                video : fileCurrent,
+                workId
             });
             res.status(201).send({status: "OK", data: data });
         }else{
             const data = await News.create({
-                name, description,video,workId, date
+                name,
+                description,
+                video : fileCurrent
             });
             res.status(201).send({status: "OK", data: data });
         }
         
     } catch (error) {
         console.log(error)
-        throw Error(res.status(500).send({status:500, data:"no se creo ninguna novedad"}));
     }
 }
 const updateOneNews = async(req, res)=>{

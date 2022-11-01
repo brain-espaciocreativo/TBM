@@ -9,9 +9,6 @@ const News = (conn) => conn.define('news', {
   name: {
     type: DataTypes.STRING
   },
-  date: {
-    type: DataTypes.DATE
-  },
   description: {
     type: DataTypes.STRING
   },

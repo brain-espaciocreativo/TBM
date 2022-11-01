@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react'
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 
 const useStyle = makeStyles({
     btn: {
@@ -20,7 +20,7 @@ const useStyle = makeStyles({
     }
   });
 
-export default function CardNews( { id, name, description, video, date } ) {
+export default function CardNews( { id, name, description, video } ) {
 
     const styles = useStyle();
     
@@ -41,18 +41,6 @@ export default function CardNews( { id, name, description, video, date } ) {
                         >
                           {name}
                         </Typography>
-                        <Typography 
-                        gutterBottom variant="h6" 
-                        component="h6"
-                        sx={{
-                          color: '#000',
-                          fontWeight: '600',
-                          display: 'flex',
-                          justifyContent: 'end'
-                        }}
-                        >
-                          {date.substr(0,10)}
-                        </Typography>
                         <Typography variant='body2' color="textSecondary" component="p">
                           {description}
                         </Typography>
@@ -69,7 +57,10 @@ export default function CardNews( { id, name, description, video, date } ) {
                         >
                         </Typography>
                         {
-                            video?<ReactPlayer url={video} controls loop width='100%' height='100%'  />:""
+                            video ?
+                             <video>
+                              <source src={video} type="video/mp4" />
+                            </video> :"hola"
                         }
                       
                     </CardActionArea>

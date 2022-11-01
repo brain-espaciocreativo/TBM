@@ -17,6 +17,6 @@ router.use('/work', work);
 router.use('/progress', progress);
 router.use('/auth', authSesion);
 router.use('/send-email', sendMail);
-router.use('/upload-files', uploadFiles);
+// router.use('/upload-files', uploadFiles);
 
 module.exports = router
