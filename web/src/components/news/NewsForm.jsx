@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import UploadFiles from "../uploadFiles/UploadFiles";
 import { createOneNews } from "../../redux/slices/newSlice";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -47,6 +47,7 @@ export default function NewsForm () {
         setData(state => ({...state, [name]: value}));
     }
 
+    const query =  `http://localhost:3000/news?name=${data.name}&description=${data.description}`
     return (
         <>
             <NavDashboard />
@@ -64,7 +65,7 @@ export default function NewsForm () {
                 }} >
                 <Grid container spacing={2} sx={{display:'flex', flexDirection:'column', gap: '6', width: '50%'}} >
                     <Typography sx={{fontSize:'1.5rem', color:'#333', margin: '1rem 0'}}>Creacion de Novedades</Typography>
-                    <form onSubmit={(e) => createNews(e)} encType="multipart/form-data" method="post">
+                    <form action={query} encType="multipart/form-data" method="post">
                         <input 
                         type="text" 
                         name="name"
@@ -78,7 +79,8 @@ export default function NewsForm () {
                         onChange={handleChange}
                         />
                         <input type="file" name="video" accept="video/mp4"></input>
-                        <input type="submit" value='enviar'/>
+                        {/* <UploadFiles/> */}
+                            <input type="submit" value='enviar'/>
                     </form>
                   </Grid> 
                 </Grid>

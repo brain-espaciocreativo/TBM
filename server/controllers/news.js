@@ -24,14 +24,10 @@ const getOneNews = async(req, res)=>{
 }
 const createOneNews = async (req, res) => {
 
-    const { name, description, workId} = req.body; 
-    const { filename } = req.file
-
-    const fileCurrent =  'http://localhost:5173/uploads/' + filename
+    const { name, description, video, workId} = req.query; 
 
 
-
-    console.log('---> esto es el body', req.body)
+    console.log('---> esto es el body', req.query)
     console.log('-------------------------------');
     console.log('---> esto es el file', req.file)
 
@@ -45,7 +41,7 @@ const createOneNews = async (req, res) => {
             const data = await News.create({
                 name,
                 description,
-                video : fileCurrent,
+                video, 
                 workId
             });
             res.status(201).send({status: "OK", data: data });
@@ -53,7 +49,7 @@ const createOneNews = async (req, res) => {
             const data = await News.create({
                 name,
                 description,
-                video : fileCurrent
+                video 
             });
             res.status(201).send({status: "OK", data: data });
         }
