@@ -4,6 +4,7 @@ import { AppBar, Button,Toolbar, Typography, Box, useTheme, useMediaQuery } from
 import { makeStyles } from '@mui/styles';
 import DrawerDashboard from '../drawerDashboard/DrawerDashboard';
 import './NavDashboard.css';
+import Swal from 'sweetalert2';
 
 const useStyle = makeStyles(theme=>({
     offset: theme.mixins.toolbar,
@@ -22,8 +23,22 @@ export default function NavDashboard({links}) {
     const navigate = useNavigate()
 
     const handleClean = () =>{
-        localStorage.removeItem('user');
-        navigate('/')
+        const logout = localStorage.removeItem('user');
+        Swal.fire({
+            title: '¿Estás seguro que quieres cerrar Sesiíon?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'si!'
+          }).then((logout) => {
+            if (logout.isConfirmed) {
+              Swal.fire(
+                'Sesión cerrada!'
+              )
+              navigate('/')
+            }
+          })
     }
 
 

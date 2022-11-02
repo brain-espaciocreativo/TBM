@@ -22,8 +22,7 @@ export default function Users() {
 
   return (
     <>
-        <NavDashboard 
-       />
+        <NavDashboard/>
       <Grid container>
          {
             !isMatch &&
