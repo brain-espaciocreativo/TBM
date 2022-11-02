@@ -22,8 +22,7 @@ export default function Users() {
 
   return (
     <>
-        <NavDashboard 
-       />
+        <NavDashboard/>
       <Grid container>
          {
             !isMatch &&
@@ -31,7 +30,7 @@ export default function Users() {
               <NavDashboard2/>
             </Grid>
           }
-          <Grid item xs={9} columns={2}>
+          <Grid item xs={9} columns={2} style={{marginTop:'7rem'}}>
             <ListUserDashboard />
           </Grid>
         </Grid>
