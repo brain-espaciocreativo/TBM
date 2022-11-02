@@ -28,9 +28,11 @@ export const AuthProvider = ({children}) =>{
             }
         }).catch( e =>{
             console.log(e);
+            setLoading(false)
             if(e.response.status === 401){
-                console.log('datos incorrectos');
-                return toast.danger({message:"Datos incorrectos, verifique informacion"})
+                toast.danger({message:"Datos incorrectos, verifique informacion"}) 
+                setLoading(false)
+                return
             }
             setTimeout(() => {
             setLoading(false)
@@ -45,9 +47,20 @@ export const AuthProvider = ({children}) =>{
     }
     
     const logout = () =>{
-        AsyncStorage.removeItem('userInfo')
-        setUserInfo(null)
-        RootNavigation.navigate('Login')
+        Alert.alert(
+            "Atención",
+            "¿Desea cerrar sesíon?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => {
+                AsyncStorage.removeItem('userInfo')
+                RootNavigation.navigate('Login')
+              } }
+            ])
     }
 
     return (

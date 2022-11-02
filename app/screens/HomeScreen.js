@@ -9,8 +9,6 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function HomeScreen() {
 
-export default function HomeScreen() {
-
   const { userInfo} = useContext(AuthContext);
   const news = userInfo[2];
   const progresses = userInfo[3];

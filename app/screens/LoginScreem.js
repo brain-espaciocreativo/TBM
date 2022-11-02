@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet,View, Text,TextInput, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getOneUser } from '../redux/slices/userSlice';
 import Button from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { useNavigation } from '@react-navigation/native';
 import toast from '../helpers/toast';
 import { RadioButton } from 'react-native-paper';
 import { useContext } from 'react';
@@ -11,35 +8,21 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function LoginScreen () {
 
-    
-    // const dispatch  = useDispatch();
-    // const userSelect = useSelector((state) => state.users.user);
-
     const [ email, setEmail ] = useState(null);
     const [ password , setPassword ] = useState(null);
     const [ show, setShow ] = useState(true);
 
-    const { login, loading } = useContext(AuthContext);
-
-    // const loggedSubmit =  () =>{
-    //     if( (email === '') || (password === '')){
-    //         return toast.danger({message:"Los campos no pueden estar vacios"})
-    //     }
-    //     setLoading(true);
-    //     setTimeout(() => {
-    //         dispatch(getOneUser({email, password}));
-    //         navigation.navigate('Home');
-    //         setLoading(false);
-    //     }, 3000);
-    // }
+    const { login , loading} = useContext(AuthContext);
 
     const handleLogin = () =>{
-        login (email , password);
+        login(email , password);
         if(email == null){
             console.log('email no puede estar vacio');
-            return toast.danger({message:"El campo email no puede estar vacio"})
+            toast.danger({message:"El campo email no puede estar vacio"})
+            return
         }else if(password === null){
-            return toast.danger({message:"El campo password no puede estar vacio"})
+            toast.danger({message:"El campo password no puede estar vacio"})
+            return
         }
     }
 
@@ -95,9 +78,6 @@ export default function LoginScreen () {
             <View style={style.footer}>
                 <Text style={{ color: "#f19ea0" }}>Términos de uso | Políca de privacidad</Text>
             </View>
-            {/* <View style={{flex:1, backgroundColor:'red', width:'100%', marginTop: '10%',display:'flex'}}>
-                <Text>footer</Text>
-            </View> */}
     </View>
   )
 }
