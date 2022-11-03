@@ -438,7 +438,7 @@ export default function ListUserDashboard() {
                   <Delete onClick={() =>deleteUser(e.id)} />
                 </TableCell>
               </TableRow>
-            )) : <ListUI/>} 
+            )) : null} 
           </TableBody>
         </Table>
       </TableContainer>

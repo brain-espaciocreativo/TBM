@@ -34,7 +34,7 @@ export default function WorkItem() {
     return (
         <div>
             <Grid container>
-              <Grid item>
+              <Grid item >
               <Button 
                     sx={{
                       backgroundColor: 'rgb(160, 7, 7) ',
@@ -52,7 +52,7 @@ export default function WorkItem() {
                   ( 
                     <Card key={i} sx={{ minWidth: 275,boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', margin:'20px 0', width:'20%' }}>
                       <CardContent>
-                        <Typography key={i} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                           Nombre de la Obra
                         </Typography>
                         <Typography variant="h5" component="div">
@@ -65,7 +65,7 @@ export default function WorkItem() {
                         {e.description}
                         </Typography>
                         {
-                          e.progresses.map(element=>{
+                          e.progresses.map((element, i)=>{
                             return <Chip key={i} label={`${element.category.name} ${element.value}% ${element.height_value}%`}/>
                           })
                         }

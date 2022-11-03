@@ -9,11 +9,19 @@ export const categoriesSlide = createSlice({
     reducers:{
         setCategoriesList: (state, action) => {
             state.categories = action.payload;
+        },
+        createCategory:(state, action) =>{
+            // return state.categories.push(action.payload);
+            console.log(action.payload);
+            return {
+                ...state,
+                categories: state.categories.concat(action.payload),
+              };
         }
     }
 })
 
-export const { setCategoriesList } = categoriesSlide.actions;
+export const { setCategoriesList , createCategory} = categoriesSlide.actions;
 
 export default categoriesSlide.reducer;
 
@@ -24,5 +32,17 @@ export const getAllCategories = () => {
             dispatch(setCategoriesList(res.data.data));
         })
         .catch((error) => console.log(error))
+    }
+}
+
+export const createOneCategory = (payload) => {
+    console.log(payload);
+    return async (dispatch) => {
+         await axios.post('http://localhost:3000/categories', payload)
+        .then((res) => {
+            console.log(res.data.data),
+            dispatch(createCategory(res.data.data))
+        })
+        .catch(error => console.log(error));
     }
 }

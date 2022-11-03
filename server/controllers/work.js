@@ -61,12 +61,24 @@ const createOneWork = async(req, res)=>{
                     description: work.description
                 });
                 const currentWork = workCreated.get({ plain: true });
-                ships.map(e=> {
+                ships.map( async (e)=> {
+                    const currentCategory = await Categories.findOne({
+
+                        where:{
+                            name: e.category
+                        }
+                    })
+                    console.log(currentCategory);
+
+                    // const categoryClean = currentCategory.get({plain : true});
+                    
+
                     const createdProgress = Progress.create({
                         value: `${e.progress.value}`,
                         height_value: `${e.progress.height_value}`,
                         work_progress: currentWork.id,
-                        categoryId: e.category.id
+                        categoryId: currentCategory.dataValues.id
+
                     });
                     // const currentProgress = createdProgress.get({ plain: true });
                     const categoria = Categories.create({
@@ -76,22 +88,7 @@ const createOneWork = async(req, res)=>{
                 });
                 res.status(201).send({status: "OK", data: workCreated });
             }
-        }else{
-            if(work.userId) {
-                const data = await Works.create({
-                    name: work.name,
-                    description: work.description,
-                    userId: work.userId
-                });
-                res.status(201).send({status: "OK", data: data });
-            }else{
-                const data = await Works.create({
-                    name: work.name,
-                    description: work.description
-                });
-                res.status(201).send({status: "OK", data: data });
-            }}
-        
+        }
     } catch (error) {
         console.log(error);
         throw Error(res.status(500).send({status:500, data:"no se creo ningun trabajo"}));

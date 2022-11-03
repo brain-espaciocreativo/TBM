@@ -17,11 +17,11 @@ export default function WorkContainer() {
             <Grid container>
             {
                 !isMatch &&
-                <Grid  xs={3} columns={1}>
+                <Grid item xs={3} columns={1}>
                     <NavDashboard2/>
                 </Grid>
             }
-                <Grid item xs={9}
+                <Grid  xs={9}
                     columns={2}
                     sx={{
                     width: '70%',

@@ -22,6 +22,7 @@ export default function Dashboard() {
 
   const news = useSelector(state => state.news.newList);
 
+
   const theme = useTheme();
 
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
@@ -29,6 +30,7 @@ export default function Dashboard() {
   useEffect(()=>{
     dispatch(getAllNews());
   },[dispatch]);
+
   
   return (
     <div>
@@ -38,16 +40,16 @@ export default function Dashboard() {
       <Grid container>
           {
             !isMatch &&
-            <Grid  xs={3} columns={1}>
+            <Grid item xs={3} columns={1}>
             <NavDashboard2/>
           </Grid>
           }
           <Grid item xs={9} columns={2}>
           <Typography sx={{marginTop:'8rem', color: 'rgb(142, 7, 7)'}} variant='h5'>Novedades</Typography>
             <Box p={5} sx={{display: 'flex', flexWrap: 'wrap', gap: '2rem', marginBottom: '10rem'}}>
-          {news && news.length ? news.map((e) =>
+          {news && news.length ? news.map((e, i) =>
                 ( 
-                    <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
+                    <CardNews key={i} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
                  )) : ""
                 }
               </Box>
