@@ -8,6 +8,7 @@ import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { Add} from '@mui/icons-material';
 import { getAllCategories } from "../../redux/slices/categoriesSlice";
+import axios from 'axios';
 
 
 export default function WorkEdit () {
@@ -31,8 +32,17 @@ export default function WorkEdit () {
       description: "",
       
   });
-
   const [ ship, setShip] = useState([]);
+
+  const [ number, setNumbre ] = useState(0)
+
+  if(work && number < 1 ){
+      work.progresses.map((e) =>{
+        setShip(state => [...state, {category: e.category.name, progress: { value: e.value , height_value : e.height_value}}]);
+      })
+      setNumbre( number + 1 )
+  }
+
 
   const [ selectedCategory, SetSelectedCategory] = useState({
     id: "",
@@ -72,7 +82,7 @@ export default function WorkEdit () {
 }
 
   const handleEdit = () =>{
-      dispatch(updateOneWork(createWorkState))
+      dispatch(updateOneWork({ categoryData : createWorkState , chip: ship}))
       Swal.fire({
         title: 'Obra Actualizada!',
       })
@@ -251,20 +261,6 @@ const handleChipDelete = (chipToDelete) =>{
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
                     </Box>
-                    <p> categorias existentes</p>
-
-                    <Stack direction="row" spacing={1}>
-                      { work && typeof work === 'object'? work.progresses.map( (e, i) =>(
-                        <Chip key={i} label={`${e.category.name} ${e.value}% ${e.height_value}%`}
-                        onDelete={ () => handleChipDelete(`${e.category.name}`)}
-                         />
-                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>
-                      }
-                    </Stack>
-
-
-
-
                   <Grid sx={{display:'flex', gap:'5rem'}} item xs={2}>
                       <Button 
                         sx={{

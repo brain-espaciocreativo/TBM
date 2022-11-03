@@ -96,7 +96,11 @@ const createOneWork = async(req, res)=>{
 }
 const updateOneWork = async(req, res)=>{
     const { id } = req.params;
-    const { name, description  } = req.body;
+    const { name, description } = req.body.categoryData;
+
+    console.log(req.body.categoryData)
+    console.log(req.body.chip)
+
 try {
     if(!name || !description ){
         
@@ -113,7 +117,7 @@ try {
         });
         res.status(201).send({status: "OK", data });
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se actualizó ningun trabajo"}));
+        res.status(500).send({status:500, data:"no se actualizó ningun trabajo"});
     }
 }
 const deleteOneWork = async(req, res)=>{
