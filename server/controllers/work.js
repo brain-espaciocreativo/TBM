@@ -103,7 +103,6 @@ const updateOneWork = async(req, res)=>{
 
 try {
     if(!name || !description ){
-        
         res.status(402).send({status:402, data: "Datos obligatorios"});
         return;
     } 
