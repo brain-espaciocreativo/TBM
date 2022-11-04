@@ -1,7 +1,8 @@
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 import React from 'react'
-// import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player';
 
 const useStyle = makeStyles({
     btn: {
@@ -22,7 +23,13 @@ const useStyle = makeStyles({
 
 export default function CardNews( { id, name, description, video } ) {
 
-    const styles = useStyle();
+  const styles = useStyle();
+
+
+
+
+
+
     
   return (
     <div>
@@ -59,10 +66,10 @@ export default function CardNews( { id, name, description, video } ) {
                         {
                             video ?
                              <video>
-                              <source src={video} type="video/mp4" />
-                            </video> :"hola"
+                              <source src='/videos' type='video/mp4'/>
+                             </video>
+                            :"hola"
                         }
-                      
                     </CardActionArea>
                   </Card>
     </div>

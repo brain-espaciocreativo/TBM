@@ -16,7 +16,7 @@ const diskStorage =  multer.diskStorage({
     filename: (req, file, cb) =>{
         const extencion = path.extname(file.originalname)
        
-        cb(null,  `video-${Date.now()}${extencion}`)
+        cb(null,  `${Date.now()}${extencion}`)
     }
 }) 
 
@@ -45,7 +45,7 @@ router.post('/', uploads.single('video') , async (req, res) =>{
             const data = await News.create({
                 name,
                 description,
-                video: '/uploads/' + req.file.fieldname, 
+                video: `videos?video=${req.file.filename}`, 
                 workId
             });
             res.status(201).send({status: "OK", data: data });
@@ -53,7 +53,7 @@ router.post('/', uploads.single('video') , async (req, res) =>{
             const data = await News.create({
                 name,
                 description,
-                video : '/uploads/' + req.file.fieldname
+                video : `videos?video=${req.file.filename}`
             });
             res.status(201).send({status: "OK", data: data });
         }
@@ -62,6 +62,7 @@ router.post('/', uploads.single('video') , async (req, res) =>{
         console.log(error)
     }
 });
+
 router.put('/:id', newsControllers.updateOneNews);
 router.delete("/:id", newsControllers.deleteOneNews);
 

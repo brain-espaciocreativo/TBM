@@ -9,7 +9,7 @@ const path = require('path');
 server.use(morgan('dev'))
 server.use(cors());
 
-server.use(express.static(path.resolve(__dirname, 'uploads')))
+server.use(express.static(path.resolve(__dirname, './uploads')))
 server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 server.use(bodyParser.json({ limit: "50mb" }));
 
