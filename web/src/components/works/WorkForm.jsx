@@ -7,7 +7,7 @@ import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
 import { Add} from '@mui/icons-material';
-import { getAllCategories } from "../../redux/slices/categoriesSlice";
+import { deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
 import { lightGreen } from "@mui/material/colors";
 import axios from "axios";
 
@@ -47,10 +47,17 @@ const createOneCategory =  (payload) => {
     name:"name"
   })
   
+
+
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
     setCategoriaUnica(e.target.value.name)
   }
+
+const deleteCategoria =  (name) =>{
+  dispatch(deleteOneCategory(name))
+} 
+
   const handleCategoriaChip = (e) =>{
     setCategoriaChip(e.target.value)
   }
@@ -93,8 +100,8 @@ const handleAdd = () =>{
       console.log('no se creo');
       dispatch(getAllCategories())
     }
+    dispatch(getAllCategories())
 }
-
 
   useEffect(() => {
     dispatch(getAllCategories())
@@ -198,7 +205,7 @@ return (
                       {
                         categories && categories.length ? 
                           categories.map((e ,i )=>{
-                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
+                            return <MenuItem key= {i} value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button></MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>

@@ -7,7 +7,7 @@ import { getOneWork, updateOneWork} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { Add} from '@mui/icons-material';
-import { getAllCategories } from "../../redux/slices/categoriesSlice";
+import { deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
 import axios from 'axios';
 
 
@@ -42,7 +42,6 @@ export default function WorkEdit () {
       })
       setNumbre( number + 1 )
   }
-
 
   const [ selectedCategory, SetSelectedCategory] = useState({
     id: "",
@@ -130,6 +129,10 @@ const handleCreateCategoria  = (e) =>{
   }
 }
 
+const deleteCategoria = (name) =>{
+  dispatch(deleteOneCategory(name))
+}
+
 const handleChipDelete = (chipToDelete) =>{
   setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
   setArray((e) => e.filter( (array) => array !== chipToDelete ) )
@@ -215,7 +218,7 @@ const handleChipDelete = (chipToDelete) =>{
                       {
                         categories && categories.length ? 
                           categories.map((e, i)=>{
-                            return <MenuItem key={i}value={e.name}>{e.name}</MenuItem>
+                            return <MenuItem key={i}value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button> </MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>

@@ -17,11 +17,14 @@ export const categoriesSlide = createSlice({
                 ...state,
                 categories: state.categories.concat(action.payload),
               };
+        },
+        deleteCategory:(state, action) =>{
+            state.categories
         }
     }
 })
 
-export const { setCategoriesList , createCategory} = categoriesSlide.actions;
+export const { setCategoriesList , createCategory, deleteCategory} = categoriesSlide.actions;
 
 export default categoriesSlide.reducer;
 
@@ -45,4 +48,14 @@ export const createOneCategory = (payload) => {
         })
         .catch(error => console.log(error));
     }
+}
+export const deleteOneCategory = (payload) =>{
+    console.log(payload , 'soy el pauload');
+    return async (dispatch) => {
+        await axios.delete('http://localhost:3000/categories/'+ payload)
+       .then((res) => {
+           dispatch(deleteCategory(res.data.data))
+       })
+       .catch(error => console.log(error));
+   }
 }

@@ -1,4 +1,4 @@
-const {Categories} = require('../models');
+const {Categories, Progress} = require('../models');
 
 const getAllCategories = async(req, res)=>{
     try {
@@ -64,12 +64,44 @@ const updateOneCategories = async(req, res)=>{
 }
 const deleteOneCategories = async(req, res)=>{
     const { id } = req.params;
+    console.log(req.params);
     try {
         if(!id) throw Error(res.status(402).send("Seleccione un ID"));
-        await Categories.destroy({ where: { id: id }});
+
+        const data = await Categories.findOne({
+            where: {
+                name: id
+            },
+            include: [{
+                model: Progress
+              },]
+        })
+
+        
+
+     const result =  data.get({ plain: true })
+
+  
+
+     const result2 = [result.progress]
+     console.log(result2, 'soy el resuyltado2')
+
+
+     result2.map( (e) => {
+        Progress.destroy({
+            where: { id: e.id }
+        })
+     })
+
+    
+
+        await Categories.destroy({
+             where: { name: id }
+            });
         res.status(204).send("Se elimino correctamente");
+
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se elimino correctamente"}));
+            console.log(error)
     }
 }
 

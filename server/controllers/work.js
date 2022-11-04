@@ -98,14 +98,45 @@ const updateOneWork = async(req, res)=>{
     const { id } = req.params;
     const { name, description } = req.body.categoryData;
 
-    console.log(req.body.categoryData)
-    console.log(req.body.chip)
+    const workData = req.body.categoryData;
+    const oldProgress = req.body.categoryData.progresses;
+    const newProgress = req.body.chip;
+    
 
 try {
-    if(!name || !description ){
-        res.status(402).send({status:402, data: "Datos obligatorios"});
-        return;
-    } 
+    
+        if(!name || !description )return res.status(402).send({status:402, data: "Datos obligatorios"})  
+
+        newProgress.map( async (j) =>{
+            let result = true;
+                oldProgress.map( (e) => {
+                    if(e.category.name === j.category){
+                        result = false
+                        Progress.update({
+                            value: j.progress.value,
+                            height_value: j.progress.height_value,
+                        },{
+                            where:{
+                                id: e.id
+                            }
+                        })
+                    }
+                })
+
+                if(result){
+                    const newData  = await Categories.findOne({
+                        where: {
+                            name: j.category
+                        }
+                    })
+                    Progress.create({
+                        value: j.progress.value,
+                        height_value: j.progress.height_value,
+                        categoryId: newData.id,
+                        work_progress: workData.id
+                    })
+                }
+})
         const data = await Works.update({
             name:name,
             description:description
