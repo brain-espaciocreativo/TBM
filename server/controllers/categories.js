@@ -19,6 +19,9 @@ const getOneCategories = async(req, res)=>{
 }
 const createOneCategories = async (req, res) => {
     const { name, progressId } = req.body; 
+
+    console.log(req.body)
+
     try {
         if(!name ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
         const categoriaData = await Categories.findOne({
@@ -43,6 +46,7 @@ const createOneCategories = async (req, res) => {
         }
         
     } catch (error) {
+        
         throw Error(res.status(500).send({status: 500, data:"No se creo categoria"}));
     }
 }

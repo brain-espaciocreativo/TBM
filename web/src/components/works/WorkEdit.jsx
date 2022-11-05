@@ -8,19 +8,11 @@ import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { Add} from '@mui/icons-material';
 import { deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
-import axios from 'axios';
+import { createOneCategories } from "../../../../server/controllers/categories";
 
 
 export default function WorkEdit () {
 
-
-  const createOneCategory =  (payload) => {
-    axios.post('http://localhost:3000/categories', {name: payload})
-   .then((res) => {
-       console.log(res.data.data)
-   })
-   .catch(error => console.log(error));
-}
     const dispatch = useDispatch();
     const work = useSelector(state => state.works.work);
     const categories = useSelector(state => state.categories.categories);
@@ -121,7 +113,7 @@ const handleCreateCategoria  = (e) =>{
     array.push( e.name)
   })
   if(!array.includes(categoriachip)){
-    createOneCategory(categoriachip)
+    dispatch(createOneCategories(categoriachip))
     dispatch(getAllCategories())
   }else{
     console.log('no se creo');

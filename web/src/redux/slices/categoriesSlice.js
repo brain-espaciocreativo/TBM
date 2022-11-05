@@ -41,7 +41,7 @@ export const getAllCategories = () => {
 export const createOneCategory = (payload) => {
     console.log(payload);
     return async (dispatch) => {
-         await axios.post('http://localhost:3000/categories', payload)
+         await axios.post('http://localhost:3000/categories', {name: payload})
         .then((res) => {
             console.log(res.data.data),
             dispatch(createCategory(res.data.data))
