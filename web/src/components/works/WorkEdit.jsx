@@ -7,8 +7,7 @@ import { getOneWork, updateOneWork} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { Add} from '@mui/icons-material';
-import { deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
-import { createOneCategories } from "../../../../server/controllers/categories";
+import { createOneCategory, deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
 
 
 export default function WorkEdit () {
@@ -113,7 +112,7 @@ const handleCreateCategoria  = (e) =>{
     array.push( e.name)
   })
   if(!array.includes(categoriachip)){
-    dispatch(createOneCategories(categoriachip))
+    dispatch(createOneCategory(categoriachip))
     dispatch(getAllCategories())
   }else{
     console.log('no se creo');

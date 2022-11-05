@@ -7,9 +7,11 @@ const Progress = require('./Progress')(conn);
 
 // TODO: Crear relaciones
 
-// Relacion usuarios con trabajos ( 1 a n)
-Users.hasMany(Works, { foreignKey: 'userId', sourceKey: 'id' });
-Works.belongsTo(Users, { foreignKey: 'userId', targetId: 'id' });
+// Relacion usuarios con trabajos ( n a n)
+Users.belongsToMany( Works, { through: "user_work"});
+Works.belongsToMany(Users, { through:"user_work" });
+
+
 
 // Relacion trabajo con novedades ( 1 a n)
 Works.hasMany(News, { foreignKey: 'workId', sourceKey: 'id' });
