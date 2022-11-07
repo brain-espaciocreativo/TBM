@@ -45,23 +45,7 @@ const getOneWork = async(req, res)=>{
 const createOneWork = async(req, res)=>{
     const { work, ships } = req.body;
     try {
-        // let data = Works.create({
-        //     name: "parque chacabuco", 
-        //     description: "pequeña descripcion",
-        //     users:[
-        //         {name:"abi", surname:"",email:"abi@gmail.com",password:"123456",phone:"1153492800",role:"admin"},
-        //         {name:"rosa", surname:"",email:"rosa@gmail.com",password:"123456",phone:"1153492800",role:"user"},
-        //     ]
-        // },{
-        //     include:Users
-        // })
-        // res.status(201).send({data:data, message:"creacion de works correcta"})
-
-
-
-
-
-        if(!work.name || !work.description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(!work.name || !work.description ) res.status(402).send({status:402, data: "Datos obligatorios"});
         if(ships){
             if(work.userId) {
                 const data = await Works.create({
@@ -78,42 +62,33 @@ const createOneWork = async(req, res)=>{
                     description: work.description
                 });
                 const currentWork = workCreated.get({ plain: true });
-                ships.map( async (e)=> {
-                    const currentCategory = await Categories.findOne({
 
+                ships.map( async (e) => {
+                    const currentCategory = await Categories.findOne({
                     where:{
                         name: e.category
                     }
                 })
-
-                // const categoryClean = currentCategory.get({plain : true});
-
-                        where:{
-                            name: e.category
-                        }
-                    })
-
                     const createdProgress = Progress.create({
                         value: `${e.progress.value}`,
                         height_value: `${e.progress.height_value}`,
                         work_progress: currentWork.id,
                         categoryId: currentCategory.dataValues.id
+                    })
 
-                    });
-                    // const currentProgress = createdProgress.get({ plain: true });
                     const categoria = Categories.create({
                         name: `${e.category.name}`,
                         progressId: 1
                     })
-                });
-                res.status(201).send({status: "OK", data: workCreated });
-            }
+                res.status(201).send({status: "OK", data: workCreated })
+                })
         }
-    } catch (error) {
+    }      
+    }catch (error) {
         console.log(error);
-        throw Error(res.status(500).send({status:500, data:"no se creo ningun trabajo"}));
     }
 }
+
 const updateOneWork = async(req, res)=>{
     const { id } = req.params;
     const { name, description } = req.body.categoryData;

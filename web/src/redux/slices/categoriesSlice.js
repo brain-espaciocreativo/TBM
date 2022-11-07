@@ -12,7 +12,6 @@ export const categoriesSlide = createSlice({
         },
         createCategory:(state, action) =>{
             // return state.categories.push(action.payload);
-            console.log(action.payload);
             return {
                 ...state,
                 categories: state.categories.concat(action.payload),
@@ -27,7 +26,6 @@ export const categoriesSlide = createSlice({
 
 export const { setCategoriesList , createCategory, deleteCategory} = categoriesSlide.actions;
 
-export const { setCategoriesList , createCategory} = categoriesSlide.actions;
 
 
 export default categoriesSlide.reducer;
@@ -43,12 +41,10 @@ export const getAllCategories = () => {
 }
 
 export const createOneCategory = (payload) => {
-    console.log(payload);
     return async (dispatch) => {
          await axios.post('http://localhost:3000/categories', {name: payload})
 
         .then((res) => {
-            console.log(res.data.data),
             dispatch(createCategory(res.data.data))
         })
         .catch(error => console.log(error));

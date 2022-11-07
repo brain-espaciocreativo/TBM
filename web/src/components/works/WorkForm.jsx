@@ -101,9 +101,6 @@ const handleAdd = () =>{
     }
     dispatch(getAllCategories())
 }
-}
-
-
 
   useEffect(() => {
     dispatch(getAllCategories())
@@ -208,8 +205,6 @@ return (
                         categories && categories.length ? 
                           categories.map((e ,i )=>{
                             return <MenuItem key= {i} value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button></MenuItem>
-
-                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
