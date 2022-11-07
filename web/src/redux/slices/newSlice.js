@@ -24,7 +24,7 @@ export const getAllNews = () => {
     return async (dispatch) => {
         await axios('http://localhost:3000/news')
         .then((res) => {
-            dispatch(setNewList(res.data.data));
+            dispatch(setNewList(res.data.result));
         })
         .catch((error) => console.log(error))
     }

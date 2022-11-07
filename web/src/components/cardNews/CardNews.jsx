@@ -65,8 +65,8 @@ export default function CardNews( { id, name, description, video } ) {
                         </Typography>
                         {
                             video ?
-                             <video>
-                              <source src='/videos' type='video/mp4'/>
+                             <video controls>
+                              <source src={`${video}`} type='video/mp4'/>
                              </video>
                             :"hola"
                         }

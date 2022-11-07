@@ -31,9 +31,6 @@ router.post('/', uploads.single('video') , async (req, res) =>{
     const { name, description, video, workId} = req.query; 
 
 
-    console.log('---> esto es el body', req.query)
-    console.log('-------------------------------');
-    console.log('---> esto es el file', req.file)
 
     try {
 

@@ -8,7 +8,23 @@ const getAllNews = async(req, res)=>{
                 model: Progress
               }
             });
-        res.status(201).send({status: "OK", data});
+
+
+            console.log(data)
+            
+            const hostUrl = req.protocol + '://' + req.get('host');
+
+        const result = data.map( (n)=>{
+            n.video = hostUrl + '/'+ n.video;
+            return n;
+        } )
+
+        
+
+        // console.log(result.get({plain: true}));
+        // console.log(result)
+
+        res.status(201).send({status: "OK", result});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró novedades"}));
     }
@@ -17,7 +33,14 @@ const getOneNews = async(req, res)=>{
     const { id } = req.params;
     try {
         const data = await News.findByPk(id);
-        res.status(201).send({data: data });;
+        const hostUrl = req.protocol + '://' + req.get('host');
+
+        const result = data.map( (n)=>{
+            n.video = hostUrl + '/'+ n.video;
+            return n;
+        } )
+
+        res.status(201).send({data: result });;
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se encontró novedades con ese ID"}));
     }
