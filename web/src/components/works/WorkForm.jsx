@@ -42,12 +42,11 @@ export default function WorkForm () {
     name:"name"
   })
   
-
-
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
     setCategoriaUnica(e.target.value.name)
   }
+
 
   const handleselectUser = (e) =>{
     setSelectUser(e.target.value)
@@ -94,6 +93,7 @@ const handleAdd = () =>{
     })
     if(!array.includes(categoriachip)){
       dispatch(createOneCategory(categoriachip))
+      createOneCategory(categoriachip)
       dispatch(getAllCategories())
     }else{
       console.log('no se creo');
@@ -101,6 +101,9 @@ const handleAdd = () =>{
     }
     dispatch(getAllCategories())
 }
+}
+
+
 
   useEffect(() => {
     dispatch(getAllCategories())
@@ -205,6 +208,8 @@ return (
                         categories && categories.length ? 
                           categories.map((e ,i )=>{
                             return <MenuItem key= {i} value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button></MenuItem>
+
+                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>

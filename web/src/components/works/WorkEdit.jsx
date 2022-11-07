@@ -11,7 +11,6 @@ import { createOneCategory, deleteOneCategory, getAllCategories } from "../../re
 
 
 export default function WorkEdit () {
-
     const dispatch = useDispatch();
     const work = useSelector(state => state.works.work);
     const categories = useSelector(state => state.categories.categories);
@@ -98,7 +97,6 @@ const handleAdd = () =>{
   console.log(array);
   if(!array.includes(selectedCategory)){
     setShip(state => [...state, {category: selectedCategory, progress: progress }]);
-
   }else{
     console.log('no se puede agregar');
   }
@@ -122,6 +120,31 @@ const handleCreateCategoria  = (e) =>{
 
 const deleteCategoria = (name) =>{
   dispatch(deleteOneCategory(name))
+}
+
+const handleChipDelete = (chipToDelete) =>{
+  setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
+  setArray((e) => e.filter( (array) => array !== chipToDelete ) )
+
+  }else{
+    console.log('no se puede agregar');
+  }
+  setArray([...array, selectedCategory])
+}
+
+const handleCreateCategoria  = (e) =>{
+  let array = []
+  e.preventDefault();
+  categories.map( (e) =>{
+    array.push( e.name)
+  })
+  if(!array.includes(categoriachip)){
+    createOneCategory(categoriachip)
+    dispatch(getAllCategories())
+  }else{
+    console.log('no se creo');
+    dispatch(getAllCategories())
+  }
 }
 
 const handleChipDelete = (chipToDelete) =>{
@@ -209,7 +232,11 @@ const handleChipDelete = (chipToDelete) =>{
                       {
                         categories && categories.length ? 
                           categories.map((e, i)=>{
+
                             return <MenuItem key={i}value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button> </MenuItem>
+
+                            return <MenuItem key={i}value={e.name}>{e.name}</MenuItem>
+
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>

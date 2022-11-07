@@ -85,10 +85,13 @@ const createOneWork = async(req, res)=>{
                         name: e.category
                     }
                 })
-                console.log(currentCategory);
 
                 // const categoryClean = currentCategory.get({plain : true});
-                    
+
+                        where:{
+                            name: e.category
+                        }
+                    })
 
                     const createdProgress = Progress.create({
                         value: `${e.progress.value}`,
