@@ -2,27 +2,17 @@ import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Sta
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from "sweetalert2";
-import { createOneWork, getAllWorks} from "../../redux/slices/workSlice"
+import { createOneWork} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
-import { Add} from '@mui/icons-material';
-import { getAllCategories } from "../../redux/slices/categoriesSlice";
-import { lightGreen } from "@mui/material/colors";
-import axios from "axios";
+import { createOneCategory, deleteOneCategory, getAllCategories,  } from "../../redux/slices/categoriesSlice";
 
 export default function WorkForm () {
 
-const createOneCategory =  (payload) => {
-         axios.post('http://localhost:3000/categories', {name: payload})
-        .then((res) => {
-            console.log(res.data.data)
-        })
-        .catch(error => console.log(error));
-}
-
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
+  const user = useSelector(state => state.users.list);
 
   const navigate = useNavigate();
 
@@ -34,6 +24,11 @@ const createOneCategory =  (payload) => {
   const [ selectedCategory, SetSelectedCategory] = useState({
     id: "",
     name: ""
+  })
+
+  const [ selectUser, setSelectUser ] = useState({
+    id: "",
+    name:""
   })
 
   const [ categoriachip, setCategoriaChip] = useState(null)
@@ -51,6 +46,16 @@ const createOneCategory =  (payload) => {
     SetSelectedCategory(e.target.value);
     setCategoriaUnica(e.target.value.name)
   }
+
+
+  const handleselectUser = (e) =>{
+    setSelectUser(e.target.value)
+  }
+
+const deleteCategoria =  (name) =>{
+  dispatch(deleteOneCategory(name))
+} 
+
   const handleCategoriaChip = (e) =>{
     setCategoriaChip(e.target.value)
   }
@@ -87,13 +92,17 @@ const handleAdd = () =>{
       array.push( e.name)
     })
     if(!array.includes(categoriachip)){
+      dispatch(createOneCategory(categoriachip))
       createOneCategory(categoriachip)
       dispatch(getAllCategories())
     }else{
       console.log('no se creo');
       dispatch(getAllCategories())
     }
+    dispatch(getAllCategories())
 }
+}
+
 
 
   useEffect(() => {
@@ -198,6 +207,8 @@ return (
                       {
                         categories && categories.length ? 
                           categories.map((e ,i )=>{
+                            return <MenuItem key= {i} value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button></MenuItem>
+
                             return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
@@ -242,6 +253,26 @@ return (
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
                     </Box>
+                    <FormControl  sx={{marginTop:'2rem'}} >
+                      <InputLabel id="demo-simple-select-label">usuarios</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        name="name"
+                        value={selectUser}
+                        onChange={handleselectUser}
+                        label="Usuarios"
+                        sx={{border:'none', 
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                      >
+                      {
+                        user && user.length ? 
+                          user.map((e ,i )=>{
+                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
+                          }) : <MenuItem value='No hay usuarios'>No hay Usuarios</MenuItem>
+                      }
+                      </Select>
+                      </FormControl>
                     <Grid  item xs={2}>
                       <Button 
                         sx={{

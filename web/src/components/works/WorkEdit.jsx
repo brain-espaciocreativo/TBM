@@ -7,19 +7,10 @@ import { getOneWork, updateOneWork} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { Add} from '@mui/icons-material';
-import { getAllCategories } from "../../redux/slices/categoriesSlice";
+import { createOneCategory, deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
 
 
 export default function WorkEdit () {
-
-
-  const createOneCategory =  (payload) => {
-    axios.post('http://localhost:3000/categories', {name: payload})
-   .then((res) => {
-       console.log(res.data.data)
-   })
-   .catch(error => console.log(error));
-}
     const dispatch = useDispatch();
     const work = useSelector(state => state.works.work);
     const categories = useSelector(state => state.categories.categories);
@@ -31,8 +22,16 @@ export default function WorkEdit () {
       description: "",
       
   });
-
   const [ ship, setShip] = useState([]);
+
+  const [ number, setNumbre ] = useState(0)
+
+  if(work && number < 1 ){
+      work.progresses.map((e) =>{
+        setShip(state => [...state, {category: e.category.name, progress: { value: e.value , height_value : e.height_value}}]);
+      })
+      setNumbre( number + 1 )
+  }
 
   const [ selectedCategory, SetSelectedCategory] = useState({
     id: "",
@@ -72,7 +71,7 @@ export default function WorkEdit () {
 }
 
   const handleEdit = () =>{
-      dispatch(updateOneWork(createWorkState))
+      dispatch(updateOneWork({ categoryData : createWorkState , chip: ship}))
       Swal.fire({
         title: 'Obra Actualizada!',
       })
@@ -98,6 +97,34 @@ const handleAdd = () =>{
   console.log(array);
   if(!array.includes(selectedCategory)){
     setShip(state => [...state, {category: selectedCategory, progress: progress }]);
+  }else{
+    console.log('no se puede agregar');
+  }
+  setArray([...array, selectedCategory])
+}
+
+const handleCreateCategoria  = (e) =>{
+  let array = []
+  e.preventDefault();
+  categories.map( (e) =>{
+    array.push( e.name)
+  })
+  if(!array.includes(categoriachip)){
+    dispatch(createOneCategory(categoriachip))
+    dispatch(getAllCategories())
+  }else{
+    console.log('no se creo');
+    dispatch(getAllCategories())
+  }
+}
+
+const deleteCategoria = (name) =>{
+  dispatch(deleteOneCategory(name))
+}
+
+const handleChipDelete = (chipToDelete) =>{
+  setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
+  setArray((e) => e.filter( (array) => array !== chipToDelete ) )
 
   }else{
     console.log('no se puede agregar');
@@ -205,7 +232,11 @@ const handleChipDelete = (chipToDelete) =>{
                       {
                         categories && categories.length ? 
                           categories.map((e, i)=>{
+
+                            return <MenuItem key={i}value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button> </MenuItem>
+
                             return <MenuItem key={i}value={e.name}>{e.name}</MenuItem>
+
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
@@ -251,20 +282,6 @@ const handleChipDelete = (chipToDelete) =>{
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
                     </Stack>
                     </Box>
-                    <p> categorias existentes</p>
-
-                    <Stack direction="row" spacing={1}>
-                      { work && typeof work === 'object'? work.progresses.map( (e, i) =>(
-                        <Chip key={i} label={`${e.category.name} ${e.value}% ${e.height_value}%`}
-                        onDelete={ () => handleChipDelete(`${e.category.name}`)}
-                         />
-                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>
-                      }
-                    </Stack>
-
-
-
-
                   <Grid sx={{display:'flex', gap:'5rem'}} item xs={2}>
                       <Button 
                         sx={{

@@ -17,11 +17,18 @@ export const categoriesSlide = createSlice({
                 ...state,
                 categories: state.categories.concat(action.payload),
               };
+        },
+        deleteCategory:(state, action) =>{
+            state.categories
         }
     }
 })
 
+
+export const { setCategoriesList , createCategory, deleteCategory} = categoriesSlide.actions;
+
 export const { setCategoriesList , createCategory} = categoriesSlide.actions;
+
 
 export default categoriesSlide.reducer;
 
@@ -38,11 +45,22 @@ export const getAllCategories = () => {
 export const createOneCategory = (payload) => {
     console.log(payload);
     return async (dispatch) => {
-         await axios.post('http://localhost:3000/categories', payload)
+         await axios.post('http://localhost:3000/categories', {name: payload})
+
         .then((res) => {
             console.log(res.data.data),
             dispatch(createCategory(res.data.data))
         })
         .catch(error => console.log(error));
     }
+}
+export const deleteOneCategory = (payload) =>{
+    console.log(payload , 'soy el pauload');
+    return async (dispatch) => {
+        await axios.delete('http://localhost:3000/categories/'+ payload)
+       .then((res) => {
+           dispatch(deleteCategory(res.data.data))
+       })
+       .catch(error => console.log(error));
+   }
 }

@@ -1,4 +1,4 @@
-const {Works, News, Progress, Categories} =  require('../models');
+const {Works, News, Progress, Categories, Users} =  require('../models');
 
 const getAllWork = async(req, res)=>{
     try {
@@ -44,8 +44,23 @@ const getOneWork = async(req, res)=>{
 }
 const createOneWork = async(req, res)=>{
     const { work, ships } = req.body;
-    console.log(req.body);
     try {
+        // let data = Works.create({
+        //     name: "parque chacabuco", 
+        //     description: "pequeña descripcion",
+        //     users:[
+        //         {name:"abi", surname:"",email:"abi@gmail.com",password:"123456",phone:"1153492800",role:"admin"},
+        //         {name:"rosa", surname:"",email:"rosa@gmail.com",password:"123456",phone:"1153492800",role:"user"},
+        //     ]
+        // },{
+        //     include:Users
+        // })
+        // res.status(201).send({data:data, message:"creacion de works correcta"})
+
+
+
+
+
         if(!work.name || !work.description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
         if(ships){
             if(work.userId) {
@@ -53,6 +68,8 @@ const createOneWork = async(req, res)=>{
                     name: work.name,
                     description: work.description,
                     userId: work.userId
+                },{
+                    include: Users
                 });
                 res.status(201).send({status: "OK", data: data });
             }else{
@@ -64,14 +81,17 @@ const createOneWork = async(req, res)=>{
                 ships.map( async (e)=> {
                     const currentCategory = await Categories.findOne({
 
+                    where:{
+                        name: e.category
+                    }
+                })
+
+                // const categoryClean = currentCategory.get({plain : true});
+
                         where:{
                             name: e.category
                         }
                     })
-                    console.log(currentCategory);
-
-                    // const categoryClean = currentCategory.get({plain : true});
-                    
 
                     const createdProgress = Progress.create({
                         value: `${e.progress.value}`,
@@ -96,13 +116,47 @@ const createOneWork = async(req, res)=>{
 }
 const updateOneWork = async(req, res)=>{
     const { id } = req.params;
-    const { name, description  } = req.body;
+    const { name, description } = req.body.categoryData;
+
+    const workData = req.body.categoryData;
+    const oldProgress = req.body.categoryData.progresses;
+    const newProgress = req.body.chip;
+    
+
 try {
-    if(!name || !description ){
-        
-        res.status(402).send({status:402, data: "Datos obligatorios"});
-        return;
-    } 
+    
+        if(!name || !description )return res.status(402).send({status:402, data: "Datos obligatorios"})  
+
+        newProgress.map( async (j) =>{
+            let result = true;
+                oldProgress.map( (e) => {
+                    if(e.category.name === j.category){
+                        result = false
+                        Progress.update({
+                            value: j.progress.value,
+                            height_value: j.progress.height_value,
+                        },{
+                            where:{
+                                id: e.id
+                            }
+                        })
+                    }
+                })
+
+                if(result){
+                    const newData  = await Categories.findOne({
+                        where: {
+                            name: j.category
+                        }
+                    })
+                    Progress.create({
+                        value: j.progress.value,
+                        height_value: j.progress.height_value,
+                        categoryId: newData.id,
+                        work_progress: workData.id
+                    })
+                }
+})
         const data = await Works.update({
             name:name,
             description:description
@@ -113,7 +167,7 @@ try {
         });
         res.status(201).send({status: "OK", data });
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se actualizó ningun trabajo"}));
+        res.status(500).send({status:500, data:"no se actualizó ningun trabajo"});
     }
 }
 const deleteOneWork = async(req, res)=>{

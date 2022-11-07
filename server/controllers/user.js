@@ -32,6 +32,26 @@ const getOneUser = async(req, res)=>{
 }
 const createOneUser = async (req, res) => {
     try {
+
+        // let user1 = Users.create({
+        //     name: "luis",
+        //     surname: "barreca",
+        //     email:"abi@gmail.com",
+        //     password:"123456",
+        //     phone:"1153492800",
+        //     role:"admin",
+        //     works:[
+        //         {name:"parque chacabuco",description:"parque donde juegan los niños"},
+        //         {name:"parque rivadavia",description:"parque donde juegan los niños"}
+        //     ]
+        // },{
+        //     include: Works
+        // })
+
+        // res.status(201).send({message:' creacion correcta', data :  user1})
+
+
+
         const {name, surname, email,password ,phone, role} = req.body; 
         const hashPass = hash.MD5(password);
         if(!name || !surname || !email || !password || !role || !phone) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
@@ -42,6 +62,8 @@ const createOneUser = async (req, res) => {
             password: hashPass,
             phone:phone,
             role:role
+        },{
+            include: Works
         });
         res.status(201).send({status: "OK", data: data });
     } catch (error) {

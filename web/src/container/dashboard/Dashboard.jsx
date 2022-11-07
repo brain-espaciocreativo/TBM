@@ -15,8 +15,17 @@ const useStyle = makeStyles({
 export default function Dashboard() {
 
   const styles = useStyle();
+  const dispatch = useDispatch();
+
+  const news = useSelector(state => state.news.newList);
+
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+  
+  useEffect(()=>{
+    dispatch(getAllNews());
+  },[dispatch]);
+
   
   return (
     <div>
@@ -30,6 +39,7 @@ export default function Dashboard() {
             <NavDashboard2/>
           </Grid>
           }
+
           <Grid item xs={9}
                     columns={2}
                     sx={{
