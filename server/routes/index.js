@@ -9,6 +9,7 @@ const progress = require('./progress');
 const authSesion = require('./authSession');
 const sendMail = require('./sendMail');
 const uploadFiles = require('./uploadFiles');
+const videos =  require('./videos')
 
 router.use('/user', user);
 router.use('/categories', categories);
@@ -17,6 +18,7 @@ router.use('/work', work);
 router.use('/progress', progress);
 router.use('/auth', authSesion);
 router.use('/send-email', sendMail);
-router.use('/upload-files', uploadFiles);
+router.use('/videos', videos)
+// router.use('/upload-files', uploadFiles);
 
 module.exports = router

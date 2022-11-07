@@ -10,6 +10,7 @@ import Work from './container/work/WorkContainer';
 import WorkForm from './components/works/WorkForm';
 import WorkEdit from './components/works/WorkEdit';
 import WorkId from './components/works/WorkId';
+import NewsForm from './components/news/NewsForm';
 import Users from './container/users/Users';
 import PasswordReset from './components/forgotPassword/PasswordReset';
 import ForgotPassword from './components/forgotPassword/ForgotPassword';
@@ -21,6 +22,7 @@ function App() {
           <Route path='/' element={<Login/>} />
           <Route path='/home' element={<Home />} />
           <Route path='/admin' element={<Dashboard />} />
+          <Route path='/admin/news/create' element={<NewsForm />} />
           <Route path='/users' element={<Users />} />
           <Route path='/work' element={<Work/>}/>
           <Route path='/work/create' element={<WorkForm/>}/>
