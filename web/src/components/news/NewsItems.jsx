@@ -14,8 +14,6 @@ export default function WorkItem() {
     const news = useSelector(state => state.news.newList);
     const navigate = useNavigate();
 
-    console.log(news);
-
     useEffect(()=>{
         dispatch(getAllNews());
       },[dispatch]);

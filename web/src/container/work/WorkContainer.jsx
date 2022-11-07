@@ -21,7 +21,7 @@ export default function WorkContainer() {
                     <NavDashboard2/>
                 </Grid>
             }
-                <Grid  xs={9}
+                <Grid item xs={9}
                     columns={2}
                     sx={{
                     width: '70%',

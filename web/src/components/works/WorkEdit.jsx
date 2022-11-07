@@ -122,30 +122,30 @@ const deleteCategoria = (name) =>{
   dispatch(deleteOneCategory(name))
 }
 
-const handleChipDelete = (chipToDelete) =>{
-  setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
-  setArray((e) => e.filter( (array) => array !== chipToDelete ) )
+// const handleChipDelete = (chipToDelete) =>{
+//   setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
+//   setArray((e) => e.filter( (array) => array !== chipToDelete ) )
 
-  }else{
-    console.log('no se puede agregar');
-  }
-  setArray([...array, selectedCategory])
-}
+//   // }else{
+//   //   console.log('no se puede agregar');
+//   // }
+//   // setArray([...array, selectedCategory])
+// }
 
-const handleCreateCategoria  = (e) =>{
-  let array = []
-  e.preventDefault();
-  categories.map( (e) =>{
-    array.push( e.name)
-  })
-  if(!array.includes(categoriachip)){
-    createOneCategory(categoriachip)
-    dispatch(getAllCategories())
-  }else{
-    console.log('no se creo');
-    dispatch(getAllCategories())
-  }
-}
+// const handleCreateCategoria  = (e) =>{
+//   let array = []
+//   e.preventDefault();
+//   categories.map( (e) =>{
+//     array.push( e.name)
+//   })
+//   if(!array.includes(categoriachip)){
+//     createOneCategory(categoriachip)
+//     dispatch(getAllCategories())
+//   }else{
+//     console.log('no se creo');
+//     dispatch(getAllCategories())
+//   }
+// }
 
 const handleChipDelete = (chipToDelete) =>{
   setShip((chips) => chips.filter((chip) => chip.category != chipToDelete))
@@ -234,9 +234,6 @@ const handleChipDelete = (chipToDelete) =>{
                           categories.map((e, i)=>{
 
                             return <MenuItem key={i}value={e.name}>{e.name} <Button onClick={() => deleteCategoria(e.name)}>X</Button> </MenuItem>
-
-                            return <MenuItem key={i}value={e.name}>{e.name}</MenuItem>
-
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                       </Select>
