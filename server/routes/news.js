@@ -4,7 +4,7 @@ const newsControllers = require('../controllers/news')
 const multer = require('multer')
 const fs = require('fs');
 const path = require('path')
-const {News} = require('../models/index'); 
+const {News, Works} = require('../models/index'); 
 
 
 const diskStorage =  multer.diskStorage({
@@ -28,9 +28,8 @@ const uploads = multer({
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
 router.post('/', uploads.single('video') , async (req, res) =>{
-    const { name, description, video, workId} = req.query; 
-
-
+    const { name, description, video, workId} = req.query;
+    console.log('Esto es workId',workId);
 
     try {
 
@@ -38,12 +37,18 @@ router.post('/', uploads.single('video') , async (req, res) =>{
 
         if(req.file === null) res.status(402).send({status:402, data: "No existe archivo para subir"})
 
-        if(workId){
+        if(workId && workId !== ''){
+            const dataWork = await Works.findOne({
+                where: {
+                    name: workId
+                }
+            })
+ 
             const data = await News.create({
                 name,
                 description,
                 video: `videos?video=${req.file.filename}`, 
-                workId
+                workId: dataWork.id
             });
             res.status(201).send({status: "OK", data: data });
         }else{
