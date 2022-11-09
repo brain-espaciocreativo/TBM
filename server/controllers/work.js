@@ -68,7 +68,8 @@ const createOneWork = async(req, res)=>{
                     where:{
                         name: e.category
                     }
-                })
+                    })
+                    
                     const createdProgress = Progress.create({
                         value: `${e.progress.value}`,
                         height_value: `${e.progress.height_value}`,
@@ -148,8 +149,9 @@ try {
 const deleteOneWork = async(req, res)=>{
     const { id } = req.params;
     try {
+        const data = await Works.findOne({ where: { id: id }})
         await Works.destroy({ where: { id: id }});
-        res.status(204).send("Se elimino correctamente");
+        res.status(200).send({status: 200, data: data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se elimino correctamente"}));
     }
