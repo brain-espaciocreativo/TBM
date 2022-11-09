@@ -12,6 +12,8 @@ const getAllWork = async(req, res)=>{
                   include: {
                     model: Categories
                 }
+                },{
+                    model: Users
                 }]
         });
         res.status(201).send({status: "OK", data});
@@ -34,6 +36,8 @@ const getOneWork = async(req, res)=>{
                     include: {
                         model: Categories
                     }
+                },{
+                    model:Users
                 }]
             
         });
@@ -43,21 +47,22 @@ const getOneWork = async(req, res)=>{
     }
 }
 const createOneWork = async(req, res)=>{
-    const { work, ships } = req.body;
+    const { work, ships, shipUsers } = req.body;
+
     try {
         if(!work.name || !work.description ) res.status(402).send({status:402, data: "Datos obligatorios"});
+
         if(ships){
+            let workCreated = null;
             if(work.userId) {
                 const data = await Works.create({
                     name: work.name,
                     description: work.description,
                     userId: work.userId
-                },{
-                    include: Users
                 });
                 res.status(201).send({status: "OK", data: data });
             }else{
-                const workCreated = await Works.create({
+                workCreated = await Works.create({
                     name: work.name,
                     description: work.description
                 });
@@ -82,6 +87,20 @@ const createOneWork = async(req, res)=>{
                     })
                 res.status(201).send({status: "OK", data: workCreated })
                 })
+
+
+        if(shipUsers){
+            const usersData = await shipUsers.map( async (e) =>{
+                    const data = await Users.findOne({
+                    where:{
+                        email: e.email
+                    }
+                })
+                workCreated.addUsers(data)
+            })
+            // res.status(201).send({status: "OK", data: data });
+        }
+
         }
     }      
     }catch (error) {

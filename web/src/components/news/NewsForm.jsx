@@ -8,7 +8,7 @@ import UploadFiles from "../uploadFiles/UploadFiles";
 import { createOneNews } from "../../redux/slices/newSlice";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { Axios } from "axios";
 
 
 
@@ -27,19 +27,24 @@ export default function NewsForm () {
         description:'',
         video:''
     })
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleSubmit = async(event) => {
+        event.preventDefault()
+        const formData = new FormData();
+        formData.append("video", selectedFile);
 
 
-    const createNews = async (e) => {
-        e.preventDefault()
-        // dispatch(createOneNews());
-       await axios.post('http://localhost:3000/news',data)
-        .then((res) => {
-            console.log(res.data.data);
-        })
-        // Swal.fire({
-        //   title: 'novedad creada!',
-        // })
-        // navigate('/admin');
+        try {
+          const response = await axios({
+            method: "post",
+            url: `http://localhost:3000/news?name=${data.name}&description=${data.description}`,
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+        } catch(error) {
+          console.log(error)
+        }
       }
     
     const handleChange = (e) =>{
@@ -47,7 +52,11 @@ export default function NewsForm () {
         setData(state => ({...state, [name]: value}));
     }
 
-    const query =  `http://localhost:3000/news?name=${data.name}&description=${data.description}`
+    const handleFileSelect = (event) => {
+        setSelectedFile(event.target.files[0])
+      }   
+
+
     return (
         <>
             <NavDashboard />
@@ -65,22 +74,21 @@ export default function NewsForm () {
                 }} >
                 <Grid container spacing={2} sx={{display:'flex', flexDirection:'column', gap: '6', width: '50%'}} >
                     <Typography sx={{fontSize:'1.5rem', color:'#333', margin: '1rem 0'}}>Creacion de Novedades</Typography>
-                    <form action={query} encType="multipart/form-data" method="post">
+                    <form onSubmit={handleSubmit} id='formulario' encType="multipart/form-data">
                         <input 
                         type="text" 
                         name="name"
                         value={data.name}
                         onChange={handleChange}
                         />
-                        <input 
+                        <textarea
                         type="text" 
                         name="description"
                         value={data.description}
                         onChange={handleChange}
                         />
-                        <input type="file" name="video" accept="video/mp4"></input>
-                        {/* <UploadFiles/> */}
-                            <input type="submit" value='enviar'/>
+                        <input type="file" name="video" accept="video/mp4" onChange={handleFileSelect}></input>
+                        <input type="submit" value='enviar'/>
                     </form>
                   </Grid> 
                 </Grid>
