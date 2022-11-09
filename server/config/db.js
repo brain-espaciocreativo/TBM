@@ -3,9 +3,9 @@ const { Sequelize } = require("sequelize");
 
 
 
-const database = process.env.DB || 'TBM';
+const database = process.env.DB || 'tbm';
 const username = process.env.USERDB || 'postgres';
-const password = process.env.PASSDB || 'postgres';
+const password = process.env.PASSDB || 'Yoel1234';
 const host = process.env.HOST || 'localhost';
 
 
