@@ -7,6 +7,7 @@ import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
 import { createOneCategory, deleteOneCategory, getAllCategories,  } from "../../redux/slices/categoriesSlice";
+import { getAllUsers } from "../../redux/slices/userSlice";
 
 export default function WorkForm () {
 
@@ -26,10 +27,7 @@ export default function WorkForm () {
     name: ""
   })
 
-  const [ selectUser, setSelectUser ] = useState({
-    id: "",
-    name:""
-  })
+  const [ selectUser, setSelectUser ] = useState("")
 
   const [ categoriachip, setCategoriaChip] = useState(null)
 
@@ -38,6 +36,10 @@ export default function WorkForm () {
     height_value: ""
   });
   const [ ship, setShip] = useState([]);
+
+  const [ shipUsers , setShipUsers] = useState([])
+
+
   const [ categoriaUnica , setCategoriaUnica] = useState({
     name:"name"
   })
@@ -104,6 +106,7 @@ const handleAdd = () =>{
 
   useEffect(() => {
     dispatch(getAllCategories())
+    dispatch(getAllUsers())
     setCreateWorkState('')
   }, [dispatch]);
 
@@ -114,12 +117,23 @@ const handleAdd = () =>{
   }
 
   const createWork = async () => {
-    await dispatch(createOneWork({work: createWorkState, ships: ship}));
+    await dispatch(createOneWork({work: createWorkState, ships: ship, shipUsers: shipUsers}));
     Swal.fire({
       title: 'Obra creada!',
     })
     navigate('/work');
   }
+
+
+  const handleAddChipUser = () =>{
+    setShipUsers(state => [...state, { email: selectUser}]);
+    console.log(shipUsers)
+  }
+  
+  const handleChipDeleteUser = (chipToDelete) =>{
+    setShipUsers((chips) => chips.filter((chip) => chip.email != chipToDelete))
+  }
+
 
   const theme = useTheme();
 
@@ -186,6 +200,9 @@ return (
                       />
                         <Button sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={handleCreateCategoria}>crear categoria</Button>
                     </Box>
+                    <Typography sx={{marginTop: '1.2rem'}}>
+                        asignar categoria...
+                      </Typography>
 
                     <Box sx={{width: '100%',display: 'flex', flexDirection: 'row', gap: '1rem', justifyContent:'center', alignItems:'center'}}>
                     
@@ -263,11 +280,19 @@ return (
                       {
                         user && user.length ? 
                           user.map((e ,i )=>{
-                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
+                            return <MenuItem key= {i} value={e.email}>{e.email}</MenuItem>
                           }) : <MenuItem value='No hay usuarios'>No hay Usuarios</MenuItem>
                       }
                       </Select>
+                      <Button onClick={handleAddChipUser}>Agregar usuario</Button>
                       </FormControl>
+
+                      <Stack direction="row" spacing={1}>
+                      { shipUsers && shipUsers.length > 0 ? shipUsers.map( (e, i) =>(
+                        <Chip key={i} label={` ${e.email}`} onDelete={ () => handleChipDeleteUser(`${e.email}`)}/>
+                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Usuarios</Typography>}
+                    </Stack>
+
                     <Grid  item xs={2}>
                       <Button 
                         sx={{

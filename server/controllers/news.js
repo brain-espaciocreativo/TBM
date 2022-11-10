@@ -8,9 +8,6 @@ const getAllNews = async(req, res)=>{
                 model: Progress
               }
             });
-
-
-            console.log(data)
             
             const hostUrl = req.protocol + '://' + req.get('host');
 
@@ -19,10 +16,7 @@ const getAllNews = async(req, res)=>{
             return n;
         } )
 
-        
-
-        // console.log(result.get({plain: true}));
-        // console.log(result)
+    
 
         res.status(201).send({status: "OK", result});
     } catch (error) {

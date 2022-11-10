@@ -81,23 +81,17 @@ const deleteOneCategories = async(req, res)=>{
               },]
         })
 
-        
-
      const result =  data.get({ plain: true })
 
-  
-
      const result2 = [result.progress]
-     console.log(result2, 'soy el resuyltado2')
 
-
-     result2.map( (e) => {
-        Progress.destroy({
-            where: { id: e.id }
-        })
-     })
-
-    
+     if(result2[0] !== null){
+         result2.map( (e) => {
+             Progress.destroy({
+                 where: { id: e.id }
+                })
+            })
+        }
 
         await Categories.destroy({
              where: { name: id }

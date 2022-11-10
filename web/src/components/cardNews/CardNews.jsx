@@ -64,11 +64,10 @@ export default function CardNews( { id, name, description, video } ) {
                         >
                         </Typography>
                         {
-                            video ?
-                             <video controls>
+                            video &&
+                             <video controls width='100%'>
                               <source src={`${video}`} type='video/mp4'/>
                              </video>
-                            :"hola"
                         }
                     </CardActionArea>
                   </Card>
