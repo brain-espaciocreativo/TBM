@@ -101,6 +101,20 @@ export default function ListUserDashboard() {
 
   const users = useSelector(state => state.users.list);
 
+  // console.log(users)
+
+  const [ usersList , setUsersList]  = useState([])
+  const [ count, setCount ] = useState(0)
+
+  if(users && count < 1){
+    users.map( (e) =>{
+      setUsersList(state => [...state,e.email])
+    })
+    setCount(count +1)
+    console.log(usersList)
+  }
+
+
     useEffect(()=>{
         dispatch(getAllUsers());
     },[dispatch]);
@@ -133,13 +147,20 @@ export default function ListUserDashboard() {
     }
 
     const createUser = async () => {
-      await dispatch(createOneUser(createUserState));
-      await dispatch(getAllUsers());
+      if(usersList.includes(createUserState.email)){
+        Swal.fire({
+          title: 'usuario con email ya registrado!',
+        })
+        handleModalCreate()
+      }else{
+       dispatch(createOneUser(createUserState));
+       dispatch(getAllUsers());
       Swal.fire({
         title: 'Usuario creado!',
       })
       handleModalCreate()
       setCreateUserState('')
+    }
     }
 
     const editUser = () => {
