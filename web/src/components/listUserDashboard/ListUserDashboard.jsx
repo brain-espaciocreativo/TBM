@@ -66,6 +66,20 @@ export default function ListUserDashboard() {
 
   const users = useSelector(state => state.users.list);
 
+  // console.log(users)
+
+  const [ usersList , setUsersList]  = useState([])
+  const [ count, setCount ] = useState(0)
+
+  if(users && count < 1){
+    users.map( (e) =>{
+      setUsersList(state => [...state,e.email])
+    })
+    setCount(count +1)
+    console.log(usersList)
+  }
+
+
     useEffect(()=>{
         dispatch(getAllUsers());
     },[dispatch]);
@@ -98,6 +112,20 @@ export default function ListUserDashboard() {
     }
 
     const createUser = async () => {
+      if(usersList.includes(createUserState.email)){
+        Swal.fire({
+          title: 'usuario con email ya registrado!',
+        })
+        handleModalCreate()
+      }else{
+       dispatch(createOneUser(createUserState));
+       dispatch(getAllUsers());
+      Swal.fire({
+        title: 'Usuario creado!',
+      })
+      handleModalCreate()
+      setCreateUserState('')
+
 
       if(!createUserState.name || !createUserState.surname || !createUserState.email || !createUserState.password || !createUserState.role || !createUserState.phone){
         return (
@@ -114,6 +142,7 @@ export default function ListUserDashboard() {
         handleModalCreate()
       }
     }
+    }
 
     const editUser = () => {
       dispatch(updateOneUser(editState))
@@ -123,9 +152,10 @@ export default function ListUserDashboard() {
       handleModalEdit()
     }
 
-    const deleteUser = (id) => {
+    const deleteUser = (data) => {
+      const { id , email } = data;
       Swal.fire({
-        title: 'Desea eliminar este usuario?',
+        title: `Desea eliminar este usuario ${email}?`,
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
       }).then((result) => {
@@ -408,7 +438,7 @@ export default function ListUserDashboard() {
                 <TableCell>{e.role}</TableCell>
                 <TableCell>
                   <Edit onClick={() =>handleModalEdit(e)}/>
-                  <Delete onClick={() =>deleteUser(e.id)} />
+                  <Delete onClick={() =>deleteUser({id:e.id, email: e.email})} />
                 </TableCell>
               </TableRow>
             )) : null} 

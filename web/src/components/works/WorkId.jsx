@@ -72,6 +72,14 @@ export default function WorkId () {
                             }) 
                             : <p>No hay progreso</p>
                             }
+                            <Typography  sx={{ mb: 1.5 }} color="text.secondary">Usuarios</Typography>
+                            {
+                            work && work.users
+                            ? work.users.map(element=>{
+                              return <Chip key={element.id} label={`${element.email}`} />
+                            }) 
+                            : <p>No hay usuarios</p>
+                            }
                         </CardContent>
                 </Card>
                 : <p>No se encontro trabajo</p>}
