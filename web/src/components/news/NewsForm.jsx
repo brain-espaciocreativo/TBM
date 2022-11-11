@@ -33,19 +33,21 @@ export default function NewsForm () {
     const [selectedFile, setSelectedFile] = useState(null);
 
 
+    useEffect(()=>{
+        dispatch(getAllWorks);
+    },[dispatch]);
+
+
     const handleSubmit = async(event) => {
         event.preventDefault()
         const formData = new FormData();
         formData.append("video", selectedFile);
 
-    useEffect(()=>{
-        dispatch(getAllWorks);
-    },[dispatch]);
 
         try {
           const response = await axios({
             method: "post",
-            url: `http://localhost:3000/news?name=${data.name}&description=${data.description}`,
+            url: `http://localhost:3000/news?name=${data.name}&description=${data.description}&workId=${selectWork}`,
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
           });
@@ -60,12 +62,14 @@ export default function NewsForm () {
     }
 
 
+    const handleselectWork = (e)=>{
+        setSelectWork(e.target.value);
+        console.log('Esto es work',selectWork);
+    };
+
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0])
       }   
-    const handleselectWork = (e)=>{
-        setSelectWork(e.target.value);
-    };
     return (
         <>
             <NavDashboard />
@@ -96,7 +100,9 @@ export default function NewsForm () {
                         value={data.description}
                         onChange={handleChange}
                         />
+
                         <input type="file" name="video" accept="video/mp4" onChange={handleFileSelect}></input>
+
                         <Typography >
                             Selecciona una Obra
                         </Typography>
