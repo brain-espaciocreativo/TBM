@@ -51,7 +51,10 @@ export default function NewsForm () {
             url: `http://localhost:3000/news?name=${data.name}&description=${data.description}`,
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
-          });
+          }).then((res) =>{
+            Swal.fire({title: 'novedad creada!'})
+          })
+          navigate('/admin')
         } catch(error) {
           console.log(error)
         }
