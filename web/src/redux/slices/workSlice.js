@@ -4,7 +4,7 @@ import axios from 'axios';
 export const workSlide = createSlice({
     name:'works',
     initialState:{
-        workList:[],
+        workList:null,
         work: null,
     },
     reducers:{

@@ -38,44 +38,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '1px 4px 17px -10px #000000'
   }
 }));
- const initialForm ={
-   name:'',
-   surname:'',
-   email:'',
-   password:'',
-   phone:'',
-   role:''
- }
-// const validationsForm = (user) =>{
-
-//    let errors = {};
-//    let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-//    let regexphone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-
-  
-//    if(!user.email.trim()){
-//       errors.email = "Campo  requerido*"
-//    }else if(!regexEmail.test(user.email.trim())){
-//      errors.email="formato inválido";
-//    }
-//   if(!user.phone.trim()){
-//     errors.phone = "Campo  requerido*"
-//   }else if(!regexphone.test(user.phone.trim())){
-//     errors.phone="formato inválido";
-//   }
-  
-  
-//    if(!user.name.trim()){ errors.name = "Campo es requerido*"}
-//    if(!user.surname.trim()){ errors.surname = "Campo  requerido*"}
-//     if(!user.password.trim()){ errors.password = "Campo  requerido*"}
-//     if(!user.role.trim()){ errors.role = "Campo  requerido*"}
-
-//    return errors;
-//  }
 
 export default function ListUserDashboard() {
 
-  const {} = useForm(initialForm)
 
   const styles= useStyles();
   const [ modal, setModal ] = useState(false);
@@ -160,6 +125,22 @@ export default function ListUserDashboard() {
       })
       handleModalCreate()
       setCreateUserState('')
+
+
+      if(!createUserState.name || !createUserState.surname || !createUserState.email || !createUserState.password || !createUserState.role || !createUserState.phone){
+        return (
+          Swal.fire({title: 'Llene los campos para crear un usuario'}),
+          handleModalCreate()
+        )
+      }else{
+        await dispatch(createOneUser(createUserState));
+        await dispatch(getAllUsers());
+        Swal.fire({
+          title: 'Usuario creado!',
+        })
+        setCreateUserState('')
+        handleModalCreate()
+      }
     }
     }
 
