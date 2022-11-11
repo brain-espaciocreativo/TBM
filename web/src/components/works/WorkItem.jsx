@@ -14,7 +14,6 @@ export default function WorkItem() {
     const dispatch = useDispatch();
     const works = useSelector(state => state.works.workList);
 
-    console.log(works)
 
     useEffect(() => {
         dispatch(getAllWorks());

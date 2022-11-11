@@ -7,7 +7,7 @@
     text-transform: uppercase;
     font-family: 'Roboto Condensed', sans-serif !important;
 }
-.error{
-    font-size: .5rem;
+.errs{
+    font-size: .7rem;
     color: rgb(160, 7, 7);
 }

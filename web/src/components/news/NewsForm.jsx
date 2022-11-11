@@ -35,13 +35,16 @@ export default function NewsForm () {
 
     const handleSubmit = async(event) => {
         event.preventDefault()
+
+        if(!data.description || !data.name){
+          return Swal.fire({title: 'los campos deben estar llenos'})
+        }
+
+
         const formData = new FormData();
         formData.append("video", selectedFile);
 
-    useEffect(()=>{
-        dispatch(getAllWorks);
-    },[dispatch]);
-
+        
         try {
           const response = await axios({
             method: "post",
@@ -53,6 +56,9 @@ export default function NewsForm () {
           console.log(error)
         }
       }
+      useEffect(()=>{
+          dispatch(getAllWorks);
+      },[dispatch]);
     
     const handleChange = (e) =>{
         const { name, value} = e.target;

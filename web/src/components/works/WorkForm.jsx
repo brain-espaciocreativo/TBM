@@ -55,7 +55,21 @@ export default function WorkForm () {
   }
 
 const deleteCategoria =  (name) =>{
-  dispatch(deleteOneCategory(name))
+  Swal.fire({
+    title: '¿Estás seguro que quieres borrar la categoria?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'si!'
+  }).then((borrado) => {
+    if (borrado.isConfirmed) {
+      dispatch(deleteOneCategory(name))
+      Swal.fire(
+        'categoria borrada!'
+      )
+    }
+  })
 } 
 
   const handleCategoriaChip = (e) =>{
@@ -74,10 +88,28 @@ const [ array , setArray] = useState([])
 
 const handleAdd = () =>{
 
+  let suma = 0
+
+  suma = Number(progress.value) + Number(progress.height_value) 
+
+  if(suma > 100){
+    return Swal.fire({title: 'el valor de categoria y su progreso no puede sobrepasar el 100%'})
+  }
+
+  if(selectedCategory.name === ""){
+    return Swal.fire({title: 'llene los campos para añadir categoria'})
+  }
+
+  if(progress.value === "" ){
+    return Swal.fire({title: 'llene el avance de la categoria'})
+  }else if(progress.height_value === ""){
+    return Swal.fire({title: 'llene el peso de la categoria'})
+  }
+
     if(!array.includes(selectedCategory)){
       setShip(state => [...state, {category: selectedCategory, progress: progress }]);
     }else{
-      console.log('no se puede agregar');
+      Swal.fire({title: 'categoria ya está añadida'})
     }
     setArray([...array, selectedCategory])
   }
@@ -90,15 +122,22 @@ const handleAdd = () =>{
   const handleCreateCategoria  = (e) =>{
     let array = []
     e.preventDefault();
+
+    if(categoriachip == null){
+      return Swal.fire({title: 'llene el campo para crear categoria'})
+    }
+
+
     categories.map( (e) =>{
       array.push( e.name)
+      Swal.fire({title: 'categoria creada'})
     })
     if(!array.includes(categoriachip)){
       dispatch(createOneCategory(categoriachip))
       createOneCategory(categoriachip)
       dispatch(getAllCategories())
     }else{
-      console.log('no se creo');
+      Swal.fire({title: 'categoria ya existente'})
       dispatch(getAllCategories())
     }
     dispatch(getAllCategories())
@@ -117,11 +156,17 @@ const handleAdd = () =>{
   }
 
   const createWork = async () => {
-    await dispatch(createOneWork({work: createWorkState, ships: ship, shipUsers: shipUsers}));
-    Swal.fire({
-      title: 'Obra creada!',
-    })
-    navigate('/work');
+
+    if(createWorkState){
+      await dispatch(createOneWork({work: createWorkState, ships: ship, shipUsers: shipUsers}));
+      Swal.fire({
+        title: 'Obra creada!',
+      })
+      navigate('/work');
+    }else{
+      return Swal.fire({title: 'Llene los campos para crear una obra'})
+    }
+
   }
 
 
