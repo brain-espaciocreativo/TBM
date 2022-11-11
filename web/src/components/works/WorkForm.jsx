@@ -2,7 +2,7 @@ import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Sta
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from "sweetalert2";
-import { createOneWork} from "../../redux/slices/workSlice"
+import { createOneWork, getAllWorks} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
@@ -14,8 +14,20 @@ export default function WorkForm () {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
   const user = useSelector(state => state.users.list);
+  const work = useSelector(state => state.works.workList);
 
   const navigate = useNavigate();
+  
+  const [ arrayObras , setArrayObras ] = useState([])
+  const [ number, setNumbre ] = useState(0)
+  
+  if(work && number < 1 ){
+    work.map( (e) =>{
+      setArrayObras(state => [...state,e.name]);
+    })
+    setNumbre( number + 1 )
+  }
+
 
   const [ createWorkState, setCreateWorkState ] = useState({
     name: "" ,
@@ -43,6 +55,18 @@ export default function WorkForm () {
   const [ categoriaUnica , setCategoriaUnica] = useState({
     name:"name"
   })
+
+  const [ stateHeigthValues, setStateHeigthValues ] = useState(0)
+
+  // const [ number, setNumbre ] = useState(0)
+
+  // if(work && number < 1 ){
+  //     work.progresses.map((e) =>{
+  //       setStateHeigthValues(stateHeigthValues + e.height_value);
+  //     })
+  //     setNumbre( number + 1 )
+  //     console.log(stateHeigthValues)
+  // }
   
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
@@ -56,7 +80,7 @@ export default function WorkForm () {
 
 const deleteCategoria =  (name) =>{
   Swal.fire({
-    title: '¿Estás seguro que quieres borrar la categoria?',
+    title: `¿Estás seguro que quieres borrar la categoria ${name}?`,
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -88,14 +112,6 @@ const [ array , setArray] = useState([])
 
 const handleAdd = () =>{
 
-  let suma = 0
-
-  suma = Number(progress.value) + Number(progress.height_value) 
-
-  if(suma > 100){
-    return Swal.fire({title: 'el valor de categoria y su progreso no puede sobrepasar el 100%'})
-  }
-
   if(selectedCategory.name === ""){
     return Swal.fire({title: 'llene los campos para añadir categoria'})
   }
@@ -111,6 +127,10 @@ const handleAdd = () =>{
     }else{
       Swal.fire({title: 'categoria ya está añadida'})
     }
+    // setStateHeigthValues(stateHeigthValues + Number(progress.height_value));
+    // if(stateHeigthValues + progress.value > 100 ){
+    //     return  Swal.fire({title: 'no se puede crear'})
+    // }
     setArray([...array, selectedCategory])
   }
 
@@ -122,18 +142,15 @@ const handleAdd = () =>{
   const handleCreateCategoria  = (e) =>{
     let array = []
     e.preventDefault();
-
-    if(categoriachip == null){
+    if(categoriachip == null || categoriachip === ''){
       return Swal.fire({title: 'llene el campo para crear categoria'})
     }
-
-
     categories.map( (e) =>{
       array.push( e.name)
       Swal.fire({title: 'categoria creada'})
     })
     if(!array.includes(categoriachip)){
-      dispatch(createOneCategory(categoriachip))
+      dispatch(createOneCategory(categoriachip.trim().toLowerCase()))
       createOneCategory(categoriachip)
       dispatch(getAllCategories())
     }else{
@@ -146,6 +163,7 @@ const handleAdd = () =>{
   useEffect(() => {
     dispatch(getAllCategories())
     dispatch(getAllUsers())
+    dispatch(getAllWorks())
     setCreateWorkState('')
   }, [dispatch]);
 
@@ -155,9 +173,18 @@ const handleAdd = () =>{
     setCreateWorkState(state => ({...state, [name]: value}));
   }
 
+
+
+
   const createWork = async () => {
 
-    if(createWorkState){
+    if(arrayObras.includes(createWorkState.name)){
+      return Swal.fire({
+        title: `la obra ${createWorkState.name} ya existe`,
+      })
+    }
+    
+    if(createWorkState ){
       await dispatch(createOneWork({work: createWorkState, ships: ship, shipUsers: shipUsers}));
       Swal.fire({
         title: 'Obra creada!',
@@ -166,7 +193,7 @@ const handleAdd = () =>{
     }else{
       return Swal.fire({title: 'Llene los campos para crear una obra'})
     }
-
+    
   }
 
 
@@ -272,6 +299,8 @@ return (
                       </Select>
                       </FormControl>
                       <TextField  
+                        type='number'
+                        InputProps={{inputProps:{min:10, max:100, step:5}}}
                         onChange={handleChange}
                         value={progress.value}
                         label="% Avance"
@@ -286,6 +315,7 @@ return (
                         boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                         />
                       <TextField  
+                      type='number'
                       onChange={handleChange}
                       value={progress.height_value}
                       label="% Peso de la categoria"
@@ -296,9 +326,11 @@ return (
                                     fontSize:".8rem",
                                   }
                                 }} 
+                      InputProps={{inputProps:{min:10, max:100, step:5}}}
                       sx={{marginTop:'2rem',border:'none', 
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                       />
+                      
                       <Box sx={{marginTop:'2rem'}}>
                         <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
                       </Box>
