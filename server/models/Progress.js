@@ -7,7 +7,7 @@ const Progress = (conn) => conn.define('progress', {
         autoIncrement: true
     },
     value: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     height_value: {
