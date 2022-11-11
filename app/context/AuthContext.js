@@ -10,8 +10,12 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) =>{
     
-    const [ userInfo , setUserInfo] = useState();
+    const [ userInfo , setUserInfo] = useState(null);
     const [ loading , setLoading ] = useState(false);
+    const [ worksData, setWorksData ] = useState({
+        progresses: null,
+        news: null
+    })
 
     const login = ( email , password) =>{
         setLoading(true)
@@ -63,13 +67,22 @@ export const AuthProvider = ({children}) =>{
             ])
     }
 
+    const getDataWork = (id) =>{
+        axios.get('http://10.0.2.2:3000/work/' + id)
+        .then( (res) =>{
+            console.log(res.data.data, 'ESTO ES LA RESPUESTA DEL AXIOS')
+            // setWorksData(res.data.data)
+        })
+    }
     return (
         <AuthContext.Provider
          value={{
             userInfo,
             login,
             loading,
-            logout
+            logout,
+            getDataWork,
+            worksData
          }}
          >
          {children}

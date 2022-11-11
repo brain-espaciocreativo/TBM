@@ -6,22 +6,39 @@ import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
 import { AuthContext } from '../context/AuthContext';
+import { useDispatch , useSelector } from 'react-redux';
+import ListWorks from '../components/acordion/ListWorks';
 
 export default function HomeScreen() {
 
-  const { userInfo} = useContext(AuthContext);
-  const news = userInfo[2];
-  const progresses = userInfo[3];
+  // const dispatch = useDispatch()
+  // const works =  useSelector(state => state.users.works  )
+  const { userInfo, getDataWork} = useContext(AuthContext);
+  // const news = userInfo[2];
+  // const progresses = userInfo[3];
 
 
-  
+
+  // useEffect(() =>{
+  //   getDataWork()
+  //   setTimeout(() => {
+      
+  //   }, 30000);
+  // },[])
+
+  const getDataWorks = () =>{
+    getDataWork(userInfo[1][1].id)
+  }
+
+
 const  numColumns = 2
   return (
     <>
         <FlatList ListHeaderComponent={
           <SafeAreaView>
             <Profile />
-            {
+            <ListWorks/>
+            {/* {
               progresses && progresses.length > 0 ? 
               <Progreso progreso={progresses}/>
               :
@@ -65,7 +82,7 @@ const  numColumns = 2
           listKey={(news, index) => index.toString()}
           />: 
           <Text>no hay novedades</Text>
-          }
+          } */}
         </SafeAreaView>
         } 
         />

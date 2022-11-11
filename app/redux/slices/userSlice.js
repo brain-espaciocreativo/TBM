@@ -10,82 +10,30 @@ export const userSlice = createSlice({
         progresses: null
     },
     reducers: {
-        setUserList: (state, action) => {
-            state.list = action.payload;
-        },
-        getOneUser: (state, action) => {
-            state.user = action.payload;
-        },
-        createUser: (state, action) => {
-            state.list = action.payload;
-            // return {...state, list: [...state.list ,action.payload]}
-        },
-        updateUser: (state, action) => {
-            state
-        },
-        deleteUser : (state, action) => {
-            state
-        },
         user:(state, action) =>{
             return {
                 ...state,
                 user: action.payload[0],
-                works: action.payload[1],
-                news: action.payload[2],
-                progresses: action.payload[3]
+                works: action.payload[1]
         }
         },
         cleanUser:(state,action) =>{
             state.user = ''
+        },
+        getOneData:(state, action) =>{
+        //     return {
+        //         ...state,
+        //         progresses: action.payload[0],
+        //         news: action.payload[1]
+        // }
         }
     }
 });
 
-export const { setUserList, createUser, updateUser, deleteUser, user, cleanUser } = userSlice.actions;
+export const {user, cleanUser, getOneData } = userSlice.actions;
 
 export default userSlice.reducer;
 
-export const getAllUsers = () => {
-    return (dispatch) => {
-        axios('http://10.0.2.2:3000/user')
-        .then((res) => {
-            dispatch(setUserList(res.data.data));
-        })
-        .catch((error) => console.log(error))
-    }
-}
-
-export const createOneUser = (payload) => {
-    return async (dispatch) => {
-        await axios.post('http://10.0.2.2:3000/user', payload)
-        .then((res) => {
-            dispatch(createUser(payload))
-        })
-        .catch(error => console.log(error));
-    }
-}
-
-export const updateOneUser = (payload) => {
-    
-    return async (dispatch) => {
-        await axios.put('http://10.0.2.2:3000/user/'+payload.id, payload)
-        .then(res => {
-            dispatch(updateUser());
-        })
-        .catch((error) => console.log(error))
-    }
-}
-
-export const deleteOneUser = (payload) => {
-    
-    return async (dispatch) => {
-        await axios.delete('http://10.0.2.2:3000/user/'+payload)
-        .then(res => {
-            dispatch(deleteUser());
-        })
-        .catch((error) => console.log(error))
-    }
-}
 export const getOneUser = (payload) => {
     return async (dispatch) => {
         await axios.post('http://10.0.2.2:3000/auth/login', payload)
@@ -98,5 +46,14 @@ export const getOneUser = (payload) => {
 export const cleanOneUser = () =>{
     return  (dispatch) =>{
         dispatch(cleanUser());
+    }
+}
+
+export const getWorkData = (payload) =>{
+    return async (dispatch)=>{
+        await axios.get('http://10.0.2.2:3000/work/', payload)
+        .then( res =>{
+            dispatch(getOneData(res.data))
+        })
     }
 }
