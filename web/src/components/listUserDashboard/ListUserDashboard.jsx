@@ -150,9 +150,10 @@ export default function ListUserDashboard() {
       handleModalEdit()
     }
 
-    const deleteUser = (id) => {
+    const deleteUser = (data) => {
+      const { id , email } = data;
       Swal.fire({
-        title: 'Desea eliminar este usuario?',
+        title: `Desea eliminar este usuario ${email}?`,
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
       }).then((result) => {
@@ -435,7 +436,7 @@ export default function ListUserDashboard() {
                 <TableCell>{e.role}</TableCell>
                 <TableCell>
                   <Edit onClick={() =>handleModalEdit(e)}/>
-                  <Delete onClick={() =>deleteUser(e.id)} />
+                  <Delete onClick={() =>deleteUser({id:e.id, email: e.email})} />
                 </TableCell>
               </TableRow>
             )) : null} 

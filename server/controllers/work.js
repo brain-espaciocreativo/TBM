@@ -86,8 +86,8 @@ const createOneWork = async(req, res)=>{
                         name: `${e.category.name}`,
                         progressId: 1
                     })
-                res.status(201).send({status: "OK", data: workCreated })
                 })
+                res.status(201).send({status: "OK", data: workCreated })
 
 
         if(shipUsers){
