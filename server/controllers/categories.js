@@ -81,12 +81,14 @@ const deleteOneCategories = async(req, res)=>{
               },]
         })
 
+
         if(data.dataValues.progress){
         data.dataValues.progress.map( (e) => {
             Progress.destroy({
                 where: { id: e.id }
             })
         })
+     
         }
 
         const result = await Categories.destroy({
