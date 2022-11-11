@@ -98,7 +98,9 @@ const handleAdd = () =>{
   if(!array.includes(selectedCategory)){
     setShip(state => [...state, {category: selectedCategory, progress: progress }]);
   }else{
-    console.log('no se puede agregar');
+    Swal.fire({
+      title: `no se puede agregar`,
+    })
   }
   setArray([...array, selectedCategory])
 }
@@ -113,7 +115,9 @@ const handleCreateCategoria  = (e) =>{
     dispatch(createOneCategory(categoriachip))
     dispatch(getAllCategories())
   }else{
-    console.log('no se creo');
+    Swal.fire({
+      title: `no se puede agregar`,
+    })
     dispatch(getAllCategories())
   }
 }

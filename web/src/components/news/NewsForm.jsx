@@ -40,9 +40,14 @@ export default function NewsForm () {
 
     const handleSubmit = async(event) => {
         event.preventDefault()
+
+        if(!data.description || !data.name){
+          return Swal.fire({title: 'los campos deben estar llenos'})
+        }
+
+
         const formData = new FormData();
         formData.append("video", selectedFile);
-
 
         try {
           const response = await axios({
@@ -50,11 +55,17 @@ export default function NewsForm () {
             url: `http://localhost:3000/news?name=${data.name}&description=${data.description}&workId=${selectWork}`,
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
-          });
+          }).then((res) =>{
+            Swal.fire({title: 'novedad creada!'})
+          })
+          navigate('/admin')
         } catch(error) {
           console.log(error)
         }
       }
+      useEffect(()=>{
+          dispatch(getAllWorks);
+      },[dispatch]);
     
     const handleChange = (e) =>{
         const { name, value} = e.target;
