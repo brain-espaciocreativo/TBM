@@ -30,7 +30,7 @@ authSessionRouter.post('/login', async (req, res)=>{
 
     const user = data.get({ plain: true });
 
-    const works = user.works[0];
+    const works = user.works;
     delete user.works;
     const userData = user;
 

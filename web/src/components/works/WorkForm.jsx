@@ -113,7 +113,7 @@ const handleAdd = () =>{
 
   const handleCreateWork = (e) => {
     const { name, value} = e.target;
-    setCreateWorkState(state => ({...state, [name]: value}));
+    setCreateWorkState(state => ({...state, [name]: value.trim()}));
   }
 
   const createWork = async () => {

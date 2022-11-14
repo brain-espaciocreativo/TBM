@@ -175,11 +175,39 @@ const deleteOneWork = async(req, res)=>{
         throw Error(res.status(500).send({status:500, data:"no se elimino correctamente"}));
     }
 }
+const getOneByName = async(req, res)=>{
+    const { name } = req.params;
+    console.log(name)
+    try {
+        const data = await Works.findOne({
+            where:{
+                name: name
+            },
+                include: [{
+                  model: News
+                },
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories
+                    }
+                },{
+                    model:Users
+                }]
+            
+        });
+        console.log(data , 'ESTO ES LA DATA')
+        res.status(200).send({data: data });
 
+    } catch (error) {
+        throw Error(res.status(500).send({status:500, data:"no se encontró trabajos con ese nombre"}));
+    }
+}
 module.exports = {
     getAllWork,
     getOneWork,
     createOneWork,
     updateOneWork,
-    deleteOneWork
+    deleteOneWork,
+    getOneByName
 }

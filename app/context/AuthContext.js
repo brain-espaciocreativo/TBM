@@ -70,8 +70,13 @@ export const AuthProvider = ({children}) =>{
     const getDataWork = (id) =>{
         axios.get('http://10.0.2.2:3000/work/' + id)
         .then( (res) =>{
-            console.log(res.data.data, 'ESTO ES LA RESPUESTA DEL AXIOS')
-            // setWorksData(res.data.data)
+            setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
+        })
+    }
+    const getDataWorkByName = (name) =>{
+        axios.get('http://10.0.2.2:3000/work/name/' + name)
+        .then( (res) =>{
+            setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })
     }
     return (
@@ -82,7 +87,8 @@ export const AuthProvider = ({children}) =>{
             loading,
             logout,
             getDataWork,
-            worksData
+            worksData,
+            getDataWorkByName
          }}
          >
          {children}
