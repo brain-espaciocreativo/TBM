@@ -180,7 +180,7 @@ const reset = async (req, res, next) => {
 const updatePass = async (req, res, next) => {
 
     const { token } = req.params;
-    console.log(req.body, req.params);
+    
     if (req.body.password === "") {
         throw new BusinessError('Contrasena incorrect', 403);
     }
@@ -303,7 +303,7 @@ const createDataBase = async (req, res) => {
 const getUserData = async (req, res) => {
     const { email } = req.body;
     try {
-        if(email){
+        if(!email){
             throw new BusinessError("Es necesario el email", 401);
         }
         const user = await Users.findOne({
