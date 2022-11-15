@@ -12,6 +12,8 @@ const getAllWork = async(req, res)=>{
                   include: {
                     model: Categories
                 }
+                },{
+                    model: Users
                 }]
         });
         res.status(201).send({status: "OK", data});
@@ -34,6 +36,8 @@ const getOneWork = async(req, res)=>{
                     include: {
                         model: Categories
                     }
+                },{
+                    model:Users
                 }]
             
         });
@@ -43,21 +47,22 @@ const getOneWork = async(req, res)=>{
     }
 }
 const createOneWork = async(req, res)=>{
-    const { work, ships } = req.body;
+    const { work, ships, shipUsers } = req.body;
+
     try {
         if(!work.name || !work.description ) res.status(402).send({status:402, data: "Datos obligatorios"});
+
         if(ships){
+            let workCreated = null;
             if(work.userId) {
                 const data = await Works.create({
                     name: work.name,
                     description: work.description,
                     userId: work.userId
-                },{
-                    include: Users
                 });
                 res.status(201).send({status: "OK", data: data });
             }else{
-                const workCreated = await Works.create({
+                workCreated = await Works.create({
                     name: work.name,
                     description: work.description
                 });
@@ -68,7 +73,8 @@ const createOneWork = async(req, res)=>{
                     where:{
                         name: e.category
                     }
-                })
+                    })
+                    
                     const createdProgress = Progress.create({
                         value: `${e.progress.value}`,
                         height_value: `${e.progress.height_value}`,
@@ -80,8 +86,22 @@ const createOneWork = async(req, res)=>{
                         name: `${e.category.name}`,
                         progressId: 1
                     })
-                res.status(201).send({status: "OK", data: workCreated })
                 })
+                res.status(201).send({status: "OK", data: workCreated })
+
+
+        if(shipUsers){
+            const usersData = await shipUsers.map( async (e) =>{
+                    const data = await Users.findOne({
+                    where:{
+                        email: e.email
+                    }
+                })
+                workCreated.addUsers(data)
+            })
+            // res.status(201).send({status: "OK", data: data });
+        }
+
         }
     }      
     }catch (error) {
@@ -148,8 +168,9 @@ try {
 const deleteOneWork = async(req, res)=>{
     const { id } = req.params;
     try {
+        const data = await Works.findOne({ where: { id: id }})
         await Works.destroy({ where: { id: id }});
-        res.status(204).send("Se elimino correctamente");
+        res.status(200).send({status: 200, data: data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se elimino correctamente"}));
     }

@@ -2,19 +2,32 @@ import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Sta
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from "sweetalert2";
-import { createOneWork} from "../../redux/slices/workSlice"
+import { createOneWork, getAllWorks} from "../../redux/slices/workSlice"
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { useNavigate } from "react-router-dom";
 import { createOneCategory, deleteOneCategory, getAllCategories,  } from "../../redux/slices/categoriesSlice";
+import { getAllUsers } from "../../redux/slices/userSlice";
 
 export default function WorkForm () {
 
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
   const user = useSelector(state => state.users.list);
+  const work = useSelector(state => state.works.workList);
 
   const navigate = useNavigate();
+  
+  const [ arrayObras , setArrayObras ] = useState([])
+  const [ number, setNumbre ] = useState(0)
+  
+  if(work && number < 1 ){
+    work.map( (e) =>{
+      setArrayObras(state => [...state,e.name]);
+    })
+    setNumbre( number + 1 )
+  }
+
 
   const [ createWorkState, setCreateWorkState ] = useState({
     name: "" ,
@@ -26,10 +39,7 @@ export default function WorkForm () {
     name: ""
   })
 
-  const [ selectUser, setSelectUser ] = useState({
-    id: "",
-    name:""
-  })
+  const [ selectUser, setSelectUser ] = useState("")
 
   const [ categoriachip, setCategoriaChip] = useState(null)
 
@@ -38,9 +48,25 @@ export default function WorkForm () {
     height_value: ""
   });
   const [ ship, setShip] = useState([]);
+
+  const [ shipUsers , setShipUsers] = useState([])
+
+
   const [ categoriaUnica , setCategoriaUnica] = useState({
     name:"name"
   })
+
+  const [ stateHeigthValues, setStateHeigthValues ] = useState(0)
+
+  // const [ number, setNumbre ] = useState(0)
+
+  // if(work && number < 1 ){
+  //     work.progresses.map((e) =>{
+  //       setStateHeigthValues(stateHeigthValues + e.height_value);
+  //     })
+  //     setNumbre( number + 1 )
+  //     console.log(stateHeigthValues)
+  // }
   
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
@@ -53,7 +79,21 @@ export default function WorkForm () {
   }
 
 const deleteCategoria =  (name) =>{
-  dispatch(deleteOneCategory(name))
+  Swal.fire({
+    title: `¿Estás seguro que quieres borrar la categoria ${name}?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'si!'
+  }).then((borrado) => {
+    if (borrado.isConfirmed) {
+      dispatch(deleteOneCategory(name))
+      Swal.fire(
+        'categoria borrada!'
+      )
+    }
+  })
 } 
 
   const handleCategoriaChip = (e) =>{
@@ -72,11 +112,25 @@ const [ array , setArray] = useState([])
 
 const handleAdd = () =>{
 
+  if(selectedCategory.name === ""){
+    return Swal.fire({title: 'llene los campos para añadir categoria'})
+  }
+
+  if(progress.value === "" ){
+    return Swal.fire({title: 'llene el avance de la categoria'})
+  }else if(progress.height_value === ""){
+    return Swal.fire({title: 'llene el peso de la categoria'})
+  }
+
     if(!array.includes(selectedCategory)){
       setShip(state => [...state, {category: selectedCategory, progress: progress }]);
     }else{
-      console.log('no se puede agregar');
+      Swal.fire({title: 'categoria ya está añadida'})
     }
+    // setStateHeigthValues(stateHeigthValues + Number(progress.height_value));
+    // if(stateHeigthValues + progress.value > 100 ){
+    //     return  Swal.fire({title: 'no se puede crear'})
+    // }
     setArray([...array, selectedCategory])
   }
 
@@ -88,15 +142,19 @@ const handleAdd = () =>{
   const handleCreateCategoria  = (e) =>{
     let array = []
     e.preventDefault();
+    if(categoriachip == null || categoriachip === ''){
+      return Swal.fire({title: 'llene el campo para crear categoria'})
+    }
     categories.map( (e) =>{
       array.push( e.name)
+      Swal.fire({title: 'categoria creada'})
     })
     if(!array.includes(categoriachip)){
-      dispatch(createOneCategory(categoriachip))
+      dispatch(createOneCategory(categoriachip.trim().toLowerCase()))
       createOneCategory(categoriachip)
       dispatch(getAllCategories())
     }else{
-      console.log('no se creo');
+      Swal.fire({title: 'categoria ya existente'})
       dispatch(getAllCategories())
     }
     dispatch(getAllCategories())
@@ -104,6 +162,8 @@ const handleAdd = () =>{
 
   useEffect(() => {
     dispatch(getAllCategories())
+    dispatch(getAllUsers())
+    dispatch(getAllWorks())
     setCreateWorkState('')
   }, [dispatch]);
 
@@ -113,13 +173,39 @@ const handleAdd = () =>{
     setCreateWorkState(state => ({...state, [name]: value}));
   }
 
+
+
+
   const createWork = async () => {
-    await dispatch(createOneWork({work: createWorkState, ships: ship}));
-    Swal.fire({
-      title: 'Obra creada!',
-    })
-    navigate('/work');
+
+    if(arrayObras.includes(createWorkState.name)){
+      return Swal.fire({
+        title: `la obra ${createWorkState.name} ya existe`,
+      })
+    }
+    
+    if(createWorkState ){
+      await dispatch(createOneWork({work: createWorkState, ships: ship, shipUsers: shipUsers}));
+      Swal.fire({
+        title: 'Obra creada!',
+      })
+      navigate('/work');
+    }else{
+      return Swal.fire({title: 'Llene los campos para crear una obra'})
+    }
+    
   }
+
+
+  const handleAddChipUser = () =>{
+    setShipUsers(state => [...state, { email: selectUser}]);
+    console.log(shipUsers)
+  }
+  
+  const handleChipDeleteUser = (chipToDelete) =>{
+    setShipUsers((chips) => chips.filter((chip) => chip.email != chipToDelete))
+  }
+
 
   const theme = useTheme();
 
@@ -186,6 +272,9 @@ return (
                       />
                         <Button sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={handleCreateCategoria}>crear categoria</Button>
                     </Box>
+                    <Typography sx={{marginTop: '1.2rem'}}>
+                        asignar categoria...
+                      </Typography>
 
                     <Box sx={{width: '100%',display: 'flex', flexDirection: 'row', gap: '1rem', justifyContent:'center', alignItems:'center'}}>
                     
@@ -210,6 +299,8 @@ return (
                       </Select>
                       </FormControl>
                       <TextField  
+                        type='number'
+                        InputProps={{inputProps:{min:10, max:100, step:5}}}
                         onChange={handleChange}
                         value={progress.value}
                         label="% Avance"
@@ -224,6 +315,7 @@ return (
                         boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                         />
                       <TextField  
+                      type='number'
                       onChange={handleChange}
                       value={progress.height_value}
                       label="% Peso de la categoria"
@@ -234,9 +326,11 @@ return (
                                     fontSize:".8rem",
                                   }
                                 }} 
+                      InputProps={{inputProps:{min:10, max:100, step:5}}}
                       sx={{marginTop:'2rem',border:'none', 
                       boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
                       />
+                      
                       <Box sx={{marginTop:'2rem'}}>
                         <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
                       </Box>
@@ -263,11 +357,19 @@ return (
                       {
                         user && user.length ? 
                           user.map((e ,i )=>{
-                            return <MenuItem key= {i} value={e.name}>{e.name}</MenuItem>
+                            return <MenuItem key= {i} value={e.email}>{e.email}</MenuItem>
                           }) : <MenuItem value='No hay usuarios'>No hay Usuarios</MenuItem>
                       }
                       </Select>
+                      <Button onClick={handleAddChipUser}>Agregar usuario</Button>
                       </FormControl>
+
+                      <Stack direction="row" spacing={1}>
+                      { shipUsers && shipUsers.length > 0 ? shipUsers.map( (e, i) =>(
+                        <Chip key={i} label={` ${e.email}`} onDelete={ () => handleChipDeleteUser(`${e.email}`)}/>
+                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Usuarios</Typography>}
+                    </Stack>
+
                     <Grid  item xs={2}>
                       <Button 
                         sx={{

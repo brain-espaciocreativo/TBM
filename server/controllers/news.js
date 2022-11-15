@@ -8,9 +8,6 @@ const getAllNews = async(req, res)=>{
                 model: Progress
               }
             });
-
-
-            console.log(data)
             
             const hostUrl = req.protocol + '://' + req.get('host');
 
@@ -19,10 +16,7 @@ const getAllNews = async(req, res)=>{
             return n;
         } )
 
-        
-
-        // console.log(result.get({plain: true}));
-        // console.log(result)
+    
 
         res.status(201).send({status: "OK", result});
     } catch (error) {
@@ -106,8 +100,9 @@ const deleteOneNews = async(req, res)=>{
     const { id } = req.params;
     try {
         if(!id) throw Error(res.status(402).send("Seleccione un ID"));
+        const data = await News.findOne({ where: {id: id}})
         await News.destroy({ where: { id: id }});
-        res.status(204).send("Se elimino correctamente");
+        res.status(200).send({status: 200, data: data});
     } catch (error) {
         throw Error(res.status(500).send({status:500, data:"no se elimino nunguna novedad"}));
     }

@@ -14,6 +14,7 @@ export default function WorkItem() {
     const dispatch = useDispatch();
     const works = useSelector(state => state.works.workList);
 
+
     useEffect(() => {
         dispatch(getAllWorks());
     }, [dispatch])
@@ -64,11 +65,20 @@ export default function WorkItem() {
                         <Typography variant="body2">
                         {e.description}
                         </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">Categorias</Typography>
                         {
                           e.progresses.map((element, i)=>{
                             return <Chip key={i} label={`${element.category.name} ${element.value}% ${element.height_value}%`}/>
                           })
                         }
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">Usuarios</Typography>
+
+                        {
+                          e.users.map( (e, i) =>{
+                            return <Chip key={i} label={`${e.email}`} />
+                          })
+                        }
+
                       </CardContent>
                       <CardActions>
                         <Edit sx={{cursor:'pointer', margin:'0 10px'}}  onClick={() => navigate('/work/edit/'+ e.id)}/>

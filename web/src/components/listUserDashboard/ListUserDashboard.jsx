@@ -38,44 +38,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '1px 4px 17px -10px #000000'
   }
 }));
- const initialForm ={
-   name:'',
-   surname:'',
-   email:'',
-   password:'',
-   phone:'',
-   role:''
- }
-// const validationsForm = (user) =>{
-
-//    let errors = {};
-//    let regexEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-//    let regexphone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-
-  
-//    if(!user.email.trim()){
-//       errors.email = "Campo  requerido*"
-//    }else if(!regexEmail.test(user.email.trim())){
-//      errors.email="formato inválido";
-//    }
-//   if(!user.phone.trim()){
-//     errors.phone = "Campo  requerido*"
-//   }else if(!regexphone.test(user.phone.trim())){
-//     errors.phone="formato inválido";
-//   }
-  
-  
-//    if(!user.name.trim()){ errors.name = "Campo es requerido*"}
-//    if(!user.surname.trim()){ errors.surname = "Campo  requerido*"}
-//     if(!user.password.trim()){ errors.password = "Campo  requerido*"}
-//     if(!user.role.trim()){ errors.role = "Campo  requerido*"}
-
-//    return errors;
-//  }
 
 export default function ListUserDashboard() {
 
-  const {} = useForm(initialForm)
 
   const styles= useStyles();
   const [ modal, setModal ] = useState(false);
@@ -100,6 +65,20 @@ export default function ListUserDashboard() {
   const dispatch = useDispatch();
 
   const users = useSelector(state => state.users.list);
+
+  // console.log(users)
+
+  const [ usersList , setUsersList]  = useState([])
+  const [ count, setCount ] = useState(0)
+
+  if(users && count < 1){
+    users.map( (e) =>{
+      setUsersList(state => [...state,e.email])
+    })
+    setCount(count +1)
+    console.log(usersList)
+  }
+
 
     useEffect(()=>{
         dispatch(getAllUsers());
@@ -133,13 +112,36 @@ export default function ListUserDashboard() {
     }
 
     const createUser = async () => {
-      await dispatch(createOneUser(createUserState));
-      await dispatch(getAllUsers());
+      if(usersList.includes(createUserState.email)){
+        Swal.fire({
+          title: 'usuario con email ya registrado!',
+        })
+        handleModalCreate()
+      }else{
+       dispatch(createOneUser(createUserState));
+       dispatch(getAllUsers());
       Swal.fire({
         title: 'Usuario creado!',
       })
       handleModalCreate()
       setCreateUserState('')
+
+
+      if(!createUserState.name || !createUserState.surname || !createUserState.email || !createUserState.password || !createUserState.role || !createUserState.phone){
+        return (
+          Swal.fire({title: 'Llene los campos para crear un usuario'}),
+          handleModalCreate()
+        )
+      }else{
+        await dispatch(createOneUser(createUserState));
+        await dispatch(getAllUsers());
+        Swal.fire({
+          title: 'Usuario creado!',
+        })
+        setCreateUserState('')
+        handleModalCreate()
+      }
+    }
     }
 
     const editUser = () => {
@@ -150,9 +152,10 @@ export default function ListUserDashboard() {
       handleModalEdit()
     }
 
-    const deleteUser = (id) => {
+    const deleteUser = (data) => {
+      const { id , email } = data;
       Swal.fire({
-        title: 'Desea eliminar este usuario?',
+        title: `Desea eliminar este usuario ${email}?`,
         showCancelButton: true,
         confirmButtonText: 'Aceptar',
       }).then((result) => {
@@ -435,7 +438,7 @@ export default function ListUserDashboard() {
                 <TableCell>{e.role}</TableCell>
                 <TableCell>
                   <Edit onClick={() =>handleModalEdit(e)}/>
-                  <Delete onClick={() =>deleteUser(e.id)} />
+                  <Delete onClick={() =>deleteUser({id:e.id, email: e.email})} />
                 </TableCell>
               </TableRow>
             )) : null} 

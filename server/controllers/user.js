@@ -94,8 +94,9 @@ const updateOneUser =  async(req, res)=>{
 const deleteOneUser = async(req, res)=>{
     const { id } = req.params;
     try {
+        const data = await Users.findOne({ where: { id: id }})
         await Users.destroy({ where: { id: id }});
-        res.status(204).send("Se elimino correctamente");
+        res.status(200).send({status: 200, data: data});
     } catch (error) {
         throw Error(res.status(500).send({status: 500, data: "No se eliminó correctamente"}));
     }

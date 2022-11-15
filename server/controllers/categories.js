@@ -68,7 +68,7 @@ const updateOneCategories = async(req, res)=>{
 }
 const deleteOneCategories = async(req, res)=>{
     const { id } = req.params;
-    console.log(req.params);
+    
     try {
         if(!id) throw Error(res.status(402).send("Seleccione un ID"));
 
@@ -81,28 +81,23 @@ const deleteOneCategories = async(req, res)=>{
               },]
         })
 
-        
 
-     const result =  data.get({ plain: true })
-
-  
-
-     const result2 = [result.progress]
-     console.log(result2, 'soy el resuyltado2')
-
-
-     result2.map( (e) => {
-        Progress.destroy({
-            where: { id: e.id }
+        if(data.dataValues.progress){
+        data.dataValues.progress.map( (e) => {
+            Progress.destroy({
+                where: { id: e.id }
+            })
         })
-     })
+     
+        }
 
-    
-
-        await Categories.destroy({
+        const result = await Categories.destroy({
              where: { name: id }
             });
-        res.status(204).send("Se elimino correctamente");
+
+        console.log('esto es result',result);
+
+        res.status(200).send({status: 200, data: id});
 
     } catch (error) {
             console.log(error)

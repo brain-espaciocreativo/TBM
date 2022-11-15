@@ -28,36 +28,67 @@ const uploads = multer({
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
 router.post('/', uploads.single('video') , async (req, res) =>{
-    const { name, description, video, workId} = req.query;
-    console.log('Esto es workId',workId);
 
+    const { name, description, workId} = req.query;
+    
+    console.log(req.file, 'este es el file' )
+    console.log(workId, 'este es el workid' )
     try {
 
-        if( !name || !description ) res.status(402).send({status:402, data: "Datos obligatorios"});
+        if( !name || !description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
 
-        if(req.file === null) res.status(402).send({status:402, data: "No existe archivo para subir"})
+        if(!req.file){
+            console.log('entro sin archivo')
 
-        if(workId && workId !== ''){
-            const dataWork = await Works.findOne({
-                where: {
-                    name: workId
-                }
-            })
- 
-            const data = await News.create({
-                name,
-                description,
-                video: `videos?video=${req.file.filename}`, 
-                workId: dataWork.id
-            });
-            res.status(201).send({status: "OK", data: data });
-        }else{
-            const data = await News.create({
-                name,
-                description,
-                video : `videos?video=${req.file.filename}`
-            });
-            res.status(201).send({status: "OK", data: data });
+            if(workId && workId !== ''){
+
+                const dataWork = await Works.findOne({
+                    where: {
+                        name: workId
+                    }
+                })
+     
+                const data = await News.create({
+                    name,
+                    description,
+                    workId: dataWork.id
+                });
+                res.status(201).send({status: "OK", data: data });
+            }
+            if(!workId && workId === ''){
+                const data = await News.create({
+                    name,
+                    description
+                });
+                res.status(201).send({status: "OK", data: data });
+            }
+        }
+
+        if(req.file){
+            console.log('entro con archivo')
+            if(workId && workId !== ''){
+                const dataWork = await Works.findOne({
+                    where: {
+                        name: workId
+                    }
+                })
+     
+                const data = await News.create({
+                    name,
+                    description,
+                    video: `videos?video=${req.file.filename}`, 
+                    workId: dataWork.id
+                });
+                res.status(201).send({status: "OK", data: data });
+            }
+            if(!workId && workId === ''){
+                const data = await News.create({
+                    name,
+                    description,
+                    video : `videos?video=${req.file.filename}`
+                });
+                res.status(201).send({status: "OK", data: data });
+            }
         }
         
     } catch (error) {
