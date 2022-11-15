@@ -4,7 +4,8 @@ const newsControllers = require('../controllers/news')
 const multer = require('multer')
 const fs = require('fs');
 const path = require('path')
-const {News, Works} = require('../models/index'); 
+const {News, Works} = require('../models/index');
+const errorHandling = require('../utils/errorHandling');
 
 
 const diskStorage =  multer.diskStorage({

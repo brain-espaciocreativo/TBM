@@ -1,27 +1,28 @@
-const {Router} = require('express');
+const { Router } = require('express');
+const BusinessError = require('../utils/BusinessError');
 // import { Router } from 'express';
 // import server from '../config/config';
 
-const authRouter =  Router();
+const authRouter = Router();
 const DDBB = require('./DDBB');
 
 // endpoint public (No autenticado y no autorizado)
 
-authRouter.get('/public', (req, res)=>{
+authRouter.get('/public', (req, res) => {
     res.send("publico");
 });
 
 // endoint autenticado
 
-authRouter.post('/authenticated', (req, res)=>{
-    const {email, password} = req.body;
+authRouter.post('/authenticated', (req, res, next) => {
+    const { email, password } = req.body;
 
-    if(!email || !password) return res.sendStatus(400);
+    if (!email || !password) next(new BusinessError('Falta informacion del email o usaurio', 400));
 
-    const user = DDBB.find(e=> e.email === email);
-    if(!user) return res.sendStatus(401);
+    const user = DDBB.find(e => e.email === email);
+    if (!user) next(new BusinessError('Usuario no encontrado', 404));
 
-    if(user.password !== password) return res.sendStatus(401);
+    if (user.password !== password) next(new BusinessError('La contraña incorrecta', 400));
 
     res.send(`Usuario ${user.name} autenticado`);
 
@@ -29,17 +30,17 @@ authRouter.post('/authenticated', (req, res)=>{
 
 // endpoint autorizado para administradores
 
-authRouter.post('/authorized', (req, res)=>{
-    const {email, password} = req.body;
-    
-    if(!email || !password) return res.sendStatus(400);
+authRouter.post('/authorized', (req, res, next) => {
+    const { email, password } = req.body;
 
-    const user = DDBB.find(e=> e.email === email);
-    if(!user) return res.sendStatus(401).send('El usuario no existe');
+    if (!email || !password) next(new BusinessError('Falta informacion del email o usaurio', 400));
 
-    if(user.password !== password) return res.sendStatus(401).send('Contraseña incorrecta');
+    const user = DDBB.find(e => e.email === email);
+    if (!user) next(new BusinessError('Usuario no encontrado', 404));
 
-    if(user.role !== 'admin') return res.sendStatus(403);
+    if (user.password !== password) next(new BusinessError('La contraña incorrecta', 400));
+
+    if (user.role !== 'admin') next(new BusinessError('Usario no encotrado', 403));;
 
     res.send(`Usuario administrador ${user.name}`);
 
