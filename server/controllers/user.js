@@ -25,7 +25,7 @@ const getOneUser = async (req, res, next) => {
     const { id } = req.params;
     try {
         if (!id) {
-            throw new BusinessError('Usuario no encontrado!', 404);
+            throw new BusinessError('Datos obligatorios', 401);
         }
         const data = await Users.findByPk(id);
 
@@ -180,7 +180,7 @@ const reset = async (req, res, next) => {
 const updatePass = async (req, res, next) => {
 
     const { token } = req.params;
-    
+
     if (req.body.password === "") {
         throw new BusinessError('Contrasena incorrect', 403);
     }
