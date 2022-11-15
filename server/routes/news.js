@@ -4,8 +4,13 @@ const newsControllers = require('../controllers/news')
 const multer = require('multer')
 const fs = require('fs');
 const path = require('path')
+const axios = require('axios')
 const {News, Works} = require('../models/index'); 
 
+router.get('/', newsControllers.getAllNews);
+router.get('/:id', newsControllers.getOneNews);
+router.put('/:id', newsControllers.updateOneNews);
+router.delete("/:id", newsControllers.deleteOneNews);
 
 const diskStorage =  multer.diskStorage({
     
@@ -23,22 +28,15 @@ const diskStorage =  multer.diskStorage({
 const uploads = multer({ 
     storage: diskStorage
 })
-
-
-router.get('/', newsControllers.getAllNews);
-router.get('/:id', newsControllers.getOneNews);
 router.post('/', uploads.single('video') , async (req, res) =>{
 
     const { name, description, workId} = req.query;
     
-    console.log(req.file, 'este es el file' )
-    console.log(workId, 'este es el workid' )
     try {
 
         if( !name || !description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
 
         if(!req.file){
-            console.log('entro sin archivo')
 
             if(workId && workId !== ''){
 
@@ -65,7 +63,7 @@ router.post('/', uploads.single('video') , async (req, res) =>{
         }
 
         if(req.file){
-            console.log('entro con archivo')
+
             if(workId && workId !== ''){
                 const dataWork = await Works.findOne({
                     where: {
@@ -95,9 +93,5 @@ router.post('/', uploads.single('video') , async (req, res) =>{
         console.log(error)
     }
 });
-
-router.put('/:id', newsControllers.updateOneNews);
-router.delete("/:id", newsControllers.deleteOneNews);
-
 
 module.exports = router;
