@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Searchbar } from 'react-native-paper';
 import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
 import Cards from '../components/card/Cards';
@@ -6,33 +6,52 @@ import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
 import { AuthContext } from '../context/AuthContext';
+import { useDispatch , useSelector } from 'react-redux';
+import ListWorks from '../components/acordion/ListWorks';
 
 export default function HomeScreen() {
 
-  const { userInfo} = useContext(AuthContext);
-  const news = userInfo[2];
-  const progresses = userInfo[3];
+  const { userInfo, getDataWork, worksData} = useContext(AuthContext);
 
 
-  
+
+  const cargarApp = () =>{
+    if(userInfo[1] && userInfo.length){
+      getDataWork(userInfo[1][0].id)
+    }
+  }
+
+  useEffect(() =>{
+    cargarApp()
+    // setTimeout(() => {
+ 
+    // }, 30000);
+  },[])
+
+  const getDataWorks = () =>{
+    getDataWork(userInfo[1][1].id)
+  }
+
+
 const  numColumns = 2
   return (
     <>
         <FlatList ListHeaderComponent={
           <SafeAreaView>
             <Profile />
+            <ListWorks/>
             {
-              progresses && progresses.length > 0 ? 
-              <Progreso progreso={progresses}/>
+              worksData.progresses && worksData.progresses.length > 0 ? 
+              <Progreso progreso={worksData.progresses}/>
               :
               <Text>no hay progreso de obra general</Text>
             }
             {
-              progresses && progresses.length > 0 ? 
+              worksData.progresses && worksData.progresses.length > 0 ? 
               <View >
                 <FlatList 
                 numColumns={numColumns}
-                data={progresses}
+                data={worksData.progresses}
                 renderItem={(item) =>{
                   return <ProgresItem items={item}/>
                 }}
@@ -43,7 +62,7 @@ const  numColumns = 2
               <Text>No hay obras asociadas</Text>
           }
           {
-            news && news.length > 0 ? 
+            worksData.news && worksData.news.length > 0 ? 
             <>
             <Text style={style.novedades}>Novedades</Text>
             <Searchbar
@@ -56,9 +75,9 @@ const  numColumns = 2
             <Text>no hay novedades para buscar</Text>
           }
           {
-            news && news.length > 0 ? 
+            worksData.news && worksData.news.length > 0 ? 
           <FlatList 
-          data={news}
+          data={worksData.news}
           renderItem={({item}) =>{
             return <Cards info={item}/>;
           }}

@@ -19,16 +19,7 @@ authSessionRouter.post('/login', async (req, res)=>{
             email:email
         },
         include: {
-            model: Works,
-            include: [{
-              model: News
-            },
-            {
-                model: Progress,
-                include: {
-                    model: Categories
-                }
-            }]
+            model: Works
         }
     })
 
@@ -39,13 +30,7 @@ authSessionRouter.post('/login', async (req, res)=>{
 
     const user = data.get({ plain: true });
 
-    console.log(user);
-
-    const progress = user.works[0]?.progresses || [];
-    delete user.works[0]?.progresses
-    const news = user.works[0]?.news || [];
-    delete user.works[0]?.news
-    const works = user.works[0] || [];
+    const works = user.works;
     delete user.works;
     const userData = user;
 
@@ -53,8 +38,6 @@ authSessionRouter.post('/login', async (req, res)=>{
 
         result.push(userData);
         result.push(works);
-        result.push(news);
-        result.push(progress);
 
     res.status(201).send({data:`Usuario ${user} autenticado`, data: result});
 });
