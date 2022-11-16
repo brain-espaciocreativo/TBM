@@ -8,6 +8,10 @@ const {News, Works} = require('../models/index');
 const errorHandling = require('../utils/errorHandling');
 const BusinessError = require('../utils/BusinessError');
 
+router.get('/', newsControllers.getAllNews);
+router.get('/:id', newsControllers.getOneNews);
+router.put('/:id', newsControllers.updateOneNews);
+router.delete("/:id", newsControllers.deleteOneNews);
 
 const diskStorage =  multer.diskStorage({
     
@@ -27,9 +31,11 @@ const uploads = multer({
 })
 
 
+
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
 router.post('/', uploads.single('video') , async (req, res, next) =>{
+
 
     const { name, description, workId} = req.query;
     
@@ -91,9 +97,5 @@ router.post('/', uploads.single('video') , async (req, res, next) =>{
         next(error)
     }
 });
-
-router.put('/:id', newsControllers.updateOneNews);
-router.delete("/:id", newsControllers.deleteOneNews);
-
 
 module.exports = router;
