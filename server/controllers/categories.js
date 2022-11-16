@@ -1,37 +1,38 @@
 const {Categories, Progress} = require('../models');
+const BusinessError = require('../utils/BusinessError');
 
-const getAllCategories = async(req, res)=>{
+const getAllCategories = async(req, res, next)=>{
     try {
         const data = await Categories.findAll();
         res.status(201).send({status: "OK", data});
     } catch (error) {
-        throw Error(res.status(500).send({status: 500, data: "No se encontró ninguna categoria"}));
+        next(error)
     }
 }
-const getOneCategories = async(req, res)=>{
+const getOneCategories = async(req, res,next)=>{
     const { id } = req.params;
     try {
+        if (!id) {
+            throw new BusinessError('Datos obligatorios', 401);
+        }
         const data = await Categories.findByPk(id);
         res.status(201).send({data: data });
     } catch (error) {
-        throw Error(res.status(500).send({status: 500, data:"no se encontró ninguna categoria con ese ID"}));
+        next(error)
     }
 }
-const createOneCategories = async (req, res) => {
+const createOneCategories = async (req, res, next) => {
     const { name, progressId } = req.body; 
 
-    console.log(req.body)
-
     try {
-        if(!name ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(!name ) throw new BusinessError('Datos obligatorios', 401);
         const categoriaData = await Categories.findOne({
             where:{
                 name: name
             }
         })
-        console.log(categoriaData);
         if(categoriaData && categoriaData.datavalues.name === name){
-            throw Error(res.status(402).send({status:402, data:"la categoria ya existe"}))
+            throw new BusinessError('la categoria ya existe', 402);
         }
         if(progressId){
             const data = await Categories.create({
@@ -46,15 +47,14 @@ const createOneCategories = async (req, res) => {
         }
         
     } catch (error) {
-        
-        throw Error(res.status(500).send({status: 500, data:"No se creo categoria"}));
+        next(error)
     }
 }
-const updateOneCategories = async(req, res)=>{
+const updateOneCategories = async(req, res, next)=>{
     const { id } = req.params;
     const {name} = req.body;
     try {
-        if(!name ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(!name ) throw new BusinessError('Datos obligatorios', 401);
         const data = await Categories.update({
             name: name
         }, {
@@ -63,14 +63,13 @@ const updateOneCategories = async(req, res)=>{
         }});
         res.status(201).send({status: "OK", data });
     } catch (error) {
-        throw Error(res.status(500).send("No se actualizó ninguna categoria"));
+        next(error)
     }
 }
-const deleteOneCategories = async(req, res)=>{
+const deleteOneCategories = async(req, res, next)=>{
     const { id } = req.params;
-    
     try {
-        if(!id) throw Error(res.status(402).send("Seleccione un ID"));
+        if(!id) throw new BusinessError('seleccione un id', 401);
 
         const data = await Categories.findOne({
             where: {
@@ -80,27 +79,21 @@ const deleteOneCategories = async(req, res)=>{
                 model: Progress
               },]
         })
-
-
         if(data.dataValues.progress){
         data.dataValues.progress.map( (e) => {
             Progress.destroy({
                 where: { id: e.id }
             })
         })
-     
         }
 
         const result = await Categories.destroy({
              where: { name: id }
             });
-
-        console.log('esto es result',result);
-
         res.status(200).send({status: 200, data: id});
 
     } catch (error) {
-            console.log(error)
+        next(error)
     }
 }
 

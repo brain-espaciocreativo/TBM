@@ -1,6 +1,7 @@
 const {Works, News, Progress, Categories, Users} =  require('../models');
+const BusinessError = require('../utils/BusinessError');
 
-const getAllWork = async(req, res)=>{
+const getAllWork = async(req, res, next)=>{
     try {
         const data = await Works.findAll({
             include: [
@@ -18,12 +19,15 @@ const getAllWork = async(req, res)=>{
         });
         res.status(201).send({status: "OK", data});
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró trabajos"}));
+        next(error)
     }
 }
-const getOneWork = async(req, res)=>{
+const getOneWork = async(req, res, next)=>{
     const { id } = req.params;
     try {
+        if (!id) {
+            throw new BusinessError('Datos obligatorios', 401);
+        }
         const data = await Works.findOne({
             where:{
                 id: id
@@ -43,14 +47,14 @@ const getOneWork = async(req, res)=>{
         });
         res.status(201).send({data: data });
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró trabajos con ese ID"}));
+        next(error)
     }
 }
-const createOneWork = async(req, res)=>{
+const createOneWork = async(req, res, next)=>{
     const { work, ships, shipUsers } = req.body;
 
     try {
-        if(!work.name || !work.description ) res.status(402).send({status:402, data: "Datos obligatorios"});
+        if(!work.name || !work.description ) throw new BusinessError('Datos obligatorios', 401);
 
         if(ships){
             let workCreated = null;
@@ -99,17 +103,14 @@ const createOneWork = async(req, res)=>{
                 })
                 workCreated.addUsers(data)
             })
-            // res.status(201).send({status: "OK", data: data });
         }
-
         }
     }      
     }catch (error) {
-        console.log(error);
+        next(error)
     }
 }
-
-const updateOneWork = async(req, res)=>{
+const updateOneWork = async(req, res, next)=>{
     const { id } = req.params;
     const { name, description } = req.body.categoryData;
 
@@ -118,10 +119,8 @@ const updateOneWork = async(req, res)=>{
     const newProgress = req.body.chip;
     
 
-try {
-    
-        if(!name || !description )return res.status(402).send({status:402, data: "Datos obligatorios"})  
-
+    try {
+        if(!name || !description )throw new BusinessError('Datos obligatorios', 401);  
         newProgress.map( async (j) =>{
             let result = true;
                 oldProgress.map( (e) => {
@@ -151,7 +150,7 @@ try {
                         work_progress: workData.id
                     })
                 }
-})
+        })
         const data = await Works.update({
             name:name,
             description:description
@@ -162,22 +161,21 @@ try {
         });
         res.status(201).send({status: "OK", data });
     } catch (error) {
-        res.status(500).send({status:500, data:"no se actualizó ningun trabajo"});
+        next(error)
     }
 }
-const deleteOneWork = async(req, res)=>{
+const deleteOneWork = async(req, res, next)=>{
     const { id } = req.params;
     try {
         const data = await Works.findOne({ where: { id: id }})
         await Works.destroy({ where: { id: id }});
         res.status(200).send({status: 200, data: data});
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se elimino correctamente"}));
+        next(error)
     }
 }
-const getOneByName = async(req, res)=>{
+const getOneByName = async(req, res, next)=>{
     const { name } = req.params;
-    console.log(name)
     try {
         const data = await Works.findOne({
             where:{
@@ -196,11 +194,9 @@ const getOneByName = async(req, res)=>{
                 }]
             
         });
-        console.log(data , 'ESTO ES LA DATA')
         res.status(200).send({data: data });
-
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró trabajos con ese nombre"}));
+        next(error)
     }
 }
 module.exports = {
