@@ -4,8 +4,8 @@ const newsControllers = require('../controllers/news')
 const multer = require('multer')
 const fs = require('fs');
 const path = require('path')
-const axios = require('axios')
-const {News, Works} = require('../models/index'); 
+const {News, Works} = require('../models/index');
+const errorHandling = require('../utils/errorHandling');
 
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
