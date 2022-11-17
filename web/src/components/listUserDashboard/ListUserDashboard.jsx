@@ -65,9 +65,8 @@ export default function ListUserDashboard() {
   const dispatch = useDispatch();
 
   const users = useSelector(state => state.users.list);
-
-  // console.log(users)
-
+  
+  
   const [ usersList , setUsersList]  = useState([])
   const [ count, setCount ] = useState(0)
 
@@ -117,16 +116,18 @@ export default function ListUserDashboard() {
           title: 'usuario con email ya registrado!',
         })
         handleModalCreate()
-      }else{
-       dispatch(createOneUser(createUserState));
-       dispatch(getAllUsers());
-      Swal.fire({
-        title: 'Usuario creado!',
-      })
-      handleModalCreate()
-      setCreateUserState('')
+        return;
+      }
+    //   else{
+    //    dispatch(createOneUser(createUserState));
+    //    dispatch(getAllUsers());
+    //   Swal.fire({
+    //     title: 'Usuario creado!',
+    //   })
+    //   handleModalCreate()
+    //   setCreateUserState('')
 
-
+    // }
       if(!createUserState.name || !createUserState.surname || !createUserState.email || !createUserState.password || !createUserState.role || !createUserState.phone){
         return (
           Swal.fire({title: 'Llene los campos para crear un usuario'}),
@@ -141,7 +142,7 @@ export default function ListUserDashboard() {
         setCreateUserState('')
         handleModalCreate()
       }
-    }
+    // }
     }
 
     const editUser = () => {
