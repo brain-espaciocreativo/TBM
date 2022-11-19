@@ -419,18 +419,18 @@ export default function ListUserDashboard() {
       <TableContainer>
         <Table >
           <TableHead>
-            <TableRow>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Apellido</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Telefono</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Acciones</TableCell>
+            <TableRow sx={{margin:5}}>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Nombre</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Apellido</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Email</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Telefono</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Role</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users && users.length ? users.map((e)=>(
-              <TableRow key={e.id}>
+              <TableRow  key={e.id}>
                 <TableCell>{e.name}</TableCell>
                 <TableCell>{e.surname}</TableCell>
                 <TableCell>{e.email}</TableCell>

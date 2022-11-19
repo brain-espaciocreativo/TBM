@@ -222,12 +222,13 @@ return (
                 <NavDashboard2/>
               </Grid>
             }
-                <Grid item xs={9} sx={{
-                    width: '70%',
+                <Grid item xs={7} columns={1}  sx={{
                     height: '80vh',
-                    marginTop: '9rem',
+                    marginTop: '7rem',
+                    marginLeft: '5rem',
+                    
                 }} >
-                <Grid container spacing={2} sx={{display:'flex', flexDirection:'column', gap: '6', width: '70%'}} >
+                <Grid container spacing={2} sx={{display:'flex' ,flexDirection:'column', gap: '1', width: '100%'}} >
                     <Typography sx={{fontSize:'1.5rem', color:'#333', margin: '1rem 0'}}>Creacion de Obras</Typography>
                     <TextField 
                     onChange={handleCreateWork}
@@ -240,20 +241,20 @@ return (
                             fontSize:".8rem"
                           }
                       }}
-                    sx={{width: '100%',border:'none', 
-                    boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                    sx={{width: '100%',
+                    boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
                     />
                     <TextareaAutosize
                       value={createWorkState.description}
                       onChange={handleCreateWork}
                       name='description'
                       placeholder="Descripcion de la obra"
-                      style={{ width: '100%', height:150, marginTop:'2rem', border:'none', 
-                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}}
+                      style={{ width: '100%', height:150, marginTop:'2rem',
+                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}}
                     />
 
                     <Box sx={{marginTop: '2rem'}}>
-                      <Typography >
+                      <Typography sx={{color:'rgb(160, 7, 7) '}} >
                         crea una nueva categoria...
                       </Typography>
                       <TextField 
@@ -267,18 +268,19 @@ return (
                               fontSize:".8rem"
                             }
                         }}
-                      sx={{border:'none', 
-                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',width:'400px'}} 
+                      sx={{ 
+                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',width:'100%',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
                       />
                         <Button sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={handleCreateCategoria}>crear categoria</Button>
                     </Box>
-                    <Typography sx={{marginTop: '1.2rem'}}>
+                    <Typography sx={{marginTop: '1.2rem' , color:'rgb(160, 7, 7) '}}>
                         asignar categoria...
                       </Typography>
 
-                    <Box sx={{width: '100%',display: 'flex', flexDirection: 'row', gap: '1rem', justifyContent:'center', alignItems:'center'}}>
+                    <Box sx={{width: 320,display: 'flex', gap: '1rem', flexDirection:'column' ,justifyContent:'center', alignItems:'center'}}>
                     
-                      <FormControl  sx={{marginTop:'2rem'}} >
+                        <Box sx={{width:'100%',display: 'flex', gap: '1rem' ,justifyContent:'center', alignItems:'center'}}>
+                        <FormControl  sx={{marginTop:'1rem'}} >
                       <InputLabel id="demo-simple-select-label"></InputLabel>
                       <Select
                         labelId="demo-simple-select-autowidth-label"
@@ -287,8 +289,8 @@ return (
                         value={selectedCategory}
                         onChange={handleSelectCategoria}
                         label="Categoria"
-                        sx={{border:'none', 
-                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                        sx={{ 
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', width:'100%',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
                       >
                       {
                         categories && categories.length ? 
@@ -311,8 +313,8 @@ return (
                                       fontSize:".8rem",
                                     }
                                   }} 
-                        sx={{marginTop:'2rem',border:'none', 
-                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                        sx={{marginTop:'2rem', 
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
                         />
                       <TextField  
                       type='number'
@@ -327,12 +329,13 @@ return (
                                   }
                                 }} 
                       InputProps={{inputProps:{min:10, max:100, step:5}}}
-                      sx={{marginTop:'2rem',border:'none', 
-                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                      sx={{marginTop:'2rem', 
+                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
                       />
+                        </Box>
                       
-                      <Box sx={{marginTop:'2rem'}}>
-                        <Button sx={{fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
+                      <Box sx={{marginLeft:'-17rem'}}>
+                        <Button sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}}onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
                       </Box>
                     </Box>
                     <Box sx={{width: '100%'}}>
@@ -351,8 +354,8 @@ return (
                         value={selectUser}
                         onChange={handleselectUser}
                         label="Usuarios"
-                        sx={{border:'none', 
-                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'}} 
+                        sx={{
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
                       >
                       {
                         user && user.length ? 
