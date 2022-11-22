@@ -4,7 +4,7 @@ const newsControllers = require('../controllers/news')
 const multer = require('multer')
 const fs = require('fs');
 const path = require('path')
-const {News, Works} = require('../models/index');
+const {News, Works, Users} = require('../models/index');
 const errorHandling = require('../utils/errorHandling');
 
 router.get('/', newsControllers.getAllNews);
@@ -43,14 +43,20 @@ router.post('/', uploads.single('video') , async (req, res) =>{
                 const dataWork = await Works.findOne({
                     where: {
                         name: workId
+                    },
+                    includes: {
+                        model: Users
                     }
-                })
+                });
      
                 const data = await News.create({
                     name,
                     description,
                     workId: dataWork.id
                 });
+
+                // sendNotification(dataWork.users, data);
+
                 res.status(201).send({status: "OK", data: data });
             }
             if(!workId && workId === ''){
@@ -68,8 +74,11 @@ router.post('/', uploads.single('video') , async (req, res) =>{
                 const dataWork = await Works.findOne({
                     where: {
                         name: workId
+                    },
+                    includes: {
+                        model: Users
                     }
-                })
+                });
      
                 const data = await News.create({
                     name,
@@ -77,6 +86,9 @@ router.post('/', uploads.single('video') , async (req, res) =>{
                     video: `videos?video=${req.file.filename}`, 
                     workId: dataWork.id
                 });
+
+                // sendNotification(dataWork.users, data);
+
                 res.status(201).send({status: "OK", data: data });
             }
             if(!workId && workId === ''){
@@ -93,5 +105,24 @@ router.post('/', uploads.single('video') , async (req, res) =>{
         console.log(error)
     }
 });
+
+const sendNotification = async (users, news)=>{
+    const message = {
+        title: "mensaje", 
+        message: "hola", 
+        id: "1"
+      }
+
+      try {
+        users.map(async(e)=>{
+            let message = e;
+            await axios.post('http://localhost:3000/send-notification', message)
+            .then(res=>console.log(res))
+            .catch(error=> console.log(error))
+        })
+        } catch (error) {
+        console.log(error)
+    }
+}
 
 module.exports = router;
