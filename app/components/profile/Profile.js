@@ -43,7 +43,7 @@ export default function Profile() {
                 <View style={{marginLeft: 20}}>
                 <Title style={[style.title, {letterSpacing:1}]}>¡Hola {user.name}!</Title> 
                 <Caption style={style.caption}>{date}</Caption>
-                <Button title="Logout" color='red' onPress={logout}></Button>
+                <Button title="Cerrar Sesión" color='red' onPress={logout}></Button>
                 </View>
                 <Avatar.Image 
                 source={{
