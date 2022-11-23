@@ -16,6 +16,7 @@ export const AuthProvider = ({children}) =>{
         progresses: null,
         news: null
     })
+    
 
     const login = ( email , password) =>{
         setLoading(true)
@@ -79,6 +80,7 @@ export const AuthProvider = ({children}) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })
     }
+    
     return (
         <AuthContext.Provider
          value={{

@@ -2,25 +2,46 @@ const {News, Progress} = require('../models/index');
 
 
 const getAllNews = async(req, res)=>{
+
+    const pageAsNumber = Number.parseInt(req.query.page);
+    const sizeAsSize = Number.parseInt(req.query.size);
+
+    
     try {
-        const data = await News.findAll({
+        let page = 0;
+    
+        if(!Number.isNaN(pageAsNumber) &&  pageAsNumber > 0){
+            page = pageAsNumber
+        }
+    
+        let size = 10;
+        if(!Number.isNaN(sizeAsSize) && sizeAsSize > 10 && sizeAsSize < 0 ){
+            size = sizeAsSize
+        }
+        
+        const data = await News.findAll(
+            {
+                limit: size,
+                offset: page * size
+            },
+            {
             include: {
                 model: Progress
-              }
-            });
-            
-            const hostUrl = req.protocol + '://' + req.get('host');
+            }
+            }
+        )
+
+
+        const hostUrl = req.protocol + '://' + req.get('host');
 
         const result = data.map( (n)=>{
             n.video = hostUrl + '/'+ n.video;
             return n;
-        } )
-
-    
-
+        })
+            
         res.status(201).send({status: "OK", result});
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró novedades"}));
+        console.log(error)
     }
 }
 const getOneNews = async(req, res)=>{

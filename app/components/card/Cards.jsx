@@ -43,7 +43,7 @@ export default function Cards(props) {
               <Title style={style.textVideo}>Video</Title>
                 <Video 
                   ref={video}
-                  source={{uri:`http://10.0.2.2:3000/${props.info.video}`}}
+                  source={{uri:`${props.info.video}`}}
                   style={style.video} 
                   isLooping
                   useNativeControls
