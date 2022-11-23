@@ -28,7 +28,8 @@ export default function WorkItem() {
                         color: 'white',
                         padding: '13px',
                         border:'1px solid rgb(160, 7, 7) ',
-                        transition: '.5s'
+                        transition: '.5s',
+                        marginLeft: '2rem'
                         }}
 
                         onClick={(e, i) =>navigate("/admin/news/create")}
@@ -37,7 +38,7 @@ export default function WorkItem() {
                 </Grid>
                 <Grid item>
                     <Grid item xs={12} columns={2}>
-                        <Box p={5} sx={{display: 'flex', flexWrap: 'wrap', gap: '2rem', marginBottom: '10rem'}}>
+                        <Box p={5} sx={{display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '-5rem', width:'100%', marginLeft: '2rem'}}>
                         {news && news.length ? news.map((e) =>
                             ( 
                                 <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
