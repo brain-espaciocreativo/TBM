@@ -12,6 +12,6 @@
             "dest":"/"
         }
     ],
-    "installCommand": "npm install",
+    "installCommand": "npm install --production",
     "regions":["gru1"]        
 }
