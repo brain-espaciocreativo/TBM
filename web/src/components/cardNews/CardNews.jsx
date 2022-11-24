@@ -12,14 +12,15 @@ const useStyle = makeStyles({
       color: 'white'
     },
     root:{
-      maxWidth:345,
-      marginTop:'10rem'    
+      maxWidth:245,
+      marginTop:'10rem',
+      marginLeft: '.2rem',
+      border:'3px solid rgb(160, 7, 7)',
+      borderRadius: 10,
+      padding:15
     },
     media:{
       height:140
-    },
-    progress:{
-      paddingTop:'50px'
     }
   });
 
@@ -27,6 +28,7 @@ export default function CardNews( { id, name, description, video } ) {
 
   const styles = useStyle();
   const dispatch = useDispatch()
+
 
   const deleteNews = (data)=>{
     console.log(data);

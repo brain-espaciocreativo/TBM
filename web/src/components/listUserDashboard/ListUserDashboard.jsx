@@ -2,13 +2,10 @@ import { useEffect,useState } from 'react'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Modal, Button, TextField,Typography, InputLabel, Select, MenuItem, FormControl } from '@mui/material'
 import { Delete, Edit } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOneUser, deleteOneUser, getAllUsers, updateOneUser } from '../../redux/slices/userSlice';
+import { createOneUser, deleteOneUser, getAllUsers, updateOneUser, user } from '../../redux/slices/userSlice';
 import { makeStyles } from '@mui/styles';
-import { useForm} from '../../hooks/useForm';
 import './ListUserDas.css';
-import ListUI from './ListUI';
 import Swal from 'sweetalert2';
-import { Box } from '@mui/system';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,19 +62,18 @@ export default function ListUserDashboard() {
   const dispatch = useDispatch();
 
   const users = useSelector(state => state.users.list);
+  
+  
+   const [ usersList , setUsersList]  = useState([])
+   const [ count, setCount ] = useState(0)
 
-  // console.log(users)
-
-  const [ usersList , setUsersList]  = useState([])
-  const [ count, setCount ] = useState(0)
-
-  if(users && count < 1){
-    users.map( (e) =>{
-      setUsersList(state => [...state,e.email])
-    })
-    setCount(count +1)
-    console.log(usersList)
-  }
+   if(users && count > 1){
+     users.map( (e) =>{
+       setUsersList(state => [...state,e.email])
+     })
+     setCount(count +1)
+     console.log(usersList)
+   }
 
 
     useEffect(()=>{
@@ -112,23 +108,24 @@ export default function ListUserDashboard() {
     }
 
     const createUser = async () => {
-      if(usersList.includes(createUserState.email)){
-        Swal.fire({
-          title: 'usuario con email ya registrado!',
-        })
-        handleModalCreate()
-      }else{
-       dispatch(createOneUser(createUserState));
-       dispatch(getAllUsers());
-      Swal.fire({
-        title: 'Usuario creado!',
-      })
-      handleModalCreate()
-      setCreateUserState('')
+       if(usersList.includes(createUserState.email)){
+         Swal.fire({
+           title: 'usuario con email ya registrado!',
+         })
+         handleModalCreate()
+         return;
+       }
+    //  else{
+    //   dispatch(createOneUser(createUserState));
+    //   dispatch(getAllUsers());
+    //  Swal.fire({
+    //    title: 'Usuario creado!',
+    //  })
+    //  handleModalCreate()
+    //  setCreateUserState('')
 
-
-      if(!createUserState.name || !createUserState.surname || !createUserState.email || !createUserState.password || !createUserState.role || !createUserState.phone){
-        return (
+     if(!createUserState.name || !createUserState.surname || !createUserState.email || !createUserState.password || !createUserState.role || !createUserState.phone){
+       return (
           Swal.fire({title: 'Llene los campos para crear un usuario'}),
           handleModalCreate()
         )
@@ -141,7 +138,7 @@ export default function ListUserDashboard() {
         setCreateUserState('')
         handleModalCreate()
       }
-    }
+    // }
     }
 
     const editUser = () => {
@@ -419,18 +416,18 @@ export default function ListUserDashboard() {
       <TableContainer>
         <Table >
           <TableHead>
-            <TableRow>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Apellido</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Telefono</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Acciones</TableCell>
+            <TableRow sx={{margin:5}}>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Nombre</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Apellido</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Email</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Telefono</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Role</TableCell>
+              <TableCell sx={{color:'rgb(160,7,7)'}}>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users && users.length ? users.map((e)=>(
-              <TableRow key={e.id}>
+              <TableRow  key={e.id}>
                 <TableCell>{e.name}</TableCell>
                 <TableCell>{e.surname}</TableCell>
                 <TableCell>{e.email}</TableCell>
