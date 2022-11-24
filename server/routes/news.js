@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path')
 const {News, Works, Users} = require('../models/index');
 const errorHandling = require('../utils/errorHandling');
+const axios = require('axios');
 
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
@@ -44,7 +45,7 @@ router.post('/', uploads.single('video') , async (req, res) =>{
                     where: {
                         name: workId
                     },
-                    includes: {
+                    include: {
                         model: Users
                     }
                 });
@@ -55,7 +56,9 @@ router.post('/', uploads.single('video') , async (req, res) =>{
                     workId: dataWork.id
                 });
 
-                // sendNotification(dataWork.users, data);
+                const users = dataWork.get({ plain: true });
+
+                sendNotification(users.users, data.dataValues);
 
                 res.status(201).send({status: "OK", data: data });
             }
@@ -86,8 +89,10 @@ router.post('/', uploads.single('video') , async (req, res) =>{
                     video: `videos?video=${req.file.filename}`, 
                     workId: dataWork.id
                 });
+                
+                const users = dataWork.get({ plain: true });
 
-                // sendNotification(dataWork.users, data);
+                sendNotification(users.users, data.dataValues);
 
                 res.status(201).send({status: "OK", data: data });
             }
@@ -107,15 +112,23 @@ router.post('/', uploads.single('video') , async (req, res) =>{
 });
 
 const sendNotification = async (users, news)=>{
-    const message = {
-        title: "mensaje", 
-        message: "hola", 
-        id: "1"
-      }
+    // const message = {
+    //     title: "mensaje", 
+    //     message: "hola", 
+    //     id: null
+    //   }
+
+    //   console.log(users, news);
+
 
       try {
         users.map(async(e)=>{
-            let message = e;
+            const message = {
+                title: news.name, 
+                message: news.description, 
+                id: e.id.toString()
+              }
+              console.log(message)
             await axios.post('http://localhost:3000/send-notification', message)
             .then(res=>console.log(res))
             .catch(error=> console.log(error))

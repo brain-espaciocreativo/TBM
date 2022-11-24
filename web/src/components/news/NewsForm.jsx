@@ -44,11 +44,6 @@ export default function NewsForm () {
           return Swal.fire({title: 'los campos deben estar llenos'})
         }
 
-    useEffect(()=>{
-        dispatch(getAllWorks);
-    },[dispatch]);
-
-
         const formData = new FormData();
         formData.append("video", selectedFile);
 
@@ -66,9 +61,6 @@ export default function NewsForm () {
           console.log(error)
         }
       }
-      useEffect(()=>{
-          dispatch(getAllWorks);
-      },[dispatch]);
     
     const handleChange = (e) =>{
         const { name, value} = e.target;
