@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path')
 const {News, Works} = require('../models/index');
 const errorHandling = require('../utils/errorHandling');
+const BusinessError = require('../utils/BusinessError');
 
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
@@ -28,18 +29,20 @@ const diskStorage =  multer.diskStorage({
 const uploads = multer({ 
     storage: diskStorage
 })
-router.post('/', uploads.single('video') , async (req, res) =>{
+
+
+router.get('/', newsControllers.getAllNews);
+router.get('/:id', newsControllers.getOneNews);
+router.post('/', uploads.single('video') , async (req, res, next) =>{
 
     const { name, description, workId} = req.query;
     
     try {
 
-        if( !name || !description ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if( !name || !description ) throw new BusinessError("Datos obligatorios", 401);
 
         if(!req.file){
-
             if(workId && workId !== ''){
-
                 const dataWork = await Works.findOne({
                     where: {
                         name: workId
@@ -63,7 +66,6 @@ router.post('/', uploads.single('video') , async (req, res) =>{
         }
 
         if(req.file){
-
             if(workId && workId !== ''){
                 const dataWork = await Works.findOne({
                     where: {
@@ -90,7 +92,7 @@ router.post('/', uploads.single('video') , async (req, res) =>{
         }
         
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 });
 
