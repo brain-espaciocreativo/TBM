@@ -31,11 +31,9 @@ const uploads = multer({
 })
 
 
-
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
 router.post('/', uploads.single('video') , async (req, res, next) =>{
-
 
     const { name, description, workId} = req.query;
     
