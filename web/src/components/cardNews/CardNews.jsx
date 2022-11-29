@@ -29,7 +29,6 @@ export default function CardNews( { id, name, description, video } ) {
   const styles = useStyle();
   const dispatch = useDispatch()
 
-
   const deleteNews = (data)=>{
     console.log(data);
     dispatch(deleteOneNews(data))

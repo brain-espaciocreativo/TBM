@@ -44,7 +44,6 @@ export default function NewsForm () {
         if(!data.description || !data.name){
           return Swal.fire({title: 'los campos deben estar llenos'})
         }
-
         const formData = new FormData();
         formData.append("video", selectedFile);
 

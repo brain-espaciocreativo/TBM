@@ -22,5 +22,7 @@ router.use('/send-email', sendMail);
 router.use('/videos', videos);
 router.use('/send-notification', sendNotification);
 // router.use('/upload-files', uploadFiles);
+router.use('/videos', videos)
+router.use('/send-notification', sendNotification);
 
 module.exports = router

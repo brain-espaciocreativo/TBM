@@ -1,6 +1,7 @@
 const {Progress, Works, Categories, News} = require('../models');
+const BusinessError = require('../utils/BusinessError');
 
-const getAllProgress = async(req, res)=>{
+const getAllProgress = async(req, res, next)=>{
     try {
         const data = await Progress.findAll({
             include: 
@@ -10,22 +11,25 @@ const getAllProgress = async(req, res)=>{
             });
         res.status(201).send({status: "OK", data});
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró progresos"}));
+        next(error)
     }
 }
-const getOnePorgress = async(req, res)=>{
+const getOnePorgress = async(req, res, next)=>{
     const { id } = req.params;
     try {
+        if (!id) {
+            throw new BusinessError('Datos obligatorios', 401);
+        }
         const data = await Progress.findByPk(id);
         res.status(201).send({data: data });
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró progreso con ese ID"}));
+        next(error)
     }
 }
-const createOneProgress = async (req, res) => {
+const createOneProgress = async (req, res, next) => {
     const { value, work_progress, newsId } = req.body; 
     try {
-        if( !value ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if( !value ) throw new BusinessError('Datos obligatorios', 401);
         
         if(newsId && work_progress){
             const data = await Progress.create({
@@ -51,14 +55,14 @@ const createOneProgress = async (req, res) => {
         }
         
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se creo ningun progreso"}));
+        next(error)
     }
 }
-const updateOneProgress = async(req, res)=>{
+const updateOneProgress = async(req, res, next)=>{
     const { id } = req.params;
     const { value, workId, work_progress } = req.body;
     try {
-        if(!workId || !categoriesId || !value ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(!workId || !categoriesId || !value ) throw new BusinessError('Datos obligatorios', 401);
         const data = await Progress.update({
             value: value,
             workId: workId,
@@ -69,17 +73,17 @@ const updateOneProgress = async(req, res)=>{
         }});
         res.status(201).send({status: "OK", data });
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se actualizó ningun progreso"}));
+        next(error)
     }
 }
-const deleteOneProgress = async(req, res)=>{
+const deleteOneProgress = async(req, res, next)=>{
     const { id } = req.params;
     try {
-        if(!id) throw Error(res.status(402).send("Seleccione un ID"));
+        if(!id) throw new BusinessError('Datos obligatorios', 401);
         await Progress.destroy({ where: { id: id }});
         res.status(204).send("Se elimino correctamente");
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se eliminó correctamente"}));
+        next(error)
     }
 }
 
