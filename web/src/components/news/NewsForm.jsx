@@ -12,7 +12,6 @@ import axios from "axios";
 import { getAllWorks } from "../../redux/slices/workSlice";
 import './NewsStyle.css'
 
-
 export default function NewsForm () {
 
     const dispatch = useDispatch();
@@ -46,6 +45,10 @@ export default function NewsForm () {
           return Swal.fire({title: 'los campos deben estar llenos'})
         }
 
+    useEffect(()=>{
+        dispatch(getAllWorks);
+    },[dispatch]);
+
 
         const formData = new FormData();
         formData.append("video", selectedFile);
@@ -72,7 +75,6 @@ export default function NewsForm () {
         const { name, value} = e.target;
         setData(state => ({...state, [name]: value}));
     }
-
 
     const handleselectWork = (e)=>{
         setSelectWork(e.target.value);
@@ -114,9 +116,8 @@ export default function NewsForm () {
                         value={data.description}
                         onChange={handleChange}
                         />
-
+                        
                         <input type="file" name="video" accept="video/mp4" onChange={handleFileSelect}></input>
-
                         <Typography >
                             Selecciona una Obra
                         </Typography>
