@@ -30,6 +30,7 @@ export const AuthProvider = ({children}) =>{
             setLoading(false)
             if(email && password == null){
                 console.log('llene los datos por favor');
+                setLoading(false)
             }
         }).catch( e =>{
             console.log(e);
@@ -39,12 +40,12 @@ export const AuthProvider = ({children}) =>{
                 setLoading(false)
                 return
             }
-            setTimeout(() => {
             setLoading(false)
+            setTimeout(() => {
             RootNavigation.navigate('Home')
             setLoading(false)
             }, 3000);
-
+            setLoading(false)
         }).catch( e =>{
             console.log(e);
             setLoading(false)

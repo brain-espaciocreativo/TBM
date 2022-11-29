@@ -1,4 +1,5 @@
 const {News, Progress} = require('../models/index'); 
+const BusinessError = require('../utils/BusinessError');
 
 
 const getAllNews = async(req, res)=>{
@@ -6,7 +7,8 @@ const getAllNews = async(req, res)=>{
     const pageAsNumber = Number.parseInt(req.query.page);
     const sizeAsSize = Number.parseInt(req.query.size);
 
-    
+
+const getAllNews = async(req, res, next)=>{
     try {
         let page = 0;
     
@@ -44,7 +46,7 @@ const getAllNews = async(req, res)=>{
         console.log(error)
     }
 }
-const getOneNews = async(req, res)=>{
+const getOneNews = async(req, res, next)=>{
     const { id } = req.params;
     try {
         const data = await News.findByPk(id);
@@ -57,23 +59,16 @@ const getOneNews = async(req, res)=>{
 
         res.status(201).send({data: result });;
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró novedades con ese ID"}));
+        next(error)
     }
 }
-const createOneNews = async (req, res) => {
+const createOneNews = async (req, res, next) => {
 
     const { name, description, video, workId} = req.query; 
 
-
-    console.log('---> esto es el body', req.query)
-    console.log('-------------------------------');
-    console.log('---> esto es el file', req.file)
-
     try {
-
-        if( !name || !description ) res.status(402).send({status:402, data: "Datos obligatorios"});
-
-        if(req.file === null) res.status(402).send({status:402, data: "No existe archivo para subir"})
+        if( !name || !description ) throw new BusinessError("Datos obligatorios", 401);
+        if(req.file === null) throw new BusinessError("No existe archivo para subir", 401);
 
         if(workId){
             const data = await News.create({
@@ -91,17 +86,16 @@ const createOneNews = async (req, res) => {
             });
             res.status(201).send({status: "OK", data: data });
         }
-        
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 }
-const updateOneNews = async(req, res)=>{
+const updateOneNews = async(req, res, next)=>{
     const { id } = req.params;
     const { name, description, video, date, workId } = req.body;
     
     try {
-        if(!description || !video || !workId || !date  ) throw Error(res.status(402).send({status:402, data: "Datos obligatorios"}));
+        if(!description || !video || !workId || !date  ) throw new BusinessError("Datos obligatorios", 402);
         const data = await News.update({
             name: name,
             description:description,
@@ -114,18 +108,18 @@ const updateOneNews = async(req, res)=>{
         }});
         res.status(201).send({status: "OK", data });
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se encontró actualizó ninguna novedad"}));
+        next(error)
     }
 }
-const deleteOneNews = async(req, res)=>{
+const deleteOneNews = async(req, res, next)=>{
     const { id } = req.params;
     try {
-        if(!id) throw Error(res.status(402).send("Seleccione un ID"));
+        if(!id) throw new BusinessError("Seleccione un ID", 401);
         const data = await News.findOne({ where: {id: id}})
         await News.destroy({ where: { id: id }});
         res.status(200).send({status: 200, data: data});
     } catch (error) {
-        throw Error(res.status(500).send({status:500, data:"no se elimino nunguna novedad"}));
+        next(error)
     }
 }
 

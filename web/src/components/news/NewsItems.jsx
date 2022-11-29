@@ -51,7 +51,8 @@ export default function WorkItem() {
                         color: 'white',
                         padding: '13px',
                         border:'1px solid rgb(160, 7, 7) ',
-                        transition: '.5s'
+                        transition: '.5s',
+                        marginLeft: '2rem'
                         }}
 
                         onClick={(e, i) =>navigate("/admin/news/create")}

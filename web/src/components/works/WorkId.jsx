@@ -48,7 +48,7 @@ export default function WorkId () {
                     <KeyboardBackspace sx={{color:'red', cursor:'pointer'}} onClick={()=>navigate('/work')}/>
                 {
                     work ?
-                    <Card sx={{ minWidth: 275,boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', margin:'20px 0', width:'20%' }}>
+                    <Card sx={{border:'3px solid rgb(160, 7, 7)', minWidth: 275,boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', margin:'20px 0', width:'20%' }}>
                         <CardContent>
                             <Typography  sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                             Nombre de la Obra
@@ -68,7 +68,7 @@ export default function WorkId () {
                             {
                             work && work.progresses
                             ? work.progresses.map(element=>{
-                              return <Chip key={element.id} label={`${element.category.name} ${element.value}% ${element.height_value}%`} />
+                              return <Chip sx={{background:'#f0b8ba'}} key={element.id} label={`${element.category.name} ${element.value}% ${element.height_value}%`} />
                             }) 
                             : <p>No hay progreso</p>
                             }
@@ -76,7 +76,7 @@ export default function WorkId () {
                             {
                             work && work.users
                             ? work.users.map(element=>{
-                              return <Chip key={element.id} label={`${element.email}`} />
+                              return <Chip sx={{background:'#f0b8ba'}} key={element.id} label={`${element.email}`} />
                             }) 
                             : <p>No hay usuarios</p>
                             }

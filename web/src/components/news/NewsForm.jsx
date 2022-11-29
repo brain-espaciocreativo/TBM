@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAllWorks } from "../../redux/slices/workSlice";
-
+import './NewsStyle.css'
 
 export default function NewsForm () {
 
@@ -45,6 +45,10 @@ export default function NewsForm () {
           return Swal.fire({title: 'los campos deben estar llenos'})
         }
 
+    useEffect(()=>{
+        dispatch(getAllWorks);
+    },[dispatch]);
+
 
         const formData = new FormData();
         formData.append("video", selectedFile);
@@ -72,7 +76,6 @@ export default function NewsForm () {
         setData(state => ({...state, [name]: value}));
     }
 
-
     const handleselectWork = (e)=>{
         setSelectWork(e.target.value);
         console.log('Esto es work',selectWork);
@@ -99,21 +102,22 @@ export default function NewsForm () {
                 <Grid container spacing={2} sx={{display:'flex', flexDirection:'column', gap: '6', width: '50%'}} >
                     <Typography sx={{fontSize:'1.5rem', color:'#333', margin: '1rem 0'}}>Creacion de Novedades</Typography>
                     <form onSubmit={handleSubmit} id='formulario' encType="multipart/form-data">
-                        <input 
+                        <TextField 
+                        placeholder="nombre"
                         type="text" 
                         name="name"
                         value={data.name}
                         onChange={handleChange}
                         />
-                        <textarea
+                        <TextareaAutosize
+                        placeholder="descripcion"
                         type="text" 
                         name="description"
                         value={data.description}
                         onChange={handleChange}
                         />
-
+                        
                         <input type="file" name="video" accept="video/mp4" onChange={handleFileSelect}></input>
-
                         <Typography >
                             Selecciona una Obra
                         </Typography>
@@ -134,7 +138,9 @@ export default function NewsForm () {
                           }) : <MenuItem value='No hay Obras'>No hay Obras</MenuItem>
                       }
                       </Select>
-                        <input type="submit" value='enviar'/>
+                      <div>
+                        <input className="submit" type="submit" value='enviar'/>
+                      </div>
                     </form>
                   </Grid> 
                 </Grid>
