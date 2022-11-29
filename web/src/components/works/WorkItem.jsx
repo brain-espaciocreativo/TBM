@@ -42,7 +42,8 @@ export default function WorkItem() {
                       color: 'white',
                       padding: '13px',
                       border:'1px solid rgb(160, 7, 7) ',
-                      transition: '.5s'
+                      transition: '.5s',
+                      marginLeft: '2rem'
                     }}
 
                     onClick={(e, i) =>navigate("/work/create")}
@@ -51,39 +52,39 @@ export default function WorkItem() {
               <Grid item xs={12} columns={2} sx={{display:'flex', gap:'2rem', flexWrap:'wrap'}}>
                   {works && works.length ? works.map((e, i) =>
                   ( 
-                    <Card key={i} sx={{ minWidth: 275,boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', margin:'20px 0', width:'20%' }}>
+                    <Card key={i} sx={{ borderRadius:10,border:'4px solid rgb(160, 7, 7)',minWidth: 250, margin:'20px 30px', width:'10%', height:350 }}>
                       <CardContent>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                           Nombre de la Obra
                         </Typography>
-                        <Typography variant="h5" component="div">
+                        <Typography variant="h5" component="div" sx={{color:'#000000', fontWeight:'bold'}}>
                         {e.name}
                         </Typography>
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
                           Descripcion
                         </Typography>
-                        <Typography variant="body2">
+                        <Typography variant="body2" sx={{color:'#000000', fontWeight:'bold'}}>
                         {e.description}
                         </Typography>
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">Categorias</Typography>
                         {
                           e.progresses.map((element, i)=>{
-                            return <Chip key={i} label={`${element.category.name} ${element.value}% ${element.height_value}%`}/>
+                            return <Chip sx={{background:'#f0b8ba'}} key={i} label={`${element.category.name} ${element.value}% ${element.height_value}%`}/>
                           })
                         }
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">Usuarios</Typography>
 
                         {
                           e.users.map( (e, i) =>{
-                            return <Chip key={i} label={`${e.email}`} />
+                            return <Chip sx={{background:'#f0b8ba'}} key={i} label={`${e.email}`} />
                           })
                         }
 
                       </CardContent>
                       <CardActions>
-                        <Edit sx={{cursor:'pointer', margin:'0 10px'}}  onClick={() => navigate('/work/edit/'+ e.id)}/>
-                        <Visibility sx={{cursor:'pointer', margin:'0 10px'}}  onClick={()=> navigate('/work/'+ e.id)}/>
-                        <Delete sx={{cursor:'pointer', margin:'0 10px'}}  onClick={() => deleteWork(e.id)} />
+                        <Edit sx={{cursor:'pointer', margin:'0 10px',color:'#000000', fontWeight:'bold'}}  onClick={() => navigate('/work/edit/'+ e.id)}/>
+                        <Visibility sx={{cursor:'pointer', margin:'0 10px', color:'#000000', fontWeight:'bold'}}  onClick={()=> navigate('/work/'+ e.id)}/>
+                        <Delete sx={{cursor:'pointer', margin:'0 10px', color:'#000000', fontWeight:'bold'}}  onClick={() => deleteWork(e.id)} />
                       </CardActions>
                 </Card>
                   )) 

@@ -4,56 +4,80 @@ import { Drawer,
     List,
     ListItemIcon,
     ListItemText,
+    Box
     } from '@mui/material'
 import Menu from '@mui/icons-material/Menu'
-import { Divider, ListItem } from '@mui/material/';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import PersonIcon from '@mui/icons-material/Person';
-import LoginIcon from '@mui/icons-material/Login';
+import { ListItem } from '@mui/material/';
+import { Link } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
+import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import '../navDachboard2/NavDas.css'
 
 export default function DrawerDashboard({links}) {
 
     const [ drawerOpen, setDrawerOpen ] = useState(false);
   
+    const navigate = useNavigate()
+
+    const handleClean = () =>{
+        const logout = localStorage.removeItem('user');
+        Swal.fire({
+            title: '¿Estás seguro que quieres cerrar Sesiíon?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'si!'
+          }).then((logout) => {
+            if (logout.isConfirmed) {
+              Swal.fire(
+                'Sesión cerrada!'
+              )
+              navigate('/')
+            }
+          })
+    }
+
     return (
     <div>
         <Drawer open={drawerOpen}
         onClose={()=>setDrawerOpen(false)}
         >
             <List component='nav'>
-            <ListItem button>
-                <ListItemIcon>
-                    <BarChartIcon />
-                </ListItemIcon>
-                <ListItemText primary='Home' />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <PersonIcon />
-                </ListItemIcon>
-                <ListItemText primary='Usuarios' />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <HomeWorkIcon />
-                </ListItemIcon>
-                <ListItemText primary='Obras' />
-            </ListItem>
-            <Divider />
-            <ListItem button>
-                <ListItemIcon>
-                    <LoginIcon />
-                </ListItemIcon>
-                <ListItemText primary='Login' />
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText primary='Log out' />
-            </ListItem>
+            <Link to='/admin' className='links'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <HomeIcon className='icon' />
+                      </ListItemIcon>
+                      <ListItemText primary='Inicio'/>
+                  </ListItem>
+              </Link>
+              <Link to='/work' className='links'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <HomeRepairServiceIcon className='icon' />
+                      </ListItemIcon>
+                      <ListItemText primary='Obras' />
+                  </ListItem>
+              </Link>
+              <Link to='/users' className='links'>
+              <ListItem button>
+                  <ListItemIcon>
+                      <GroupIcon className='icon'/>
+                  </ListItemIcon>
+                  <ListItemText primary='Usuarios' />
+              </ListItem>
+              </Link>
+              <ListItem onClick={handleClean} button >
+                  <ListItemIcon>
+                      <LogoutIcon className='icon'/>
+                  </ListItemIcon>
+                  <ListItemText primary='Cerrar Sesión' className='links'/>
+              </ListItem>
             </List>
         </Drawer>
         <IconButton sx={{color: 'white', marginLeft: 'auto'}} onClick={()=>setDrawerOpen(!drawerOpen)}>
