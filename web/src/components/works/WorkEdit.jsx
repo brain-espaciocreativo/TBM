@@ -277,7 +277,7 @@ const handleChipDelete = (chipToDelete) =>{
                     <Box sx={{width: '100%'}}>
                     <Stack direction="row" spacing={1}>
                       { ship && ship.length > 0 ? ship.map( (e, i) =>(
-                        <Chip key={i} label={`${e.category} ${e.progress.value}% ${e.progress.height_value}%`} 
+                        <Chip sx={{background:'#f0b8ba'}} key={i} label={`${e.category} ${e.progress.value}% ${e.progress.height_value}%`} 
                         onDelete={ () => handleChipDelete(`${e.category}`)}
                         />
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}

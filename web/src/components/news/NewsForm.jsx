@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAllWorks } from "../../redux/slices/workSlice";
+import './NewsStyle.css'
+
 
 export default function NewsForm () {
 
@@ -101,13 +103,15 @@ export default function NewsForm () {
                 <Grid container spacing={2} sx={{display:'flex', flexDirection:'column', gap: '6', width: '50%'}} >
                     <Typography sx={{fontSize:'1.5rem', color:'#333', margin: '1rem 0'}}>Creacion de Novedades</Typography>
                     <form onSubmit={handleSubmit} id='formulario' encType="multipart/form-data">
-                        <input 
+                        <TextField 
+                        placeholder="nombre"
                         type="text" 
                         name="name"
                         value={data.name}
                         onChange={handleChange}
                         />
-                        <textarea
+                        <TextareaAutosize
+                        placeholder="descripcion"
                         type="text" 
                         name="description"
                         value={data.description}
@@ -135,7 +139,9 @@ export default function NewsForm () {
                           }) : <MenuItem value='No hay Obras'>No hay Obras</MenuItem>
                       }
                       </Select>
-                        <input type="submit" value='enviar'/>
+                      <div>
+                        <input className="submit" type="submit" value='enviar'/>
+                      </div>
                     </form>
                   </Grid> 
                 </Grid>

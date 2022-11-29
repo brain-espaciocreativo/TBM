@@ -1,19 +1,36 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material/';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
+import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import './NavDas.css';
-import  { UserContext }  from '../../context/AuthContext';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavDashboard2() {
 
+    const navigate = useNavigate()
+
 
     const handleClean = () =>{
-        localStorage.setItem('user', '');
+        const logout = localStorage.removeItem('user');
+        Swal.fire({
+            title: '¿Estás seguro que quieres cerrar Sesiíon?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'si!'
+          }).then((logout) => {
+            if (logout.isConfirmed) {
+              Swal.fire(
+                'Sesión cerrada!'
+              )
+              navigate('/')
+            }
+          })
     }
 
   return (
@@ -27,40 +44,42 @@ export default function NavDashboard2() {
                 flexDirection: 'column',
                 justifyContent:'space-evenly',
                 height:'100vh',
-                width:'70%',
+                width:'80%',
                 boxShadow: '1px 4px 17px -10px #000000'
               }}
             >
-            <Link to='/admin'>
-            <ListItem button className='boton'>
-                <ListItemIcon>
-                    <BarChartIcon />
-                </ListItemIcon>
-                <ListItemText primary='Inicio'/>
-            </ListItem>
-            </Link>
-            <Link to='/work'>
-                <ListItem button className='boton'>
-                    <ListItemIcon>
-                        <HomeWorkIcon />
-                    </ListItemIcon>
-                    <ListItemText primary='Obras' />
-                </ListItem>
-            </Link>
-            <Link to='/users'>
-            <ListItem button className='boton'>
-                <ListItemIcon>
-                    <PersonIcon />
-                </ListItemIcon>
-                <ListItemText primary='Usuarios' />
-            </ListItem>
-            </Link>
-            <ListItem onClick={handleClean} button className='boton'>
-                <ListItemIcon>
-                    <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText primary='Log out' />
-            </ListItem>
+              <Link to='/admin' className='links'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <HomeIcon className='icon' />
+                      </ListItemIcon>
+                      <ListItemText primary='Inicio'/>
+                  </ListItem>
+              </Link>
+              <Link to='/work' className='links'>
+                  <ListItem button>
+                      <ListItemIcon>
+                          <HomeRepairServiceIcon className='icon' />
+                      </ListItemIcon>
+                      <ListItemText primary='Obras' />
+                  </ListItem>
+              </Link>
+              <Link to='/users' className='links'>
+              <ListItem button>
+                  <ListItemIcon>
+                      <GroupIcon className='icon'/>
+                  </ListItemIcon>
+                  <ListItemText primary='Usuarios' />
+              </ListItem>
+              </Link>
+              <Link className='links'>
+              <ListItem onClick={handleClean} button >
+                  <ListItemIcon>
+                      <LogoutIcon className='icon'/>
+                  </ListItemIcon>
+                  <ListItemText primary='Cerrar Sesión' />
+              </ListItem>
+              </Link>
             </Box>
             </List>
           </Grid>

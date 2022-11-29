@@ -17,13 +17,14 @@ export default function LoginScreen () {
     const handleLogin = () =>{
         login(email , password);
         if(email == null){
-            console.log('email no puede estar vacio');
-            toast.danger({message:"El campo email no puede estar vacio"})
-            return
+            return toast.danger({message:"El campo email no puede estar vacio"})
         }else if(password === null){
-            toast.danger({message:"El campo password no puede estar vacio"})
-            return
+            return toast.danger({message:"El campo password no puede estar vacio"})
         }
+        setTimeout(() => {
+            setEmail('')
+            setPassword('')
+        }, 3000);
     }
 
   return (
@@ -40,7 +41,7 @@ export default function LoginScreen () {
                 value={email}
                 onChangeText={text => setEmail(text)}
                 underlineColorAndroid='transparet'
-                placeholder="Email"
+                placeholder="Correo"
                 keyboardType='email-address'
             />
             <TouchableOpacity>
@@ -51,7 +52,7 @@ export default function LoginScreen () {
             value={password}
             onChangeText={text => setPassword(text)}
             placeholderTextColor={'#f19ea0'}
-            placeholder="Password"
+            placeholder="Contraseña"
             secureTextEntry={show}
             keyboardType="default"
             />

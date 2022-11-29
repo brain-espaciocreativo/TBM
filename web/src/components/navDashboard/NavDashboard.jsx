@@ -10,9 +10,6 @@ const useStyle = makeStyles(theme=>({
     offset: theme.mixins.toolbar,
     menuButton: {
         marginRight: theme.spacing(3)
-    },
-    title: {
-        flexGrow: 1
     }
 }));
 
@@ -42,15 +39,13 @@ export default function NavDashboard({links}) {
     }
 
 
-    const styles = useStyle();
-
     const theme = useTheme();
 
     const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <div>
-        <AppBar sx={{backgroundColor:'rgb(160, 7, 7)', height:'90px'}} >
+        <AppBar sx={{backgroundColor:'rgb(160, 7, 7)'}} >
             <Toolbar>
             TBM
                 {
