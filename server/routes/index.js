@@ -9,7 +9,8 @@ const progress = require('./progress');
 const authSesion = require('./authSession');
 const sendMail = require('./sendMail');
 const uploadFiles = require('./uploadFiles');
-const videos =  require('./videos')
+const videos =  require('./videos');
+const sendNotification = require('./sendNotification');
 
 router.use('/user', user);
 router.use('/categories', categories);
@@ -19,6 +20,6 @@ router.use('/progress', progress);
 router.use('/auth', authSesion);
 router.use('/send-email', sendMail);
 router.use('/videos', videos)
-// router.use('/upload-files', uploadFiles);
+router.use('/send-notification', sendNotification);
 
 module.exports = router

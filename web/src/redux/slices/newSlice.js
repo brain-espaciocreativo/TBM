@@ -12,11 +12,14 @@ export const newSlide = createSlice({
         },
         createNews: (state, action) =>{
             state.newList = action.payload
+        },
+        deleteNews: (state, action)=>{
+            state.newList
         }
     }
 })
 
-export const { setNewList, createNews } = newSlide.actions;
+export const { setNewList, createNews, deleteNews } = newSlide.actions;
 
 export default newSlide.reducer;
 
@@ -36,6 +39,16 @@ export const createOneNews = (payload) => {
         await axios.post('http://localhost:3000/news', payload)
         .then((res) => {
             dispatch(createNews(payload))
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+export const deleteOneNews = (payload) => {
+    return async (dispatch) => {
+        await axios.delete('http://localhost:3000/news/'+payload)
+        .then((res) => {
+            dispatch(deleteNews(payload))
         })
         .catch(error => console.log(error));
     }
