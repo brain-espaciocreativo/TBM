@@ -63,7 +63,6 @@ export default function Login() {
               navigate('/home')
             }
             localStorage.setItem('user', JSON.stringify(res.data.data[0]))
-            console.log(res.data.data[0]);
           }
       ).catch( err =>{
           console.log(err)
@@ -79,7 +78,7 @@ export default function Login() {
 
   return (
    
-      <Grid container component="main" sx={{ height: '100vh'}} className="gridContainer">
+      <Grid container component="main" sx={{ height: '100vh'}}>
         <CssBaseline />
         <Grid
           item
@@ -104,7 +103,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Ingresar
             </Typography>
-            <Box component="form"  onSubmit={onSubmit} sx={{ mt: 3 }}>
+            <Box component="form" onSubmit={onSubmit} sx={{ mt: 15, width:'100%' }}>
               <Box>
               <TextField
                 margin="normal"
@@ -115,7 +114,6 @@ export default function Login() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                className='input'
                 value={email}
                 onChange={onChangeEmail}
                 InputLabelProps={{
@@ -129,7 +127,6 @@ export default function Login() {
                 margin="normal"
                 required
                 fullWidth
-                className='input'
                 name="password"
                 label="Contraseña"
                 type="password"
@@ -152,10 +149,10 @@ export default function Login() {
               
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
+                fullWidth
                 color="error"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2}}
               >
                 Iniciar Sesión
               </Button>
@@ -166,7 +163,7 @@ export default function Login() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 40 }} />
+              <Copyright sx={{ mt: 20 }} />
             </Box>
           </Box>
         </Grid>
