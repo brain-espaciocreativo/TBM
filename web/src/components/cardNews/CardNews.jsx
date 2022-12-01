@@ -1,8 +1,10 @@
-import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import React from 'react'
 import ReactPlayer from 'react-player';
+import { useDispatch } from 'react-redux';
+import { deleteOneNews } from '../../redux/slices/newSlice';
 
 const useStyle = makeStyles({
     btn: {
@@ -25,7 +27,12 @@ const useStyle = makeStyles({
 export default function CardNews( { id, name, description, video } ) {
 
   const styles = useStyle();
+  const dispatch = useDispatch()
 
+  const deleteNews = (data)=>{
+    console.log(data);
+    dispatch(deleteOneNews(data))
+  }
     
   return (
     <div>
@@ -65,6 +72,12 @@ export default function CardNews( { id, name, description, video } ) {
                               <source src={`${video}`} type='video/mp4'/>
                              </video>
                         }
+                        <Button 
+                          onClick={()=>deleteNews(id)}
+                          sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}}
+                        >
+                          Borrar Novedad
+                        </Button>
                     </CardActionArea>
                   </Card>
     </div>
