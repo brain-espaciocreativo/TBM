@@ -12,6 +12,6 @@ const sequelize = new Sequelize(database, username, password, {
   dialect: 'postgres'
 });
 
-   module.exports = {
-     conn: sequelize,
-   };
+module.exports = {
+  conn: sequelize,
+};

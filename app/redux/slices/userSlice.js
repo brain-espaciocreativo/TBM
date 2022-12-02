@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import config from '../../config';
 
 export const userSlice = createSlice({
     name: 'users',
@@ -36,7 +37,7 @@ export default userSlice.reducer;
 
 export const getOneUser = (payload) => {
     return async (dispatch) => {
-        await axios.post('http://10.0.2.2:3000/auth/login', payload)
+        await axios.post( config.URL + '/auth/login', payload)
         .then(res => {
             dispatch(user(res.data.data))
         })
@@ -51,7 +52,7 @@ export const cleanOneUser = () =>{
 
 export const getWorkData = (payload) =>{
     return async (dispatch)=>{
-        await axios.get('http://10.0.2.2:3000/work/', payload)
+        await axios.get( config.URL + '/work/', payload)
         .then( res =>{
             dispatch(getOneData(res.data))
         })
