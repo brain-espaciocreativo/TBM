@@ -12,6 +12,7 @@ import axios from "axios";
 import { getAllWorks } from "../../redux/slices/workSlice";
 import './NewsStyle.css'
 
+
 export default function NewsForm () {
 
     const dispatch = useDispatch();
