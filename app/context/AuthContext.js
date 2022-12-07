@@ -4,6 +4,7 @@ import * as RootNavigation from '../RootNavigation'
 import { Alert } from "react-native";
 import toast from "../helpers/toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from '../config';
 
 export const AuthContext = createContext();
 
@@ -19,7 +20,7 @@ export const AuthProvider = ({children}) =>{
 
     const login = ( email , password) =>{
         setLoading(true)
-        axios.post('http://10.0.2.2:3000/auth/login',{
+        axios.post(`${config.URL}/auth/login`,{
             email, password
         }).then( res =>{
             let userInfo = res.data.data;
@@ -69,13 +70,13 @@ export const AuthProvider = ({children}) =>{
     }
 
     const getDataWork = (id) =>{
-        axios.get('http://10.0.2.2:3000/work/' + id)
+        axios.get(`${config.URL}/work/` + id)
         .then( (res) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })
     }
     const getDataWorkByName = (name) =>{
-        axios.get('http://10.0.2.2:3000/work/name/' + name)
+        axios.get(`${config.URL}/work/name/` + name)
         .then( (res) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })
