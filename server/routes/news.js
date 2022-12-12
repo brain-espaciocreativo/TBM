@@ -4,8 +4,9 @@ const newsControllers = require('../controllers/news')
 const multer = require('multer')
 const fs = require('fs');
 const path = require('path')
-const {News, Works} = require('../models/index');
+const {News, Works, Users} = require('../models/index');
 const errorHandling = require('../utils/errorHandling');
+const axios = require('axios');
 const BusinessError = require('../utils/BusinessError');
 
 router.get('/', newsControllers.getAllNews);
@@ -30,7 +31,6 @@ const uploads = multer({
     storage: diskStorage
 })
 
-
 router.get('/', newsControllers.getAllNews);
 router.get('/:id', newsControllers.getOneNews);
 router.post('/', uploads.single('video') , async (req, res, next) =>{
@@ -46,14 +46,22 @@ router.post('/', uploads.single('video') , async (req, res, next) =>{
                 const dataWork = await Works.findOne({
                     where: {
                         name: workId
+                    },
+                    include: {
+                        model: Users
                     }
-                })
+                });
      
                 const data = await News.create({
                     name,
                     description,
                     workId: dataWork.id
                 });
+
+                const users = dataWork.get({ plain: true });
+
+                sendNotification(users.users, data.dataValues);
+
                 res.status(201).send({status: "OK", data: data });
             }
             if(!workId && workId === ''){
@@ -70,8 +78,11 @@ router.post('/', uploads.single('video') , async (req, res, next) =>{
                 const dataWork = await Works.findOne({
                     where: {
                         name: workId
+                    },
+                    includes: {
+                        model: Users
                     }
-                })
+                });
      
                 const data = await News.create({
                     name,
@@ -79,6 +90,11 @@ router.post('/', uploads.single('video') , async (req, res, next) =>{
                     video: `videos?video=${req.file.filename}`, 
                     workId: dataWork.id
                 });
+                
+                const users = dataWork.get({ plain: true });
+
+                sendNotification(users.users, data.dataValues);
+
                 res.status(201).send({status: "OK", data: data });
             }
             if(!workId && workId === ''){
@@ -95,5 +111,24 @@ router.post('/', uploads.single('video') , async (req, res, next) =>{
         next(error)
     }
 });
+
+const sendNotification = async (users, news)=>{
+
+      try {
+        users.map(async(e)=>{
+            const message = {
+                title: news.name, 
+                message: news.description, 
+                id: e.id.toString()
+              }
+              console.log(message)
+            await axios.post('http://localhost:3000/send-notification', message)
+            .then(res=>console.log(res))
+            .catch(error=> console.log(error))
+        })
+        } catch (error) {
+        console.log(error)
+    }
+}
 
 module.exports = router;

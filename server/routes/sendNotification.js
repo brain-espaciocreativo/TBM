@@ -4,15 +4,15 @@ const axios = require("axios");
 
 router.post('/', async (req, res) => {
     const { title, message, id } = req.body;
-
+    
         try {
-            const result = await axios.post(`https://app.nativenotify.com/api/indie/notification`, {
-            subID: id,
-            appId: 4286,
-            appToken: 'aXYeglLuQBXrczxaW5H8wf',
-            title: title,
-            message: message
-            });
+            const result = axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+                subID: id,
+                appId: 4288,
+                appToken: 'G3UUXb9RiGbpDyN2Ltvh9X',
+                title: title,
+                message: message
+           });
 
             res.status(200).send({status: 200, data:'Se envio correctamente'});
             

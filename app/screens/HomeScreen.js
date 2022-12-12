@@ -8,11 +8,13 @@ import ProgresItem from '../components/progresItem/ProgresItems';
 import { AuthContext } from '../context/AuthContext';
 import { useDispatch , useSelector } from 'react-redux';
 import ListWorks from '../components/acordion/ListWorks';
+import registerNNPushToken from 'native-notify';
+import { registerIndieID } from 'native-notify';
 
 export default function HomeScreen() {
 
   const { userInfo, getDataWork, worksData} = useContext(AuthContext);
-
+  registerNNPushToken(4288, 'G3UUXb9RiGbpDyN2Ltvh9X');
 
 
   const cargarApp = () =>{
@@ -21,8 +23,13 @@ export default function HomeScreen() {
     }
   }
 
+  const suscribeNotifications = ()=>{
+      registerIndieID('1', 4288, 'G3UUXb9RiGbpDyN2Ltvh9X');
+  }
+
   useEffect(() =>{
-    cargarApp()
+    // cargarApp();
+    suscribeNotifications();
     // setTimeout(() => {
  
     // }, 30000);
@@ -38,8 +45,8 @@ const  numColumns = 2
     <>
         <FlatList ListHeaderComponent={
           <SafeAreaView>
-            <Profile />
-            <ListWorks/>
+            {/* <Profile /> */}
+            {/* <ListWorks/> */}
             {
               worksData.progresses && worksData.progresses.length > 0 ? 
               <Progreso progreso={worksData.progresses}/>
