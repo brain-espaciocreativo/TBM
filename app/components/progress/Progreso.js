@@ -51,13 +51,15 @@ const style = StyleSheet.create({
         margin:20,
     },
     texto:{
-        marginLeft: 10
+        marginLeft: 10,
+        color:'#000000'
     },
     titles:{
         marginLeft: 10,
         fontSize:20,
         fontWeight:"bold",
-        textTransform:'capitalize'
+        textTransform:'capitalize',
+        color:'#000000'
     },
     bar:{
         margin: 5,

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import { AuthContext } from '../../context/AuthContext';
 
-const ListWorks = () => {
+export default function ListWorks() {
     const { userInfo , getDataWork, getDataWorkByName} = useContext(AuthContext);
     const [ selectWork , setSelectWork] =  useState(null)
 
@@ -30,7 +30,7 @@ const ListWorks = () => {
                 <List.Accordion title="Obras" id="1">
                     {
                         userInfo[1] && userInfo[1].length ? userInfo[1].map( (e,i) =>{
-                            return <List.Item value={selectWork} onPress={() => handleOnPress({id:e.id, name: e.name})} title={e.name} key={i}/> 
+                            return <List.Item value={selectWork} titleStyle={style.title} onPress={() => handleOnPress({id:e.id, name: e.name})} title={e.name} key={i}/> 
                         }): <List.Item title='no hay trabajos'/>
                     }
                 </List.Accordion>
@@ -39,4 +39,9 @@ const ListWorks = () => {
     )
 };
 
-export default ListWorks;
+
+const style = StyleSheet.create({
+    title:{
+      color:'#000000'
+    }
+})
