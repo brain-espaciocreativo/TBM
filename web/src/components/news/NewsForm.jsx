@@ -39,7 +39,7 @@ export default function NewsForm () {
 
     const handleSubmit = async(event) => {
         event.preventDefault()
-        console.log('paso por aqui')
+        
         if(!data.description || !data.name){
           return Swal.fire({title: 'los campos deben estar llenos'})
         }
