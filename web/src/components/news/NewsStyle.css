@@ -18,3 +18,6 @@ form{
     border: none;
     cursor: pointer;
 }
+.description{
+    height: 150px !important;
+}
