@@ -65,20 +65,20 @@ export default function NavDashboard2() {
                   </ListItem>
               </Link>
               <Link to='/users' className='links'>
-              <ListItem button>
-                  <ListItemIcon>
-                      <GroupIcon className='icon'/>
-                  </ListItemIcon>
-                  <ListItemText primary='Usuarios' />
-              </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <GroupIcon className='icon'/>
+                    </ListItemIcon>
+                    <ListItemText primary='Usuarios' />
+                </ListItem>
               </Link>
               <Link className='links'>
-              <ListItem onClick={handleClean} button >
-                  <ListItemIcon>
-                      <LogoutIcon className='icon'/>
-                  </ListItemIcon>
-                  <ListItemText primary='Cerrar Sesión' />
-              </ListItem>
+                <ListItem onClick={handleClean} >
+                    <ListItemIcon>
+                        <LogoutIcon className='icon'/>
+                    </ListItemIcon>
+                    <ListItemText primary='Cerrar ' />
+                </ListItem>
               </Link>
             </Box>
             </List>
