@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logoAppOficial.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.yoel2000.app"

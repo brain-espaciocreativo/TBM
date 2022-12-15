@@ -15,12 +15,12 @@ export default function LoginScreen () {
     const { login , loading} = useContext(AuthContext);
 
     const handleLogin = () =>{
-        login(email , password);
         if(email == null){
             return toast.danger({message:"El campo email no puede estar vacio"})
         }else if(password === null){
             return toast.danger({message:"El campo password no puede estar vacio"})
         }
+        login(email , password);
         setTimeout(() => {
             setEmail('')
             setPassword('')

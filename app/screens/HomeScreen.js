@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Searchbar } from 'react-native-paper';
 import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
 import Cards from '../components/card/Cards';
@@ -6,13 +6,46 @@ import Profile from '../components/profile/Profile'
 import Progreso from '../components/progress/Progreso';
 import ProgresItem from '../components/progresItem/ProgresItems';
 import { AuthContext } from '../context/AuthContext';
-import { useDispatch , useSelector } from 'react-redux';
 import ListWorks from '../components/acordion/ListWorks';
 
 export default function HomeScreen() {
 
   const { userInfo, getDataWork, worksData} = useContext(AuthContext);
 
+  // const user = [
+  //   {
+  //     id: 1,
+  //     name: "juan",
+  //     surname: "perez",
+  //     email: "juan@gmail.com",
+  //     password: "",
+  //     phone: "12345678",
+  //     role: "admin"
+  //   }
+  // ];
+  // const works = [
+  //   {
+  //     name: "Lagos de rosario",
+  //     description: "Ubicado a 30km de la capital"
+  //   }
+  // ];
+  // const progresses = [
+  //   {
+  //     value: "30",
+  //     height_value: "30"
+  //   }
+  // ];
+  // const news = [
+  //   {
+  //     name: "Se hacen perforaciones",
+  //     description: "Se hacen perforaciones"
+  //   }
+  // ];
+  // const categories = [
+  //   {
+  //     name: "agua"
+  //   }
+  // ]
 
 
   const cargarApp = () =>{
@@ -23,9 +56,6 @@ export default function HomeScreen() {
 
   useEffect(() =>{
     cargarApp()
-    // setTimeout(() => {
- 
-    // }, 30000);
   },[])
 
   const getDataWorks = () =>{
@@ -33,7 +63,8 @@ export default function HomeScreen() {
   }
 
 
-const  numColumns = 2
+  const  numColumns = 2;
+
   return (
     <>
         <FlatList ListHeaderComponent={
@@ -60,8 +91,8 @@ const  numColumns = 2
               </View> 
               :
               <Text>No hay obras asociadas</Text>
-          }
-          {
+            }
+            {
             worksData.news && worksData.news.length > 0 ? 
             <>
             <Text style={style.novedades}>Novedades</Text>
@@ -85,8 +116,8 @@ const  numColumns = 2
           />: 
           <Text>no hay novedades</Text>
           }
-        </SafeAreaView>
-        } 
+          </SafeAreaView>
+          } 
         />
     </>
   )

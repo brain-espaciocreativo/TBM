@@ -1,15 +1,18 @@
-import React , { useState,createContext, useEffect} from "react";
+import React , { useState,createContext } from "react";
 import axios from 'axios';
 import * as RootNavigation from '../RootNavigation'
 import { Alert } from "react-native";
 import toast from "../helpers/toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import config from '../config';
+import { useNavigation } from "@react-navigation/native";
+// import config from '../config';
 
 export const AuthContext = createContext();
 
 
 export const AuthProvider = ({children}) =>{
+
+    const navigation = useNavigation();
     
     const [ userInfo , setUserInfo] = useState(null);
     const [ loading , setLoading ] = useState(false);
@@ -20,20 +23,19 @@ export const AuthProvider = ({children}) =>{
 
     const login = ( email , password) =>{
         setLoading(true)
-        axios.post(`${config.URL}/auth/login`,{
+        axios.post(`http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/auth/login`,{
             email, password
         }).then( res =>{
             let userInfo = res.data.data;
             setUserInfo(userInfo);
-            AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-            RootNavigation.navigate('Home')
-            setLoading(false)
+            AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+            navigation.navigate('Home');  
+            setLoading(false);
             if(email && password == null){
                 console.log('llene los datos por favor');
                 setLoading(false)
             }
         }).catch( e =>{
-            console.log(e);
             setLoading(false)
             if(e.response.status === 401){
                 toast.danger({message:"Datos incorrectos, verifique informacion"}) 
@@ -70,13 +72,13 @@ export const AuthProvider = ({children}) =>{
     }
 
     const getDataWork = (id) =>{
-        axios.get(`${config.URL}/work/` + id)
+        axios.get(`http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work/` + id)
         .then( (res) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })
     }
     const getDataWorkByName = (name) =>{
-        axios.get(`${config.URL}/work/name/` + name)
+        axios.get(`http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work/name/` + name)
         .then( (res) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })

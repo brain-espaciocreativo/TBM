@@ -51,7 +51,7 @@ export const cleanOneUser = () =>{
 
 export const getWorkData = (payload) =>{
     return async (dispatch)=>{
-        await axios.get('http://10.0.2.2:3000/work/', payload)
+        await axios.get('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work/', payload)
         .then( res =>{
             dispatch(getOneData(res.data))
         })
