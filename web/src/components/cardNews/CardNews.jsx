@@ -12,8 +12,8 @@ const useStyle = makeStyles({
       color: 'white'
     },
     root:{
-      maxWidth:245,
-      marginTop:'10rem',
+      maxWidth:345,
+      marginTop:'3rem'    
       marginLeft: '.2rem',
       border:'3px solid rgb(160, 7, 7)',
       borderRadius: 10,
