@@ -13,7 +13,7 @@ export default function ProgresItem(props) {
                 <Text style={style.texto} >Progreso </Text>
                 <View style={style.bar}>
                     <ProgressBar progress={parseInt(props.items.item.value)/100 } color='red' />
-                    <Text style={{marginLeft:'65%', marginTop:7, fontSize:12}}>{props.items.item.value}%</Text>
+                    <Text style={{marginLeft:'65%', marginTop:7, fontSize:12,color:'#000000'}}>{props.items.item.value}%</Text>
                 </View>
             </View>
         </SafeAreaView>
@@ -30,13 +30,15 @@ const style = StyleSheet.create({
         width:'50%'
     },
     texto:{
-        marginLeft: 10
+        marginLeft: 10,
+        color:'#000000'
     },
     titles:{
         marginLeft: 10,
         fontSize:14,
         fontWeight:"bold",
-        textTransform:'capitalize'
+        textTransform:'capitalize',
+        color:'#000000'
     },
     bar:{
         margin: 5,

@@ -5,6 +5,7 @@ import toast from '../helpers/toast';
 import { RadioButton } from 'react-native-paper';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import Hyperlink from 'react-native-hyperlink';
 
 export default function LoginScreen () {
 
@@ -75,7 +76,13 @@ export default function LoginScreen () {
                 <ActivityIndicator size="small" color="white" animating={loading} style={style.loader}/>
             }
             </TouchableOpacity>
-            <Text style={style.text}>Olvidaste tu contraseña? <Text style={style.href}>Haz click Aqui</Text></Text>
+            <Hyperlink linkDefault={true} 
+                linkText= {(url) => url === 'http://localhost:5173/resset-password' ? 'Haz click Aqui': url}
+            >
+                <Text style={style.text}>Olvidaste tu contraseña? 
+                    <Text style={style.href}> http://localhost:5173/resset-password</Text>
+                </Text>
+            </Hyperlink>
             <View style={style.footer}>
                 <Text style={{ color: "#f19ea0" }}>Términos de uso | Políca de privacidad</Text>
             </View>
