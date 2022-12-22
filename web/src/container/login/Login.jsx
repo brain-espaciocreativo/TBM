@@ -52,7 +52,7 @@ export default function Login() {
 
   const onSubmit = async (e) => {
 		e.preventDefault();
-    const peticion = await axios.post('http://localhost:3000/auth/login',{
+    const peticion = await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/auth/login',{
       email,
       password
       }).then( res =>
@@ -152,7 +152,7 @@ export default function Login() {
                 variant="contained"
                 fullWidth
                 color="error"
-                sx={{ mt: 3, mb: 2}}
+                sx={{ mt: 3, mb: 2, backgroundColor: '#C62828', color: 'white'}}
               >
                 Iniciar Sesión
               </Button>
