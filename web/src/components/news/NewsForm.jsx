@@ -32,23 +32,17 @@ export default function NewsForm () {
     })
     const [selectedFile, setSelectedFile] = useState(null);
 
-
-    useEffect(()=>{
-        dispatch(getAllWorks);
-    },[dispatch]);
+    useEffect(() => {
+      dispatch(getAllWorks());
+  }, [dispatch])
 
 
     const handleSubmit = async(event) => {
         event.preventDefault()
-
+        
         if(!data.description || !data.name){
           return Swal.fire({title: 'los campos deben estar llenos'})
         }
-
-    useEffect(()=>{
-        dispatch(getAllWorks);
-    },[dispatch]);
-
 
         const formData = new FormData();
         formData.append("video", selectedFile);
@@ -60,16 +54,13 @@ export default function NewsForm () {
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
           }).then((res) =>{
-            Swal.fire({title: 'novedad creada!'})
+            Swal.fire({title: 'Novedad creada!'})
           })
           navigate('/admin')
         } catch(error) {
           console.log(error)
         }
       }
-      useEffect(()=>{
-          dispatch(getAllWorks);
-      },[dispatch]);
     
     const handleChange = (e) =>{
         const { name, value} = e.target;
@@ -84,6 +75,10 @@ export default function NewsForm () {
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0])
       }   
+
+    const saludar = () =>{
+      console.log('hola')
+    }
     return (
         <>
             <NavDashboard />
@@ -101,16 +96,17 @@ export default function NewsForm () {
                 }} >
                 <Grid container spacing={2} sx={{display:'flex', flexDirection:'column', gap: '6', width: '50%'}} >
                     <Typography sx={{fontSize:'1.5rem', color:'#333', margin: '1rem 0'}}>Creacion de Novedades</Typography>
-                    <form onSubmit={handleSubmit} id='formulario' encType="multipart/form-data">
+                    <form onSubmit={(e)=>handleSubmit(e)} id='formulario' encType="multipart/form-data">
                         <TextField 
-                        placeholder="nombre"
+                        placeholder="Nombre"
                         type="text" 
                         name="name"
                         value={data.name}
                         onChange={handleChange}
                         />
                         <TextareaAutosize
-                        placeholder="descripcion"
+                        className="description"
+                        placeholder="Descripción"
                         type="text" 
                         name="description"
                         value={data.description}
@@ -139,7 +135,7 @@ export default function NewsForm () {
                       }
                       </Select>
                       <div>
-                        <input className="submit" type="submit" value='enviar'/>
+                        <input className="submit" type="submit" value='Enviar'/>
                       </div>
                     </form>
                   </Grid> 
