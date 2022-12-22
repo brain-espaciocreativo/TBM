@@ -34,13 +34,16 @@ export default function Cards(props) {
   return (
     <>
         <View style={style.container}>
-          <Card style={{margin:5}}>
+          <Card style={{margin:5, backgroundColor: '#fff'}}>
             <Card.Content>
               {/* <Title style={style.fecha}>{newDate}</Title> */}
               <Title style={style.nombre}>{props.info.name}</Title>
               <Paragraph style={style.texto}>{props.info.description}</Paragraph>
             </Card.Content>
-              <Title style={style.textVideo}>Video</Title>
+               {
+                props.info.video ?
+                <View>
+                <Title style={style.textVideo}>Video</Title>
                 <Video 
                   ref={video}
                   source={{uri:`http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/${props.info.video}`}}
@@ -49,7 +52,8 @@ export default function Cards(props) {
                   useNativeControls
                   resizeMode="contain"
                   onPlaybackStatusUpdate={status => setStatus(() => status)}
-                />
+                /></View> : ""
+               }
           </Card>
         </View>
     </>

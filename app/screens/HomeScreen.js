@@ -12,42 +12,6 @@ export default function HomeScreen() {
 
   const { userInfo, getDataWork, worksData} = useContext(AuthContext);
 
-  // const user = [
-  //   {
-  //     id: 1,
-  //     name: "juan",
-  //     surname: "perez",
-  //     email: "juan@gmail.com",
-  //     password: "",
-  //     phone: "12345678",
-  //     role: "admin"
-  //   }
-  // ];
-  // const works = [
-  //   {
-  //     name: "Lagos de rosario",
-  //     description: "Ubicado a 30km de la capital"
-  //   }
-  // ];
-  // const progresses = [
-  //   {
-  //     value: "30",
-  //     height_value: "30"
-  //   }
-  // ];
-  // const news = [
-  //   {
-  //     name: "Se hacen perforaciones",
-  //     description: "Se hacen perforaciones"
-  //   }
-  // ];
-  // const categories = [
-  //   {
-  //     name: "agua"
-  //   }
-  // ]
-
-
   const cargarApp = () =>{
     if(!userInfo[1] && userInfo.length){
       getDataWork(userInfo[1].id)
@@ -61,7 +25,6 @@ export default function HomeScreen() {
   const getDataWorks = () =>{
     getDataWork(userInfo[1][1].id)
   }
-
 
   const  numColumns = 2;
 
