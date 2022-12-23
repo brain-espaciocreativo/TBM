@@ -152,7 +152,7 @@ export default function Login() {
                 variant="contained"
                 fullWidth
                 color="error"
-                sx={{ mt: 3, mb: 2}}
+                sx={{ mt: 3, mb: 2, backgroundColor: '#C62828', color: 'white'}}
               >
                 Iniciar Sesión
               </Button>
