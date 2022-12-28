@@ -16,6 +16,8 @@ export const AuthProvider = ({children}) =>{
         progresses: null,
         news: null
     })
+    const [search , setSearchFilter] = useState([])
+
 
     const login = ( email , password) =>{
         setLoading(true)
@@ -72,6 +74,7 @@ export const AuthProvider = ({children}) =>{
         axios.get('http://10.0.2.2:3000/work/' + id)
         .then( (res) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
+            setSearchFilter({progresses: res.data.data.progresses, news:res.data.data.news })
         })
     }
     const getDataWorkByName = (name) =>{
@@ -80,6 +83,26 @@ export const AuthProvider = ({children}) =>{
             setWorksData({progresses: res.data.data.progresses, news:res.data.data.news })
         })
     }
+
+    const searchFilter = (text) =>{
+        if(text){
+            const newData =  worksData.news.filter((item) =>{
+                const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+                const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+            });
+            setWorksData({...worksData, news :newData})
+            console.log('soy la newsdata',newData)
+            if(!newData.length){
+                return toast.danger({message:"NO SE ENCONTRÓ NOVEDAD"})
+            }
+        }
+        else{
+            setWorksData(search)
+        }
+    }
+
+
     return (
         <AuthContext.Provider
          value={{
@@ -89,7 +112,9 @@ export const AuthProvider = ({children}) =>{
             logout,
             getDataWork,
             worksData,
-            getDataWorkByName
+            getDataWorkByName,
+            searchFilter,
+            search
          }}
          >
          {children}
