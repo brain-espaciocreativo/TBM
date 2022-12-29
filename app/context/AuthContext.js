@@ -92,7 +92,6 @@ export const AuthProvider = ({children}) =>{
             return itemData.indexOf(textData) > -1;
             });
             setWorksData({...worksData, news :newData})
-            console.log('soy la newsdata',newData)
             if(!newData.length){
                 return toast.danger({message:"NO SE ENCONTRÓ NOVEDAD"})
             }

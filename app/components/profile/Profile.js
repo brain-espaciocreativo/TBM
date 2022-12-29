@@ -27,7 +27,7 @@ export default function Profile() {
         }
     });
     
-      moment.locale('es')
+    moment.locale('es')
     const date = moment().format('LLLL');
 
     return (
