@@ -32,7 +32,7 @@ export default workSlide.reducer;
 
 export const getAllWorks = () => {
     return async (dispatch) => {
-        await axios('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work')
+        await axios(import.meta.env.VITE_URL+'/work')
         .then((res) => {
             dispatch(setWorkList(res.data.data));
         })
@@ -42,7 +42,7 @@ export const getAllWorks = () => {
 
 export const getOneWork = (payload) =>{
     return async (dispatch) => {
-        await axios('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work/'+ payload)
+        await axios(import.meta.env.VITE_URL+'/work/'+ payload)
         .then((res) => {
             dispatch(getWorkOne(res.data.data))
         })
@@ -52,7 +52,7 @@ export const getOneWork = (payload) =>{
 
 export const createOneWork = (payload) => {
     return async (dispatch) => {
-        await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work', payload)
+        await axios.post(import.meta.env.VITE_URL+'/work', payload)
         .then((res) => {
             dispatch(createWork(payload))
         })
@@ -62,7 +62,7 @@ export const createOneWork = (payload) => {
 
 export const updateOneWork = (payload) => {
     return async (dispatch) => {
-        await axios.put('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work/'+payload.categoryData.id, payload)
+        await axios.put(import.meta.env.VITE_URL+'/work/'+payload.categoryData.id, payload)
         .then(res => {
             dispatch(updateWork());
         })
@@ -73,7 +73,7 @@ export const updateOneWork = (payload) => {
 export const deleteOneWork = (payload) => {
     
     return async (dispatch) => {
-        await axios.delete('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/work/'+payload)
+        await axios.delete(import.meta.env.VITE_URL+'/work/'+payload)
         .then(res => {
             dispatch(deleteWork());
         })

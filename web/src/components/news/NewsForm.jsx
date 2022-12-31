@@ -50,7 +50,7 @@ export default function NewsForm () {
         try {
           const response = await axios({
             method: "post",
-            url: `http://localhost:3000/news?name=${data.name}&description=${data.description}&workId=${selectWork}`,
+            url: `${import.meta.env.VITE_URL}/news?name=${data.name}&description=${data.description}&workId=${selectWork}`,
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
           }).then((res) =>{
