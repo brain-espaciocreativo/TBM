@@ -52,7 +52,7 @@ export default function Login() {
 
   const onSubmit = async (e) => {
 		e.preventDefault();
-    const peticion = await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/auth/login',{
+    const peticion = await axios.post('http://localhost:3000/auth/login',{
       email,
       password
       }).then( res =>
