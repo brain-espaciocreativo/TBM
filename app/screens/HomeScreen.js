@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, TextInput } from 'react-native-paper';
 import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
 import Cards from '../components/card/Cards';
 import Profile from '../components/profile/Profile'
@@ -11,8 +11,7 @@ import ListWorks from '../components/acordion/ListWorks';
 
 export default function HomeScreen() {
 
-  const { userInfo, getDataWork, worksData} = useContext(AuthContext);
-
+  const { userInfo, getDataWork, worksData, searchFilter, search} = useContext(AuthContext);
 
 
   const cargarApp = () =>{
@@ -31,7 +30,6 @@ export default function HomeScreen() {
   const getDataWorks = () =>{
     getDataWork(userInfo[1][1].id)
   }
-
 
 const  numColumns = 2
   return (
@@ -61,19 +59,17 @@ const  numColumns = 2
               :
               <Text>No hay obras asociadas</Text>
           }
-          {
-            worksData.news && worksData.news.length > 0 ? 
-            <>
+          
             <Text style={style.novedades}>Novedades</Text>
-            <Searchbar
+            {/* <Searchbar
             placeholder='Buscar'
             fontSize='2'
             style={style.search}
+            /> */}
+            <TextInput
+              value={search}
+              onChangeText={(text)=> searchFilter(text)}
             />
-            </>
-            :
-            <Text>no hay novedades para buscar</Text>
-          }
           {
             worksData.news && worksData.news.length > 0 ? 
           <FlatList 
