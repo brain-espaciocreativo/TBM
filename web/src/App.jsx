@@ -16,7 +16,7 @@ import PasswordReset from './components/forgotPassword/PasswordReset';
 import ForgotPassword from './components/forgotPassword/ForgotPassword';
 
 function App() {
-  console.log("Esta es la key " + import.meta.env.VITE_SOME_KEY)
+  
   return (
     <div className="App">
         <Routes>
