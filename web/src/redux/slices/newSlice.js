@@ -25,7 +25,7 @@ export default newSlide.reducer;
 
 export const getAllNews = () => {
     return async (dispatch) => {
-        await axios('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/news')
+        await axios(import.meta.env.VITE_URL+'/news')
         .then((res) => {
             dispatch(setNewList(res.data.result));
         })
@@ -36,7 +36,7 @@ export const getAllNews = () => {
 export const createOneNews = (payload) => {
     console.log(payload);
     return async (dispatch) => {
-        await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/news', payload)
+        await axios.post(import.meta.env.VITE_URL+'/news', payload)
         .then((res) => {
             dispatch(createNews(payload))
         })
@@ -46,7 +46,7 @@ export const createOneNews = (payload) => {
 
 export const deleteOneNews = (payload) => {
     return async (dispatch) => {
-        await axios.delete('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/news/'+payload)
+        await axios.delete(import.meta.env.VITE_URL+'/news/'+payload)
         .then((res) => {
             dispatch(deleteNews(payload))
         })

@@ -39,7 +39,7 @@ export default userSlice.reducer;
 
 export const getAllUsers = () => {
     return (dispatch) => {
-        axios('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/user')
+        axios(import.meta.env.VITE_URL+'/user')
         .then((res) => {
             dispatch(setUserList(res.data.data));
         })
@@ -49,7 +49,7 @@ export const getAllUsers = () => {
 
 export const createOneUser = (payload) => {
     return async (dispatch) => {
-        await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/user', payload)
+        await axios.post(import.meta.env.VITE_URL+'/user', payload)
         .then((res) => {
             dispatch(createUser(payload))
         })
@@ -60,7 +60,7 @@ export const createOneUser = (payload) => {
 export const updateOneUser = (payload) => {
     
     return async (dispatch) => {
-        await axios.put('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/user/'+payload.id, payload)
+        await axios.put(import.meta.env.VITE_URL+'/user/'+payload.id, payload)
         .then(res => {
             dispatch(updateUser());
         })
@@ -71,7 +71,7 @@ export const updateOneUser = (payload) => {
 export const deleteOneUser = (payload) => {
     
     return async (dispatch) => {
-        await axios.delete('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/user/'+payload)
+        await axios.delete(import.meta.env.VITE_URL+'/user/'+payload)
         .then(res => {
             dispatch(deleteUser());
         })
@@ -81,7 +81,7 @@ export const deleteOneUser = (payload) => {
 export const getOneUser = (payload) => {
 
     return async (dispatch) => {
-        await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/auth/login', payload)
+        await axios.post(import.meta.env.VITE_URL+'/auth/login', payload)
         .then(res => {
             dispatch(user(res.data.data));
         })

@@ -52,7 +52,7 @@ export default function Login() {
 
   const onSubmit = async (e) => {
 		e.preventDefault();
-    const peticion = await axios.post('http://localhost:3000/auth/login',{
+    const peticion = await axios.post(import.meta.env.VITE_URL+'/auth/login',{
       email,
       password
       }).then( res =>

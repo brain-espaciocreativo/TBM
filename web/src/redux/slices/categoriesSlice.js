@@ -32,7 +32,7 @@ export default categoriesSlide.reducer;
 
 export const getAllCategories = () => {
     return async (dispatch) => {
-        await axios('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/categories')
+        await axios(import.meta.env.VITE_URL+'/categories')
         .then((res) => {
             dispatch(setCategoriesList(res.data.data));
         })
@@ -42,7 +42,7 @@ export const getAllCategories = () => {
 
 export const createOneCategory = (payload) => {
     return async (dispatch) => {
-         await axios.post('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/categories', {name: payload})
+         await axios.post(import.meta.env.VITE_URL+'/categories', {name: payload})
 
         .then((res) => {
             dispatch(createCategory(res.data.data))
@@ -53,7 +53,7 @@ export const createOneCategory = (payload) => {
 export const deleteOneCategory = (payload) =>{
     console.log(payload , 'soy el pauload');
     return async (dispatch) => {
-        await axios.delete('http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/categories/'+ payload)
+        await axios.delete(import.meta.env.VITE_URL+'/categories/'+ payload)
        .then((res) => {
            dispatch(deleteCategory(res.data.data))
        })
