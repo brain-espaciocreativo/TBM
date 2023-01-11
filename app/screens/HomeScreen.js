@@ -13,8 +13,8 @@ export default function HomeScreen() {
   const { userInfo, getDataWork, worksData,searchFilter} = useContext(AuthContext);
 
   const cargarApp = () =>{
-    if(!userInfo[1] && userInfo.length){
-      getDataWork(userInfo[1].id)
+    if(userInfo[1] && userInfo.length){
+      getDataWork(userInfo[1][0].id)
     }
   }
 
