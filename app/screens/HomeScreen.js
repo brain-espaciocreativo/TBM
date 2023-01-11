@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, TextInput } from 'react-native-paper';
 import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
 import Cards from '../components/card/Cards';
 import Profile from '../components/profile/Profile'
@@ -10,7 +10,7 @@ import ListWorks from '../components/acordion/ListWorks';
 
 export default function HomeScreen() {
 
-  const { userInfo, getDataWork, worksData} = useContext(AuthContext);
+  const { userInfo, getDataWork, worksData,searchFilter} = useContext(AuthContext);
 
   const cargarApp = () =>{
     if(!userInfo[1] && userInfo.length){
@@ -55,19 +55,13 @@ export default function HomeScreen() {
               :
               <Text>No hay obras asociadas</Text>
             }
-            {
-            worksData.news && worksData.news.length > 0 ? 
-            <>
+            
             <Text style={style.novedades}>Novedades</Text>
-            <Searchbar
-            placeholder='Buscar'
-            fontSize='2'
-            style={style.search}
+            <TextInput
+              style={style.search}
+              placeholder='Buscar'
+              onChangeText={(text)=> searchFilter(text)}
             />
-            </>
-            :
-            <Text>no hay novedades para buscar</Text>
-          }
           {
             worksData.news && worksData.news.length > 0 ? 
           <FlatList 
@@ -96,8 +90,11 @@ const style = StyleSheet.create({
       fontWeight:'bold'
     },
     search:{
-      borderRadius:55,
-      margin:20,
+      // margin:20,
+      width:'90%',
+      margin:'auto',
+      borderRadius:15,
+      marginBottom:25
     },
     grid:{
         width:'100%',
