@@ -62,7 +62,7 @@ export default function Profile() {
 
 const style = StyleSheet.create({
     container:{
-        marginTop:100,
+        marginTop:50,
         display:'flex',
     },
     userInfoSection:{

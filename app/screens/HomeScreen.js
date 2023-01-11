@@ -96,9 +96,8 @@ const style = StyleSheet.create({
       fontWeight:'bold'
     },
     search:{
-      backgroundColor:'#EAEAEA',
       borderRadius:55,
-      margin:20
+      margin:20,
     },
     grid:{
         width:'100%',

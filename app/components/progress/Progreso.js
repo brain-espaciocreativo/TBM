@@ -36,7 +36,7 @@ export default function Progreso({progreso}) {
                 <Text style={style.texto}>Progreso </Text>
                 <View style={style.bar}>
                     <ProgressBar progress={result/100} color='red' />
-                    <Text style={{marginLeft:'90%', marginTop:7}}>{result}%</Text>
+                    <Text style={{marginLeft:'88%', marginTop:7,color:'#000000'}}>{result}%</Text>
                 </View>
             </View>
         </SafeAreaView>
@@ -49,6 +49,9 @@ const style = StyleSheet.create({
     progreso:{
         width:'80%',
         margin:20,
+        backgroundColor:'#fff',
+        borderRadius:5,
+        padding: 10 
     },
     texto:{
         marginLeft: 10,

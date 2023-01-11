@@ -33,8 +33,8 @@ export default function Cards(props) {
 
   return (
     <>
-        <View style={style.container}>
-          <Card style={{margin:5, backgroundColor: '#fff'}}>
+       
+          <Card style={style.container}>
             <Card.Content>
               {/* <Title style={style.fecha}>{newDate}</Title> */}
               <Title style={style.nombre}>{props.info.name}</Title>
@@ -42,7 +42,7 @@ export default function Cards(props) {
             </Card.Content>
                {
                 props.info.video ?
-                <View>
+                <View style={style.videos}>
                 <Title style={style.textVideo}>Video</Title>
                 <Video 
                   ref={video}
@@ -55,17 +55,18 @@ export default function Cards(props) {
                 /></View> : ""
                }
           </Card>
-        </View>
     </>
   )
 }
 
 const style = StyleSheet.create({
   container:{
-      flex: 1,
-      backgroundColor: '#fff',
-      // margin:20
-    },
+    flex:1,
+    backgroundColor:'#fff',
+    marginRight:20,
+    marginLeft:15,
+    marginBottom:15
+  },
     novedades:{
       color:"#333",
       fontSize:18,
@@ -83,9 +84,9 @@ const style = StyleSheet.create({
     fontWeight:'bold'
   },
   nombre:{
-    marginLeft:'55%',
+    marginLeft:'35%',
     fontSize:15,
-    width: 200,
+    width: 250,
     fontWeight:'bold',
     color:'black',
     textTransform:'capitalize'
@@ -95,13 +96,7 @@ const style = StyleSheet.create({
     lineHeight:25
   },
   video:{
-    marginTop:-60,
-    margin:20,
-    // borderBottomEndRadius:60,
-    // borderBottomLeftRadius:60,
-    // borderTopEndRadius:60,
-    // borderTopLeftRadius:60,
-    width:350,
+    width:'100%',
     height:370
   },
   textVideo:{
@@ -111,6 +106,9 @@ const style = StyleSheet.create({
     fontWeight:'bold',
     color:'black',
     borderRadius:80
+  },
+  videos:{
+    margin:15
   }
 })
 
