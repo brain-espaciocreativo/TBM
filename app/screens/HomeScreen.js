@@ -91,7 +91,7 @@ const style = StyleSheet.create({
     },
     search:{
       width:'90%',
-      margin:'auto',
+      marginLeft: 17,
       borderRadius:15,
       marginBottom:25
     },
