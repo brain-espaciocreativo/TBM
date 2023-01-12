@@ -90,7 +90,6 @@ const style = StyleSheet.create({
       fontWeight:'bold'
     },
     search:{
-      // margin:20,
       width:'90%',
       margin:'auto',
       borderRadius:15,
