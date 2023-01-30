@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import moment from 'moment';
 import { Video } from 'expo-av'
@@ -48,8 +48,12 @@ export default function Cards(props) {
                   ref={video}
                   source={{uri:`http://ec2-18-228-222-33.sa-east-1.compute.amazonaws.com:3000/${props.info.video}`}}
                   style={style.video} 
-                  isLooping
+                  isMuted={false}
+                  isLooping={false}
+                  shouldPlay={false}
                   useNativeControls
+                  usePoster={true}
+                  posterSource={require('../../assets/poster.png')}
                   resizeMode="contain"
                   onPlaybackStatusUpdate={status => setStatus(() => status)}
                 /></View> : ""
