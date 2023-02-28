@@ -1,37 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import { AuthContext } from '../../context/AuthContext';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { View } from 'react-native-web';
+import { Divider } from '@mui/material';
+import { exp } from 'react-native/Libraries/Animated/Easing';
 
 export default function ListWorks() {
-    const { userInfo , getDataWork, getDataWorkByName} = useContext(AuthContext);
-    const [ selectWork , setSelectWork] =  useState(null)
+    const { userInfo, getDataWork, getDataWorkByName, setHomePage } = useContext(AuthContext);
+    const [selectWork, setSelectWork] = useState(null)
 
-    const handleOnPress = (data) =>{
-        const { id , name } = data
-        getDataWork(id)
-        setSelectWork(name)
-        console.log(selectWork)
+    const handleOnPress = (data) => {
+        const { id, name } = data
+        getDataWork(id);
+        setSelectWork(name);
+        setHomePage(false);
     }
-    // useEffect(() => {
-    //     setInterval(() => {
-    //         // getDataWork(selectWork)
-    //         getDataWorkByName('parque chacabuco')
-    //     console.log('ejecuto')
-    //         return clearInterval()
-    //     }, 5000);
 
-    // }, [])
-    
 
-    return(
+    return (
         <>
             <List.AccordionGroup>
-                <List.Accordion title="Obras" id="1">
+                <List.Accordion title="Obras" titleStyle={style.title} id="1" theme={{colors: { primary: '#4169e1' }}}>
                     {
-                        userInfo[1] && userInfo[1].length ? userInfo[1].map( (e,i) =>{
-                            return <List.Item value={selectWork} titleStyle={style.title} onPress={() => handleOnPress({id:e.id, name: e.name})} title={e.name} key={i}/> 
-                        }): <List.Item title='no hay trabajos'/>
+                        userInfo[1] && userInfo[1].length ? userInfo[1].map((e, i) => {
+                            return <View style={style.item} key={i}>
+                                <List.Item value={selectWork}
+                                    titleStyle={style.titleItem}
+                                    onPress={() => handleOnPress({ id: e.id, name: e.name })}
+                                    title={e.name}
+                                />
+                                <Divider />
+                            </View>
+                        }) : <List.Item title='no hay trabajos' />
                     }
                 </List.Accordion>
             </List.AccordionGroup>
@@ -41,7 +43,13 @@ export default function ListWorks() {
 
 
 const style = StyleSheet.create({
-    title:{
-      color:'#000000'
+    title: {
+        color: '#FFFFFF'
+    },
+    titleItem: {
+        color: "#000000"
+    },
+    item: {
+        backgroundColor: "white"
     }
 })

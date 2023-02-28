@@ -1,108 +1,76 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Searchbar, TextInput } from 'react-native-paper';
-import {StyleSheet,Text,FlatList, SafeAreaView, View } from 'react-native';
-import Cards from '../components/card/Cards';
-import Profile from '../components/profile/Profile'
-import Progreso from '../components/progress/Progreso';
-import ProgresItem from '../components/progresItem/ProgresItems';
+import { Searchbar, Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import Profile from '../components/profile/Profile';
 import { AuthContext } from '../context/AuthContext';
-import { useDispatch , useSelector } from 'react-redux';
 import ListWorks from '../components/acordion/ListWorks';
+import Appbar from '../components/appbar/appbar';
+import Progress from '../components/progress/Progress';
+import Novelty from '../components/novelty/novelty';
+import LastWork from '../components/lastWork/lastWork';
+
 
 export default function HomeScreen() {
 
-  const { userInfo, getDataWork, worksData, searchFilter, search} = useContext(AuthContext);
+  const { userInfo, getDataWork, worksData, logout, home } = useContext(AuthContext);
 
 
-  const cargarApp = () =>{
-    if(!userInfo[1] && userInfo.length){
+  const cargarApp = () => {
+    if (!userInfo[1] && userInfo.length) {
       getDataWork(userInfo[1].id)
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     cargarApp()
-    // setTimeout(() => {
- 
-    // }, 30000);
-  },[])
+  }, [])
 
-  const getDataWorks = () =>{
+  const getDataWorks = () => {
     getDataWork(userInfo[1][1].id)
   }
 
-const  numColumns = 2
   return (
-    <>
-        <FlatList ListHeaderComponent={
-          <SafeAreaView>
-            <Profile />
-            <ListWorks/>
-            {
-              worksData.progresses && worksData.progresses.length > 0 ? 
-              <Progreso progreso={worksData.progresses}/>
-              :
-              <Text>no hay progreso de obra general</Text>
-            }
-            {
-              worksData.progresses && worksData.progresses.length > 0 ? 
-              <View >
-                <FlatList 
-                numColumns={numColumns}
-                data={worksData.progresses}
-                renderItem={(item) =>{
-                  return <ProgresItem items={item}/>
-                }}
-                listKey={(progresses, index) => index.toString()}
-                />
-              </View> 
-              :
-              <Text>No hay obras asociadas</Text>
-          }
-          
-            <Text style={style.novedades}>Novedades</Text>
-            {/* <Searchbar
-            placeholder='Buscar'
-            fontSize='2'
-            style={style.search}
-            /> */}
-            <TextInput
-              value={search}
-              onChangeText={(text)=> searchFilter(text)}
-            />
-          {
-            worksData.news && worksData.news.length > 0 ? 
-          <FlatList 
-          data={worksData.news}
-          renderItem={({item}) =>{
-            return <Cards info={item}/>;
-          }}
-          listKey={(news, index) => index.toString()}
-          />: 
-          <Text>no hay novedades</Text>
-          }
-        </SafeAreaView>
-        } 
-        />
-    </>
+    <View>
+      {/* Componente Appbar */}
+      <Appbar logout={logout} />
+      {/* Componente perfil del usuario */}
+      <Profile />
+      {/* Componente Acordion */}
+      <ListWorks />
+      {/* Componente de contenidos */}
+      <View style={style.contents}>
+        {/* Componente titulo, descripcion y progreso general */}
+        {home ?
+          <View> 
+            <LastWork worksData={userInfo[1]} />
+          </View>
+          :
+          <View>
+            <View>
+              {
+                (worksData.progresses && worksData.progresses.length > 0) &&
+                <Progress title={worksData.name} description={worksData.description} progress={worksData.progresses} />
+              }
+            </View>
+            {/* Componente novedades*/}
+            <Novelty worksData={worksData} />
+          </View>
+        }
+      </View>
+    </View>
   )
 }
 
 const style = StyleSheet.create({
-    novedades:{
-      fontSize:18,
-      fontWeight:'400',
-      marginTop:0,
-      marginBottom:20,
-      margin:20,
-      fontWeight:'bold'
-    },
-    search:{
-      backgroundColor:'#EAEAEA',
-      borderRadius:55,
-      margin:20
-    },
-    grid:{
-        width:'100%',
-    }
+  search: {
+    backgroundColor: '#EAEAEA',
+    borderRadius: 55,
+    margin: 20
+  },
+  grid: {
+    width: '100%',
+  },
+  contents: {
+    margin: 20
+  }
 })
