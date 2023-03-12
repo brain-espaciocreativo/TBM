@@ -22,7 +22,7 @@ export default function WorkItem() {
         <div>
             <Grid container>
                 <Grid item>
-                    <Button 
+                    {/* <Button 
                         sx={{
                         backgroundColor: 'rgb(160, 7, 7) ',
                         color: 'white',
@@ -34,7 +34,7 @@ export default function WorkItem() {
 
                         onClick={(e, i) =>navigate("/admin/news/create")}
                         >Crear novedades
-                    </Button>
+                    </Button> */}
                 </Grid>
                 <Grid item>
                     <Grid item xs={12} columns={2}>

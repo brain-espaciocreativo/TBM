@@ -56,6 +56,14 @@ export default function NavDashboard2() {
                       <ListItemText primary='Inicio'/>
                   </ListItem>
               </Link>
+              <Link to='/admin/news/create' className='links'>
+                <ListItem button>
+                    {/* <ListItemIcon>
+                        <GroupIcon className='icon'/>
+                    </ListItemIcon> */}
+                    <ListItemText primary='Crear novedad' className='btns' />
+                </ListItem>
+              </Link>
               <Link to='/work' className='links'>
                   <ListItem button>
                       <ListItemIcon>

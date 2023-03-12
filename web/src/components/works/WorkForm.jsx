@@ -173,8 +173,10 @@ const handleAdd = () =>{
     setCreateWorkState(state => ({...state, [name]: value.trim()}));
   }
 
-
-
+  const handleCreateDescription = (e) => {
+    const { name, value} = e.target;
+    setCreateWorkState(state => ({...state, [name]: value}));
+  }
 
   const createWork = async () => {
 
@@ -246,7 +248,7 @@ return (
                     />
                     <TextareaAutosize
                       value={createWorkState.description}
-                      onChange={handleCreateWork}
+                      onChange={handleCreateDescription}
                       name='description'
                       placeholder="Descripcion de la obra"
                       style={{ width: '100%', height:150, marginTop:'2rem',
