@@ -35,7 +35,7 @@ export default function Profile() {
     return (
         <SafeAreaView>
             <View style={style.userInfoSection}>
-                <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center' }}>
                         {user.image == null ?
                             <AccountCircleIcon fontSize="large" />
@@ -52,21 +52,21 @@ export default function Profile() {
                             <Caption style={style.caption}>{date}</Caption>
                         </View>
                     </View>
-                    {IconNotifications()}
+                    {/* {IconNotifications()} */}
                 </View>
             </View>
         </SafeAreaView>
     )
 }
 
-function IconNotifications() {
+/* function IconNotifications() {
     const { worksData } = useContext(AuthContext);
     return (
         <View>
             <CampaignIcon style={worksData.progresses && worksData.progresses.length > 0 ? { color: "black" } : { color: "#db0007"}} />
         </View>
     )
-}
+} */
 
 const style = StyleSheet.create({
     userInfoSection: {
