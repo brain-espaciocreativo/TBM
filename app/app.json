@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "TBM",
-    "slug": "app",
+    "owner": "tongarias",
+    "slug": "tbm",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logoAppOficial.png",
@@ -14,22 +15,26 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yoel2000.app"
+      "bundleIdentifier": "com.tbm.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.yoel2000.app"
+      "package": "com.tbm.app",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "f1e417ae-fb54-4bd9-8ebe-f82348b097b9"
+        "projectId": "e8105a47-1a05-4ac4-8985-22732c4e261e"
       }
-    }
+    },
+    "plugins": [
+      "@react-native-firebase/app"
+    ]
   }
 }

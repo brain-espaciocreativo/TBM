@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "684593079942",
+    "project_id": "tbm-brain",
+    "storage_bucket": "tbm-brain.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684593079942:android:4e5d98afcf553763369307",
+        "android_client_info": {
+          "package_name": "com.tbm.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684593079942-ss1sp0ll0kve96gj3v84hnbaeouvl54t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd3lUAJ_nCTZh3xQqB2iKLrpfZskzSgoQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684593079942-ss1sp0ll0kve96gj3v84hnbaeouvl54t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
