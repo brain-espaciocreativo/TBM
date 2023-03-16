@@ -1,12 +1,14 @@
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
 import { Text, List } from "react-native-paper";
+import ProgressItem from "../progress/Progress.js"
 
 export default function Progress({ title, description, progress }) {
     const [result, setResult] = useState(0);
 
     useEffect(() => {
         sumas();
+        console.log(progress)
     }, [result])
 
     const sumas = () => {
@@ -33,10 +35,10 @@ export default function Progress({ title, description, progress }) {
                     </AccordionDetails>
                 </Accordion> */}
                 <List.Accordion
-                    title="Uncontrolled Accordion"
+                    title="Progreso"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="First item" />
-                    <List.Item title="Second item" />
+                    <ProgressItem size={"main"} category={"General"} result={result}/>
+                    <ProgressItem size={"secondary"} category={progress[0].category.name ?? ""} result={result}/>
                 </List.Accordion>
             </View>
         </SafeAreaView>

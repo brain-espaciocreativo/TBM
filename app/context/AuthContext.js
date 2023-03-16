@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = (email, password) => {
         setLoading(true);
+        console.log(config.URL);
         axios.post(`${config.URL}/auth/login`, {
             email, password
         }).then(res => {
@@ -59,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logout = () => {
+        console.log("logout")
         if (Platform.OS === "web") {
             AsyncStorage.removeItem('userInfo');
             RootNavigation.navigate('Login');

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { StyleSheet, View, SafeAreaView, Image, Button, Text } from "react-native";
-import { Avatar, Caption, Title } from "react-native-paper";
+import { Avatar, Caption, Title, TextInput } from "react-native-paper";
 import { AuthContext } from '../../context/AuthContext';
 import moment from 'moment';
 
@@ -36,7 +36,7 @@ export default function Profile() {
                 <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center' }}>
                         {user.image == null ?
-                            <Text>Hola</Text>
+                            <TextInput.Icon size={30} name="account-circle" />
                             :
                             <Avatar.Image
                                 source={{
@@ -45,26 +45,18 @@ export default function Profile() {
                                 size={60}
                             />
                         }
-                        <View style={{ marginLeft: 20 }}>
+                        <View style={{ marginLeft: 40 }}>
                             <Title style={[style.title, { letterSpacing: 1 }]}>¡Hola {user.name}!</Title>
                             <Caption style={style.caption}>{date}</Caption>
                         </View>
                     </View>
-                    {/* {IconNotifications()} */}
                 </View>
             </View>
         </SafeAreaView>
     )
 }
 
-/* function IconNotifications() {
-    const { worksData } = useContext(AuthContext);
-    return (
-        <View>
-            <CampaignIcon style={worksData.progresses && worksData.progresses.length > 0 ? { color: "black" } : { color: "#db0007"}} />
-        </View>
-    )
-} */
+
 
 const style = StyleSheet.create({
     userInfoSection: {

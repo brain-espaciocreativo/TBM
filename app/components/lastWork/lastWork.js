@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useEffect } from "react";
-import { StyleSheet, Button, TouchableHighlight, View } from "react-native";
-import { Text } from "react-native-paper";
+import { StyleSheet, TouchableHighlight, View, Text } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function LastWork({ worksData }) {
@@ -26,17 +25,14 @@ export default function LastWork({ worksData }) {
 
     return (
         <View>
-            {lastWork != null &&
+            {lastWork != null ?
                 <TouchableHighlight onPress={() => handleOnPress(lastWork.id)} underlayColor="white">
-                    <View style={style.cardContainer}>
-                        <View style={style.cardTexts}>
-                            <Text style={style.cardTitle}>{lastWork.name}</Text>
-                            <Text style={style.cardDescription}>{lastWork.description}</Text>
-                        </View>
-                        {/* <ReadMoreIcon style={{ color: "#db0007" }} /> */}
-                    </View>
+                     <View style={style.cardContainer}>
+                        <Text>{lastWork.name}</Text>
+                     </View>
                 </TouchableHighlight>
-            }
+                : <Text></Text>
+            } 
         </View>
     )
 }
@@ -64,3 +60,12 @@ const style = StyleSheet.create({
         flexDirection: "column",
     }
 })
+
+{/* <TouchableHighlight onPress={() => handleOnPress(lastWork.id)} underlayColor="white">
+                    <View style={style.cardContainer}>
+                        <View style={style.cardTexts}>
+                            <Text style={style.cardTitle}>{lastWork.name}</Text>
+                            <Text style={style.cardDescription}>{lastWork.description}</Text>
+                        </View>
+                    </View>
+                </TouchableHighlight>*/}

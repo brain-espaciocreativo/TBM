@@ -42,7 +42,7 @@ export default function ListWorks() {
 
 const style = StyleSheet.create({
     title: {
-        color: '#FFFFFF'
+        color: '#000000'
     },
     titleItem: {
         color: "#000000"

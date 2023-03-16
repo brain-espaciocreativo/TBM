@@ -1,15 +1,19 @@
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, SafeAreaView } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Appbar } from 'react-native-paper';
 
-export default function AppBar({ logout }) {
-  const { setHomePage } = useContext(AuthContext);
+export default function AppBar() {
+  const { setHomePage, logout } = useContext(AuthContext);
 
   return (
-    <Appbar>
-      <Appbar.Action icon="magnify" onPress={() => logout}/>
-    </Appbar>
+    <Appbar.Header style={style.appbar}>
+      <Image
+        style={style.image}
+        source={require('../../assets/logobn.png')}
+      />
+      <Appbar.Action icon="exit-to-app" onPress={logout} />
+    </Appbar.Header>
   );
 }
 
@@ -19,6 +23,8 @@ const style = StyleSheet.create({
     height: 33,
   },
   appbar: {
-    backgroundColor: "#db0007"
+    backgroundColor: "#db0007",
+    display: "flex",
+    justifyContent: "space-between"
   }
 })

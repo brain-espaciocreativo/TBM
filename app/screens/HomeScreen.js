@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Searchbar, Text, TextInput } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import Profile from '../components/profile/Profile';
 import { AuthContext } from '../context/AuthContext';
 import ListWorks from '../components/acordion/ListWorks';
@@ -12,7 +12,7 @@ import LastWork from '../components/lastWork/lastWork';
 
 export default function HomeScreen() {
 
-  const { userInfo, getDataWork, worksData, logout, home } = useContext(AuthContext);
+  const { userInfo, getDataWork, worksData, home } = useContext(AuthContext);
 
 
   const cargarApp = () => {
@@ -30,34 +30,39 @@ export default function HomeScreen() {
   }
 
   return (
-    <View>
-      {/* Componente Appbar */}
-      <AppBar logout={logout} />
-      {/* Componente perfil del usuario */}
-      <Profile />
-      {/* Componente Acordion */}
-      <ListWorks />
-      {/* Componente de contenidos */}
-      <View style={style.contents}>
-        {/* Componente titulo, descripcion y progreso general */}
-        {home ?
-          <View>
-            <LastWork worksData={userInfo[1]} />
-          </View>
-          :
-          <View>
+    <SafeAreaView>
+      <View>
+        {/* Componente Appbar */}
+        <AppBar/>
+        {/* Componente perfil del usuario */}
+        <Profile />
+        {/* Componente Acordion */}
+        <ListWorks />
+        {/* Componente de contenidos */}
+        <View style={style.contents}>
+          {/* <View>
+          <LastWork worksData={userInfo[1]} />
+        </View> */}
+          {/* Componente titulo, descripcion y progreso general */}
+          {home ?
             <View>
-              {
-                (worksData.progresses && worksData.progresses.length > 0) ?
-                  <Progress title={worksData.name} description={worksData.description} progress={worksData.progresses} />
-                  : <Text> </Text>
-              }
+              <LastWork worksData={userInfo[1]} />
             </View>
-            <Novelty worksData={worksData} />
-          </View>
-        }
+            :
+            <View>
+              <View>
+                {
+                  (worksData.progresses && worksData.progresses.length > 0) ?
+                    <Progress title={worksData.name} description={worksData.description} progress={worksData.progresses} />
+                    : <Text> </Text>
+                }
+              </View>
+              <Novelty worksData={worksData} />
+            </View>
+          }
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

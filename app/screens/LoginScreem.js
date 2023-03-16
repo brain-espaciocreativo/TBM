@@ -45,7 +45,9 @@ export default function LoginScreen() {
                 onChangeText={text => setEmail(text)}
                 style={style.input}
                 mode='flat'
+                selectionColor='#db0007'
                 underlineColor = '#db0007'
+                activeUnderlineColor = '#db0007'
                 left= {<TextInput.Icon name="account-circle" />}
             />
               <TextInput
@@ -54,9 +56,12 @@ export default function LoginScreen() {
                 onChangeText={text => setPassword(text)}
                 style={style.input}
                 mode='flat'
+                selectionColor='#db0007'
                 underlineColor = '#db0007'
+                secureTextEntry= {show}
+                activeUnderlineColor = '#db0007'
                 left= {<TextInput.Icon name="lock" />}
-                right={<TextInput.Icon name="eye" />}
+                right={<TextInput.Icon onPress={() => setShow(!show)} name={show ? "eye" : "eye-off" }/>}
             />
             <TouchableOpacity style={style.containerButton} onPress={() => { handleLogin() }} >
                 {!loading ?
@@ -101,10 +106,8 @@ const style = StyleSheet.create({
         height: 56,
         marginTop: 10,
         marginBottom: 10,
-        borderRadius: 26,
         border: "none",
-        /* backgroundColor: "#db0007",
-        color: "white" */
+        backgroundColor: "#ffffff"
     },
     containerButton: {
         backgroundColor: "#db0007",
