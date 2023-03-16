@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import { AuthContext } from '../../context/AuthContext';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { View } from 'react-native-web';
-import { Divider } from '@mui/material';
-import { exp } from 'react-native/Libraries/Animated/Easing';
+import { View } from 'react-native';
+import { Divider } from 'react-native-paper';
 
 export default function ListWorks() {
     const { userInfo, getDataWork, getDataWorkByName, setHomePage } = useContext(AuthContext);

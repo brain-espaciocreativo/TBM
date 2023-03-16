@@ -1,4 +1,4 @@
-import { View, FlatList } from "react-native-web";
+import { View, FlatList } from "react-native";
 import { StyleSheet } from "react-native";
 import { Searchbar, Text, TextInput } from 'react-native-paper';
 import { useContext } from "react";

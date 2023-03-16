@@ -1,10 +1,8 @@
-import { TouchableHighlight, View } from "react-native-web";
 import { useContext, useState } from "react";
 import { useEffect } from "react";
-import { StyleSheet, Button } from "react-native";
+import { StyleSheet, Button, TouchableHighlight, View } from "react-native";
 import { Text } from "react-native-paper";
 import { AuthContext } from "../../context/AuthContext";
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
 
 export default function LastWork({ worksData }) {
 
@@ -35,7 +33,7 @@ export default function LastWork({ worksData }) {
                             <Text style={style.cardTitle}>{lastWork.name}</Text>
                             <Text style={style.cardDescription}>{lastWork.description}</Text>
                         </View>
-                        <ReadMoreIcon style={{ color: "#db0007" }} />
+                        {/* <ReadMoreIcon style={{ color: "#db0007" }} /> */}
                     </View>
                 </TouchableHighlight>
             }

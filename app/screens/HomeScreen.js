@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import Profile from '../components/profile/Profile';
 import { AuthContext } from '../context/AuthContext';
 import ListWorks from '../components/acordion/ListWorks';
-import Appbar from '../components/appbar/appbar';
+import AppBar from '../components/appbar/appbar';
 import Progress from '../components/progress/Progress';
 import Novelty from '../components/novelty/novelty';
 import LastWork from '../components/lastWork/lastWork';
@@ -32,7 +32,7 @@ export default function HomeScreen() {
   return (
     <View>
       {/* Componente Appbar */}
-      <Appbar logout={logout} />
+      <AppBar logout={logout} />
       {/* Componente perfil del usuario */}
       <Profile />
       {/* Componente Acordion */}
@@ -41,18 +41,18 @@ export default function HomeScreen() {
       <View style={style.contents}>
         {/* Componente titulo, descripcion y progreso general */}
         {home ?
-          <View> 
+          <View>
             <LastWork worksData={userInfo[1]} />
           </View>
           :
           <View>
             <View>
               {
-                (worksData.progresses && worksData.progresses.length > 0) &&
-                <Progress title={worksData.name} description={worksData.description} progress={worksData.progresses} />
+                (worksData.progresses && worksData.progresses.length > 0) ?
+                  <Progress title={worksData.name} description={worksData.description} progress={worksData.progresses} />
+                  : <Text> </Text>
               }
             </View>
-            {/* Componente novedades*/}
             <Novelty worksData={worksData} />
           </View>
         }

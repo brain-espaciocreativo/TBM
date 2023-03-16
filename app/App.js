@@ -26,7 +26,7 @@ export default function App() {
   useEffect(() => {
     isReadyRef.current = false;
 
-    if (!Platform.OS === "web") {
+    /* if (!Platform.OS === "web") {
 
       if (requestUserPermission) {
         messaging().getToken().then(token => {
@@ -63,7 +63,7 @@ export default function App() {
       });
 
       return unsubscribe;
-    }
+    } */
 
   }, []);
 

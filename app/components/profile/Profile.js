@@ -1,10 +1,8 @@
 import { useContext, useEffect } from "react";
-import { StyleSheet, View, SafeAreaView, Image, Button } from "react-native"
-import { Avatar, Caption, Title } from "react-native-paper"
-import { AuthContext } from '../../context/AuthContext'
-import moment from 'moment'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CampaignIcon from '@mui/icons-material/Campaign';
+import { StyleSheet, View, SafeAreaView, Image, Button, Text } from "react-native";
+import { Avatar, Caption, Title } from "react-native-paper";
+import { AuthContext } from '../../context/AuthContext';
+import moment from 'moment';
 
 export default function Profile() {
 
@@ -38,7 +36,7 @@ export default function Profile() {
                 <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center' }}>
                         {user.image == null ?
-                            <AccountCircleIcon fontSize="large" />
+                            <Text>Hola</Text>
                             :
                             <Avatar.Image
                                 source={{

@@ -1,12 +1,6 @@
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
-import { Text } from "react-native-paper";
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ProgressItem from "../progressItem/ProgressItems";
-
+import { Text, List } from "react-native-paper";
 
 export default function Progress({ title, description, progress }) {
     const [result, setResult] = useState(0);
@@ -30,14 +24,20 @@ export default function Progress({ title, description, progress }) {
                 <Text style={style.title}>{title}</Text>
                 <Text style={style.description}>{description}</Text>
                 <Text style={style.subtitle}>Progreso</Text>
-                <Accordion>
+                {/* <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
                         <ProgressItem size={"main"} category={"General"} result={result}/>
                     </AccordionSummary>
                     <AccordionDetails >
                         <ProgressItem size={"secondary"} category={progress[0].category.name} result={result}/>
                     </AccordionDetails>
-                </Accordion>
+                </Accordion> */}
+                <List.Accordion
+                    title="Uncontrolled Accordion"
+                    left={props => <List.Icon {...props} icon="folder" />}>
+                    <List.Item title="First item" />
+                    <List.Item title="Second item" />
+                </List.Accordion>
             </View>
         </SafeAreaView>
     )

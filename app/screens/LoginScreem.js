@@ -4,16 +4,7 @@ import toast from '../helpers/toast';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import Hyperlink from 'react-native-hyperlink';
-//Icons
-import { AccountCircle } from '@mui/icons-material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import LockIcon from '@mui/icons-material/Lock';
-// Material imports
-import { red } from '@mui/material/colors';
-import { TextField, InputAdornment, IconButton, Checkbox, FormControlLabel } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
+import { TextInput } from 'react-native-paper';
 
 export default function LoginScreen() {
 
@@ -48,61 +39,25 @@ export default function LoginScreen() {
                     source={require('../assets/logo4.jpg')}
                 />
             </Text>
-            <CssTextField
+            <TextInput
                 placeholder='Correo'
                 value={email}
-                type="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChangeText={text => setEmail(text)}
                 style={style.input}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <AccountCircle />
-                        </InputAdornment>
-                    ),
-                }}
+                mode='flat'
+                underlineColor = '#db0007'
+                left= {<TextInput.Icon name="account-circle" />}
             />
-            <CssTextField
+              <TextInput
                 placeholder="Contraseña"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
-                type={show ? "text" : "password"}
+                onChangeText={text => setPassword(text)}
                 style={style.input}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <LockIcon />
-                        </InputAdornment>
-                    ),
-                    endAdornment: (
-                        <InputAdornment position="end" >
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={() => setShow(!show)}>
-                                {!show ? <VisibilityIcon sx={{ color: red[800] }} /> : <VisibilityOffIcon sx={{ color: red[800] }} />}
-                            </IconButton>
-                        </InputAdornment>
-                    )
-                }}
+                mode='flat'
+                underlineColor = '#db0007'
+                left= {<TextInput.Icon name="lock" />}
+                right={<TextInput.Icon name="eye" />}
             />
-            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <FormControlLabel
-                    label="Mantener sesion iniciada"
-                    control={
-                        <Checkbox
-                            onChange={() => setStayAline(!stayAlive)}
-                            {...label}
-                            defaultChecked
-                            sx={{
-                                color: red[800],
-                                '&.Mui-checked': {
-                                    color: red[800],
-                                },
-                            }}
-                        />
-                    }
-                />
-            </View>
             <TouchableOpacity style={style.containerButton} onPress={() => { handleLogin() }} >
                 {!loading ?
                     <Text style={style.buttonText}>
@@ -125,26 +80,6 @@ export default function LoginScreen() {
         </View >
     )
 }
-
-const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-        color: 'red',
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: 'red',
-    },
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            borderColor: 'grey',
-        },
-        '&:hover fieldset': {
-            borderColor: 'black',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'red',
-        },
-    },
-});
 
 const style = StyleSheet.create({
     text: {
