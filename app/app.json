@@ -22,6 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "userInterfaceStyle": "light",
       "package": "com.tbm.app",
       "googleServicesFile": "./google-services.json"
     },
