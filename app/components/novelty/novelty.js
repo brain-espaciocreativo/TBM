@@ -32,7 +32,7 @@ const Novelty = ({ worksData }) => {
                         }}
                         listKey={(news, index) => index.toString()}
                     /> :
-                    <Text>no hay novedades</Text>
+                    <Text style={{ marginTop: 10, marginLeft:10}}>no hay novedades</Text>
             }
         </View>
     );

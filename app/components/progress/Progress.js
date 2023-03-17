@@ -1,47 +1,39 @@
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
 import { Text, List } from "react-native-paper";
-import ProgressItem from "../progress/Progress.js"
+import ProgressItem from "../progressItem/ProgressItems.js";
 
 export default function Progress({ title, description, progress }) {
     const [result, setResult] = useState(0);
 
     useEffect(() => {
         sumas();
-        console.log(progress)
     }, [result])
 
     const sumas = () => {
         let porcentajeTotal = 0;
-        progress.forEach(e => {
-            porcentajeTotal += parseFloat(e.value);
-        });
-        porcentajeTotal = parseFloat((porcentajeTotal) / progress.length);
+        if (progress != undefined && progress != null) {
+            progress.forEach(e => {
+                porcentajeTotal += parseFloat(e.value);
+            });
+            porcentajeTotal = parseFloat((porcentajeTotal) / progress.length);
+        }
         setResult(porcentajeTotal);
     }
 
     return (
-        <SafeAreaView>
-            <View style={{ marginBottom: 20 }}>
-                <Text style={style.title}>{title}</Text>
-                <Text style={style.description}>{description}</Text>
-                <Text style={style.subtitle}>Progreso</Text>
-                {/* <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
-                        <ProgressItem size={"main"} category={"General"} result={result}/>
-                    </AccordionSummary>
-                    <AccordionDetails >
-                        <ProgressItem size={"secondary"} category={progress[0].category.name} result={result}/>
-                    </AccordionDetails>
-                </Accordion> */}
-                <List.Accordion
-                    title="Progreso"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <ProgressItem size={"main"} category={"General"} result={result}/>
-                    <ProgressItem size={"secondary"} category={progress[0].category.name ?? ""} result={result}/>
-                </List.Accordion>
-            </View>
-        </SafeAreaView>
+        <View style={{ marginBottom: 20 }}>
+            <Text style={style.title}>{title}</Text>
+            <Text style={style.description}>{description}</Text>
+            <Text style={style.subtitle}>Progreso</Text>
+            <List.Accordion
+                title="Progreso"
+                titleStyle={{color: "#000000"}}
+                left={props => <List.Icon {...props} color={"#db0007"} icon="chart-bar" />}>
+                <ProgressItem size={"main"} category={"General"} result={result} />
+                <ProgressItem size={"secondary"} category={progress[0].category.name} result={result} />
+            </List.Accordion>
+        </View>
     )
 }
 

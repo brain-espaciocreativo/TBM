@@ -20,7 +20,6 @@ export default function LastWork({ worksData }) {
     function getLastWork() {
         let last = worksData.sort((a, b) => new Date(b.user_work.createdAt).getTime() - new Date(a.user_work.createdAt).getTime())[0];
         setLastWork(last);
-        console.log(last);
     }
 
     return (

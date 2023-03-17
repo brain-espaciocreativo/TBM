@@ -27,7 +27,7 @@ export default function App() {
     isReadyRef.current = false;
 
 
-    /* if (requestUserPermission) {
+    if (requestUserPermission) {
       messaging().getToken().then(token => {
         console.log(token);
       })
@@ -61,7 +61,7 @@ export default function App() {
       Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
-    return unsubscribe; */
+    return unsubscribe;
 
 
   }, []);
