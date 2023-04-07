@@ -81,6 +81,7 @@ export const deleteOneUser = (payload) => {
 export const getOneUser = (payload) => {
 
     return async (dispatch) => {
+        console.log(import.meta.env.VITE_URL)
         await axios.post(import.meta.env.VITE_URL+'/auth/login', payload)
         .then(res => {
             dispatch(user(res.data.data));
