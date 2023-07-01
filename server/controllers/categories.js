@@ -22,7 +22,7 @@ const getOneCategories = async(req, res,next)=>{
     }
 }
 const createOneCategories = async (req, res, next) => {
-    const { name, progressId } = req.body; 
+    const { name, progressId } = req.body;
 
     try {
         if(!name ) throw new BusinessError('Datos obligatorios', 401);
