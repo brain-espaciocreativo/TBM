@@ -5,29 +5,25 @@ const News = require('./News.js')(conn);
 const Categories = require('./Categories')(conn);
 const Progress = require('./Progress')(conn);
 
-// TODO: Crear relaciones
-
 // Relacion usuarios con trabajos ( n a n)
-Users.belongsToMany( Works, { through: "user_work"});
-Works.belongsToMany(Users, { through:"user_work" });
-
-
+Users.belongsToMany(Works, { through: "user_work" });
+Works.belongsToMany(Users, { through: "user_work" });
 
 // Relacion trabajo con novedades ( 1 a n)
-Works.hasMany(News, { foreignKey: 'workId', sourceKey: 'id' });
-News.belongsTo(Works, { foreignKey: 'workId', targetId: 'id' });
+Works.hasMany(News, { foreignKey: 'workId' });
+News.belongsTo(Works, { foreignKey: 'workId' });
 
 // Relacion trabajos con progreso (1 a n)
-Works.hasMany(Progress, { foreignKey: 'work_progress', sourceKey: 'id' });
-Progress.belongsTo(Works, { foreignKey: 'work_progress', targetId: 'id' });
+Works.hasMany(Progress, { foreignKey: 'workId' });
+Progress.belongsTo(Works, { foreignKey: 'workId' });
 
 // Relacion noticias a progreso ----> falta terminar (1 a 1)
-News.hasOne(Progress, { foreignKey: 'newsId', sourceKey: 'id' });
-Progress.belongsTo(News, {foreignKey: 'newsId', targetId: 'id'});
+News.hasMany(Progress, { foreignKey: 'newsId' });
+Progress.belongsTo(News, { foreignKey: 'newsId' });
 
-// Relacion progreso a categorias (1 a 1)
-Categories.hasOne(Progress, { foreignKey: 'categoryId', sourceKey: 'id' });
-Progress.belongsTo(Categories, { foreignKey: 'categoryId', sourceKey: 'id' })
+// Relacion progreso a categorias (1 a n)
+Progress.belongsTo(Categories, { foreignKey: 'categoryId' });
+Categories.hasMany(Progress, { foreignKey: 'categoryId' });
 
 module.exports = {
     Users,
