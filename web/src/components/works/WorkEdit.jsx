@@ -8,6 +8,7 @@ import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import { Add} from '@mui/icons-material';
 import { createOneCategory, deleteOneCategory, getAllCategories } from "../../redux/slices/categoriesSlice";
+import { getAllUsers } from "../../redux/slices/userSlice";
 
 
 export default function WorkEdit () {
@@ -25,6 +26,9 @@ export default function WorkEdit () {
   const [ ship, setShip] = useState([]);
 
   const [ number, setNumbre ] = useState(0)
+  const [ selectUser, setSelectUser ] = useState("");
+  const user = useSelector(state => state.users.list);
+  const [ shipUsers , setShipUsers] = useState([])
 
   if(work && number < 1 ){
       work.progresses.map((e) =>{
@@ -52,9 +56,10 @@ export default function WorkEdit () {
     const {id} = useParams();
     
     useEffect(()=>{
-      dispatch(getOneWork(id))
-      dispatch(getAllCategories())
-    }, []);
+      dispatch(getOneWork(id));
+      dispatch(getAllUsers());
+      dispatch(getAllCategories());
+    }, [dispatch]);
 
 
             
@@ -88,6 +93,19 @@ export default function WorkEdit () {
   const handleSelectCategoria = (e) =>{
     SetSelectedCategory(e.target.value);
     setCategoriaUnica(e.target.value.name)
+  }
+
+  const handleselectUser = (e) =>{
+    setSelectUser(e.target.value)
+  }
+
+  const handleAddChipUser = () =>{
+    setShipUsers(state => [...state, selectUser]);
+    console.log(shipUsers)
+  }
+
+  const handleChipDeleteUser = (chipToDelete) =>{
+    setShipUsers((chips) => chips.filter((chip) => chip.email != chipToDelete))
   }
 
 const [ array , setArray] = useState([])
@@ -281,6 +299,33 @@ const handleChipDelete = (chipToDelete) =>{
                         onDelete={ () => handleChipDelete(`${e.category}`)}
                         />
                       )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Categorias</Typography>}
+                    </Stack>
+                    <FormControl  sx={{marginTop:'2rem'}} >
+                      <InputLabel id="demo-simple-select-label">usuarios</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        name="name"
+                        value={selectUser}
+                        onChange={handleselectUser}
+                        label="Usuarios"
+                        sx={{
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)',border:'3px solid rgb(160, 7, 7)',borderRadius: 2}} 
+                      >
+                      {
+                        user && user.length ? 
+                          user.map((e ,i )=>{
+                            return <MenuItem key= {i} value={e}>{e.email}</MenuItem>
+                          }) : <MenuItem value='No hay usuarios'>No hay Usuarios</MenuItem>
+                      }
+                      </Select>
+                      <Button onClick={handleAddChipUser}>Agregar usuario</Button>
+                      </FormControl>
+
+                      <Stack direction="row" spacing={1}>
+                      { shipUsers && shipUsers.length > 0 ? shipUsers.map( (e, i) =>(
+                        <Chip key={i} label={` ${e.email}`} onDelete={ () => handleChipDeleteUser(`${e.email}`)}/>
+                      )) : <Typography sx={{color: '#636362', marginTop:'2rem'}}>No hay Usuarios</Typography>}
                     </Stack>
                     </Box>
                   <Grid sx={{display:'flex', gap:'5rem'}} item xs={2}>
