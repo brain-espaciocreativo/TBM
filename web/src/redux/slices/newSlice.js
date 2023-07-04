@@ -27,7 +27,7 @@ export const getAllNews = () => {
     return async (dispatch) => {
         await axios(import.meta.env.VITE_URL+'/news')
         .then((res) => {
-            dispatch(setNewList(res.data.result));
+            dispatch(setNewList(res.data.data));
         })
         .catch((error) => console.log(error))
     }

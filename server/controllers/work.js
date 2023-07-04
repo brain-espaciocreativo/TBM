@@ -1,6 +1,7 @@
 const { Works, News, Progress, Categories, Users } = require('../models');
-const { progressController: progress } = require('../controllers');
+const { create: createProgress } = require('../controllers/progress');
 const BusinessError = require('../utils/BusinessError');
+const { Op } = require('sequelize');
 
 const getAll = async (req, res, next) => {
     try {
@@ -13,7 +14,8 @@ const getAll = async (req, res, next) => {
                     },
                 },
                 {
-                    model: Users
+                    model: Users,
+                    attributes: { exclude: ["password"] }
                 }]
         });
         res.status(201).send({ status: "OK", data });
@@ -39,10 +41,16 @@ const get = async (req, res, next) => {
                 model: Progress,
                 include: {
                     model: Categories
+                },
+                where: {
+                    weight: {
+                        [Op.not]: null
+                    }
                 }
             },
             {
-                model: Users
+                model: Users,
+                attributes: ['email']
             }]
 
         });
@@ -58,39 +66,31 @@ const create = async (req, res, next) => {
     try {
         if (!work.name || !work.description) throw new BusinessError('Datos obligatorios', 401);
 
-        const createdWork = [];
-
-        createdWork = await Works.create({
-            name: work.name,
-            description: work.description
+        const users = await Users.findAll({
+            where: {
+                id: usersIds
+            }
         });
 
-        const users = [];
-
-        if (usersIds) {
-            users = await Users.find({
-                where: {
-                    id: usersIds
-                }
-            });
-        }
-
-        createdWork = await Works.create({
+        const createdWork = await Works.create({
             name: work.name,
             description: work.description,
-            users
         });
 
-        if (!progresses) {
+        createdWork.addUsers(users);
+
+        if (progresses && progresses.length > 0) {
+            const createdProgresses = await Promise.all(
+                progresses.map(progress => createProgress(progress, createdWork.dataValues.id))
+            );
+
+            res.status(201).send({ status: "OK", data: { ...createdWork.dataValues, processes: createdProgresses } });
+        } else {
             res.status(201).send({ status: "OK", data: createdWork });
         }
 
-        const createdProgresses = await Promise.all(
-            progresses.map(progress => progressController.create({ ...progress, workId: workCreated.id }))
-        );
-
-        res.status(201).send({ status: "OK", data: { ...createdWork, processes: createdProgresses } });
     } catch (error) {
+        console.log(error)
         next(error)
     }
 };
@@ -101,27 +101,37 @@ const update = async (req, res, next) => {
 
     try {
         if (!name || !description) throw new BusinessError('Datos obligatorios', 401);
-        const users = [];
+        data = await Works.findOne({
+            where: {
+                id: id
+            }
+        });
 
-        if(usersIds) {
-            users = await Users.find({
-                where:{
-                    id: usersIds
-                }
-            });
+        if (data.users) {
+            data.users.map(u => data.removeUser(u))
         }
-        const data = await Works.update({
+
+        const users = await Users.findAll({
+            where: {
+                id: usersIds
+            }
+        });
+
+        await Works.update({
             name: name,
             description: description,
-            users,
         }, {
             where: {
                 id: id
             }
         });
 
+
+        data.addUsers(users);
+
         res.status(201).send({ status: "OK", data });
     } catch (error) {
+        console.log(error)
         next(error)
     }
 };

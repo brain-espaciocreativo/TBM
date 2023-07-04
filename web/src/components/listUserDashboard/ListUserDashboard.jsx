@@ -72,7 +72,6 @@ export default function ListUserDashboard() {
       setUsersList(state => [...state, e.email])
     })
     setCount(count + 1)
-    console.log(usersList)
   }
 
 

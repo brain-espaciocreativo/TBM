@@ -51,18 +51,28 @@ export const getOneWork = (payload) =>{
 }
 
 export const createOneWork = (payload) => {
+    const params = {
+        work: payload.work,
+        progresses: payload.ships,
+        usersIds: payload.shipUsers.map(u => u.id)
+    }
+
     return async (dispatch) => {
-        await axios.post(import.meta.env.VITE_URL+'/work', payload)
+        await axios.post(import.meta.env.VITE_URL+'/work', params)
         .then((res) => {
-            dispatch(createWork(payload))
+            dispatch(createWork(res.data.data))
         })
         .catch(error => console.log(error));
     }
 }
 
 export const updateOneWork = (payload) => {
+    const params = {
+        ...payload.work,
+        usersIds: payload.users.map(u => u.id)
+    }
     return async (dispatch) => {
-        await axios.put(import.meta.env.VITE_URL+'/work/'+payload.categoryData.id, payload)
+        await axios.put(import.meta.env.VITE_URL+'/work/'+payload.work.id, params)
         .then(res => {
             dispatch(updateWork());
         })

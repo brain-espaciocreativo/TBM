@@ -69,7 +69,7 @@ export default function WorkItem() {
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">Categorias</Typography>
                         {
                           e.progresses.map((element, i)=>{
-                            return <Chip sx={{background:'#f0b8ba'}} key={i} label={`${element.category.name} ${element.value}% ${element.height_value}%`}/>
+                            return <Chip sx={{background:'#f0b8ba'}} key={i} label={`${element.category.name} ${element.value}% ${element.weight}%`}/>
                           })
                         }
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">Usuarios</Typography>

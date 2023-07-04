@@ -7,7 +7,6 @@ const news = require('./news');
 const work = require('./work');
 const authSesion = require('./authSession');
 const sendMail = require('./sendMail');
-const uploadFiles = require('./uploadFiles');
 const videos =  require('./videos');
 const sendNotification = require('./sendNotification');
 

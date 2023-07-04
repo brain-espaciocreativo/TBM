@@ -1,5 +1,5 @@
-const { News } = require('../models/index');
-const { progressController: progress } = require('../controllers');
+const { News, Progress } = require('../models/index');
+const { destroyWithNewId, createWithNewsId } = require('../controllers/progress');
 const BusinessError = require('../utils/BusinessError');
 
 
@@ -29,7 +29,9 @@ const get = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
-    const { name, description, file, workId, progresses } = req.body;
+    const { file } = req;
+    const { name, description, workId, progresses } = req.body;
+    const procesos = JSON.parse(progresses);
 
     try {
         if (!name || !description || !workId) throw new BusinessError("Datos obligatorios", 401);
@@ -43,17 +45,18 @@ const create = async (req, res, next) => {
             workId
         });
 
-        const createdProgress = [];
-
-        if (progress) {
-            createdProgress = await Promise.all(progresses.map(progress => progressController.create({ ...progress, newsId: data.id, workId })))
+        if (progresses && progresses.length > 0) {
+            createdProgress = await Promise.all(procesos.map(progress => createWithNewsId(progress, workId, data.dataValues.id)))
+            
+            
+            data.progresses = createdProgress;
+            res.status(201).send({ status: "OK", data: data });
+        }else{
+            res.status(201).send({ status: "OK", data: data });
         }
 
-
-        data.progresses = createdProgress;
-
-        res.status(201).send({ status: "OK", data: data });
     } catch (error) {
+        console.log(error)
         next(error)
     }
 };
@@ -84,10 +87,11 @@ const destroy = async (req, res, next) => {
     try {
         if (!id) throw new BusinessError("Seleccione un ID", 401);
         const data = await News.findOne({ where: { id: id } });
-        await progressController.destroyWithNewId(id);
+        await destroyWithNewId(id);
         await News.destroy({ where: { id: id } });
         res.status(200).send({ status: 200, data: data });
     } catch (error) {
+        console.log(error)
         next(error)
     }
 };

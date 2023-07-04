@@ -2,22 +2,16 @@ const { Users, Works, News, Progress, Categories } = require('../models');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const hash = require('object-hash');
-const Work = require('../models/Work');
-const axios = require('axios');
 const BusinessError = require('../utils/BusinessError');
 
 const getAllUser = async (req, res, next) => {
     try {
         const data = await Users.findAll({
-            include: {
-                model: Works,
-                include: {
-                    model: News
-                }
-            }
+            attributes: ['id', 'name', 'email','surname' ,'phone' ,'role']
         });
         res.status(201).send({ status: "OK", data: data });
     } catch (error) {
+        console.log(error)
         next(error)
     }
 }
@@ -283,7 +277,7 @@ const createDataBase = async (req, res) => {
 const getUserData = async (req, res) => {
     const { email } = req.body;
     try {
-        if(!email){
+        if (!email) {
             throw new BusinessError("Es necesario el email", 401);
         }
         const user = await Users.findOne({

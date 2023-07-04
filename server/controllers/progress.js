@@ -53,32 +53,33 @@ const getByNewsId = async (newsId) => {
     }
 };
 
-const create = async (progress) => {
-    const { value, categoryId, workId, newsId, weight } = progress;
-    try {
-        if (!value || !categoryId || !workId) throw new BusinessError('Datos obligatorios', 401);
+const create = async (progress, workId) => {
+    const { value, categoryId, weight } = progress;
+    if (!value || !categoryId || !workId || !weight) throw new BusinessError('Datos obligatorios', 401);
 
-        if (newsId) {
-            const data = await Progress.create({
-                value,
-                workId,
-                newsId,
-                categoryId
-            });
-            res.status(201).send({ status: "OK", data: data });
-        }
-        else if (weight) {
-            const data = await Progress.create({
-                value,
-                workId,
-                weight
-            });
-            res.status(201).send({ status: "OK", data: data });
-        }
-    } catch (error) {
-        next(error)
-    }
+    const data = await Progress.create({
+        value,
+        categoryId,
+        workId,
+        weight
+    });
+
+    return data;
 };
+
+const createWithNewsId = async (progress, workId, newsId) => {
+    const { value, categoryId } = progress;
+    if (!value || !categoryId || !workId ) throw new BusinessError('Datos obligatorios', 401);
+
+    const data = await Progress.create({
+        value,
+        categoryId,
+        workId,
+        newsId
+    });
+
+    return data;
+}
 
 const destroy = async (id) => {
     try {
@@ -91,13 +92,8 @@ const destroy = async (id) => {
 }
 
 const destroyWithNewId = async (id) => {
-    try {
-        if (!id) throw new BusinessError('Datos obligatorios', 401);
-        await Progress.destroy({ where: { newsId: id } });
-        res.status(204).send("Se elimino correctamente");
-    } catch (error) {
-        next(error)
-    }
+    if (!id) throw new BusinessError('Datos obligatorios', 401);
+    await Progress.destroy({ where: { newsId: id } });
 }
 
 module.exports = {
@@ -106,5 +102,6 @@ module.exports = {
     getByNewsId,
     create,
     destroy,
-    destroyWithNewId
+    destroyWithNewId,
+    createWithNewsId
 }
