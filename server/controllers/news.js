@@ -15,7 +15,7 @@ const getAll = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-}
+};
 
 const get = async (req, res, next) => {
     const { id } = req.params;
@@ -26,12 +26,15 @@ const get = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-}
+};
+
 const create = async (req, res, next) => {
-    const { name, description, video, workId, progresses } = req.body;
+    const { name, description, file, workId, progresses } = req.body;
 
     try {
         if (!name || !description || !workId) throw new BusinessError("Datos obligatorios", 401);
+
+        const video = file ? `videos?video=${file.filename}` : undefined;
 
         const data = await News.create({
             name,
@@ -57,19 +60,19 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     const { id } = req.params;
-    const { name, description, video } = req.body;
+    const { name, description } = req.body;
+    if (!name || !description && id) throw new BusinessError("Datos obligatorios", 402);
 
     try {
-        if (!description || !video) throw new BusinessError("Datos obligatorios", 402);
         const data = await News.update({
-            name: name,
-            description: description,
-            video: video,
+            name,
+            description,
         }, {
             where: {
                 id: id
             }
         });
+
         res.status(201).send({ status: "OK", data });
     } catch (error) {
         next(error)
