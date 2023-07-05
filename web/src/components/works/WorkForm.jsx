@@ -186,7 +186,14 @@ export default function WorkForm() {
 
 
   const handleAddChipUser = () => {
-    setShipUsers(state => [...state, selectUser ]);
+    if (shipUsers.includes(selectUser)) {
+      return Swal.fire({
+        title: `el usuario  ${selectUser.name} ya existe`,
+      })
+    }else {
+      setShipUsers(state => [...state, selectUser ]);
+    }
+    
   }
 
   const handleChipDeleteUser = (chipToDelete) => {
