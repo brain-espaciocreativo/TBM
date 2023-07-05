@@ -355,6 +355,7 @@ export default function ListUserDashboard() {
             fontSize: ".8rem"
           }
         }}
+        name='phone'
         value={editState.phone}
         label="Telefono"
         className={styles.inputs}
