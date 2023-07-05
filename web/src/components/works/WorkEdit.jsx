@@ -157,7 +157,7 @@ export default function WorkEdit() {
 
   const handleChipDelete = (chipToDelete) => {
     setShip( ship.filter((ship) => ship.category.name != chipToDelete))
-    setArray((e) => e.filter((array) => array !== chipToDelete))
+    setArray((e) => e.filter((array) => array.name !== chipToDelete))
   }
 
   const theme = useTheme();
