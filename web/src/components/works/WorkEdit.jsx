@@ -35,7 +35,7 @@ export default function WorkEdit() {
       setShip(state => [...state, { categoryId: selectedCategory.id, category: e.category, progress: { value: e.value, weight: e.weight } }]);
     });
     work.users.map((e) => {
-      setShipUsers((state) => [...state, e])
+      setShipUsers((state) => [...state, {id: e.user_work.userId, name: e.name, email:e.email, surname: e.surname, phone:e.phone, role:e.role}])
     });
     setNumbre(number + 1)
   }
@@ -80,7 +80,7 @@ export default function WorkEdit() {
   }
 
   const handleEdit = () => {
-    dispatch(updateOneWork({ work: createWorkState, chip: ship, users: user }))
+   dispatch(updateOneWork({ work: createWorkState, chip: ship, users: shipUsers}))
     Swal.fire({
       title: 'Obra Actualizada!',
     })
@@ -104,7 +104,13 @@ export default function WorkEdit() {
   }
 
   const handleAddChipUser = () => {
-    setShipUsers(state => [...state, selectUser]);
+    if (shipUsers.includes(selectUser)) {
+      return Swal.fire({
+        title: `el usuario  ${selectUser.name} ya existe`,
+      })
+    }else {
+      setShipUsers(state => [...state, selectUser ]);
+    }
   }
 
   const handleChipDeleteUser = (chipToDelete) => {
