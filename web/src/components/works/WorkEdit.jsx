@@ -32,7 +32,7 @@ export default function WorkEdit() {
 
   if (work && number < 1) {
     work.progresses.map((e) => {
-      setShip(state => [...state, { category: e.category, progress: { value: e.value, weight: e.weight } }]);
+      setShip(state => [...state, { categoryId: selectedCategory.id, category: e.category, progress: { value: e.value, weight: e.weight } }]);
     });
     work.users.map((e) => {
       setShipUsers((state) => [...state, e])
@@ -114,7 +114,7 @@ export default function WorkEdit() {
   const [array, setArray] = useState([])
   const [categoriachip, setCategoriaChip] = useState(null)
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
     if (selectedCategory.name === "") {
       return Swal.fire({ title: 'llene los campos para añadir categoria' })
     }
@@ -126,7 +126,7 @@ export default function WorkEdit() {
     }
 
     if (!array.includes(selectedCategory)) {
-      setShip(state => [...state, { categoryId: selectedCategory.id, category: selectedCategory.name, value: progress.value }]);
+      setShip([...ship, { categoryId: selectedCategory.id, category: selectedCategory, progress: {value: progress.value, weight: progress.weight} }]);
     } else {
       Swal.fire({ title: 'categoria ya está añadida' })
     }
@@ -153,6 +153,11 @@ export default function WorkEdit() {
 
   const deleteCategoria = (name) => {
     dispatch(deleteOneCategory(name))
+  }
+
+  const handleChipDelete = (chipToDelete) => {
+    setShip( ship.filter((ship) => ship.category.name != chipToDelete))
+    setArray((e) => e.filter((array) => array !== chipToDelete))
   }
 
   const theme = useTheme();
@@ -287,7 +292,7 @@ export default function WorkEdit() {
             <Box sx={{ width: '100%' }}>
               <Stack direction="row" spacing={1}>
                 {ship && ship.length > 0 ? ship.map((e, i) => (
-                  <Chip sx={{ background: '#f0b8ba' }} key={i} label={`${e.category.name} ${e.progress.value}% ${e.progress.weight}%`} />
+                  <Chip sx={{ background: '#f0b8ba' }} key={i} label={`${e.category.name} ${e.progress.value}% ${e.progress.weight}%`} onDelete={() => handleChipDelete(`${e.category.name}`)} />
                 )) : <Typography sx={{ color: '#636362', marginTop: '2rem' }}>No hay Categorias</Typography>}
               </Stack>
               <FormControl sx={{ marginTop: '2rem' }} >
