@@ -30,6 +30,7 @@ export default function WorkId() {
                 description: work.description
             })
         }
+        console.log(work);
     }, [work]);
 
     const theme = useTheme();
@@ -69,7 +70,7 @@ export default function WorkId() {
                                 {
                                     work && work.progresses
                                         ? work.progresses.map(element => {
-                                            return <Chip sx={{ background: '#f0b8ba' }} key={element.id} label={`${element.category.name} ${element.value}% ${element.height}%`} />
+                                            return <Chip sx={{ background: '#f0b8ba' }} key={element.id} label={`${element.category.name} ${element.value}% ${element.weight}%`} />
                                         })
                                         : <p>No hay progreso</p>
                                 }
