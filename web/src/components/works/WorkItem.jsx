@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import { Button, Card, CardActions, CardContent, Chip, Grid, Typography} from '@mui/material/';
+import { Button, Card, CardActions, CardContent, Chip, Grid, Typography, Paper} from '@mui/material/';
 import { useDispatch, useSelector } from 'react-redux';
 import { Delete, Edit ,Visibility} from '@mui/icons-material';
 import { deleteOneWork, getAllWorks } from "../../redux/slices/workSlice";
@@ -73,12 +73,17 @@ export default function WorkItem() {
                           })
                         }
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">Usuarios</Typography>
-
-                        {
-                          e.users.map( (e, i) =>{
-                            return <Chip sx={{background:'#f0b8ba'}} key={i} label={`${e.email}`} />
-                          })
-                        }
+                        
+                        <Paper style={{maxHeight: 50, overflow: 'auto'}}>
+                         
+                            {
+                              e.users.map( (e, i) =>{
+                                return <Chip sx={{background:'#f0b8ba'}} key={i} label={`${e.email}`} />
+                              })
+                            }
+                        
+                        </Paper>
+                        
 
                       </CardContent>
                       <CardActions>
