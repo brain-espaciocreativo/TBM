@@ -7,11 +7,11 @@ const BusinessError = require('../utils/BusinessError');
 const getAllUser = async (req, res, next) => {
     try {
         const data = await Users.findAll({
-            attributes: ['id', 'name', 'email','surname' ,'phone' ,'role']
+            attributes: ['id', 'name', 'email','surname' ,'phone' ,'role','password']
         });
         res.status(201).send({ status: "OK", data: data });
     } catch (error) {
-        console.log(error)
+        // console.log(error);
         next(error)
     }
 }
