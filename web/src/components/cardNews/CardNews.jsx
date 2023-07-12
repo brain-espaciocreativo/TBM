@@ -5,6 +5,7 @@ import React, {useEffect} from 'react'
 import ReactPlayer from 'react-player';
 import { useDispatch } from 'react-redux';
 import { deleteOneNews } from '../../redux/slices/newSlice';
+import {config} from '../../config/config.js';
 
 
 const useStyle = makeStyles({
@@ -72,7 +73,7 @@ export default function CardNews( { id, name, description, video } ) {
                         {
                             video &&
                              <video controls width='100%'>
-                              <source src={`http://localhost:3000/${video}`} type='video/mp4'/>
+                              <source src={`${config.apiURL}/${video}`} type='video/mp4'/>
                              </video>
                         }
                         <Button 
