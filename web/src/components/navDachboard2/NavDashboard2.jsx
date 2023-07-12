@@ -4,6 +4,7 @@ import { Grid, List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/mate
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import './NavDas.css';
 import Swal from 'sweetalert2';
@@ -58,9 +59,9 @@ export default function NavDashboard2() {
               </Link>
               <Link to='/admin/news/create' className='links'>
                 <ListItem button>
-                    {/* <ListItemIcon>
-                        <GroupIcon className='icon'/>
-                    </ListItemIcon> */}
+                     <ListItemIcon>
+                        <AddIcon className='icon'/>
+                    </ListItemIcon>
                     <ListItemText primary='Crear novedad' className='btns' />
                 </ListItem>
               </Link>

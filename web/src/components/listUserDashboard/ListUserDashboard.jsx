@@ -85,15 +85,18 @@ export default function ListUserDashboard() {
 
   const handleModalEdit = (data) => {
     setModalEdit(!modalEdit);
-    setEditState({
-      id: data.id,
-      name: data.name,
-      surname: data.surname,
-      email: data.email,
-      phone: data.phone,
-      role: data.role,
-      password: data.password,
-    })
+    if (data) [
+      setEditState({
+        id: data.id,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        role: data.role,
+        password: data.password,
+      })
+    ]
+   
   }
 
   const handleCreateUser = (e) => {
@@ -332,6 +335,22 @@ export default function ListUserDashboard() {
         value={editState.email}
         label="Email"
         className={styles.inputs}
+      />
+      <TextField
+        className={styles.inputs}
+        label="Contraseña"
+        type='password'
+        name='password'
+        value={editState.password}
+        required
+        onChange={handleChangeEdit}
+        // onBlur={handleBlur}
+        InputLabelProps={{
+          style: {
+            textTransform: "uppercase",
+            fontSize: ".8rem"
+          }
+        }}
       />
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Role</InputLabel>

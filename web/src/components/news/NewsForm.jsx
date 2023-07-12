@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAllWorks } from "../../redux/slices/workSlice";
+import { getAllCategories } from "../../redux/slices/categoriesSlice";
 import './NewsStyle.css'
 
 export default function NewsForm() {
@@ -48,6 +49,7 @@ export default function NewsForm() {
 
   useEffect(() => {
     dispatch(getAllWorks());
+    dispatch(getAllCategories());
   }, [dispatch]);
 
   useEffect(() => {
@@ -84,7 +86,7 @@ export default function NewsForm() {
       })
       navigate('/admin')
     } catch (error) {
-      console.log(error)
+      Swal.fire({ title: 'Ocurrio un error al intentar crear la novedad' })
     }
   }
 
@@ -118,7 +120,7 @@ export default function NewsForm() {
 
     if (progress.value === "") {
       return Swal.fire({ title: 'llene el avance de la categoria' })
-    } 
+    }
 
     if (!array.includes(selectedCategory)) {
       setShip(state => [...state, { categoryId: selectedCategory.id, category: selectedCategory.name, value: progress.value, weight: progress.weight }]);
@@ -165,64 +167,84 @@ export default function NewsForm() {
       <Grid container>
         {
           !isMatch &&
-          <Grid item xs={3} columns={1}>
+          <Grid item md={3} columns={1}>
             <NavDashboard2 />
           </Grid>
         }
-        <Grid item xs={9} sx={{
-          width: '70%',
-          height: '80vh',
-          marginTop: '9rem',
-        }} >
-          <Grid container spacing={2} sx={{ display: 'flex', flexDirection: 'column', gap: '6', width: '50%' }} >
-            <Typography sx={{ fontSize: '1.5rem', color: '#333', margin: '1rem 0' }}>Creacion de Novedades</Typography>
-            <form onSubmit={(e) => handleSubmit(e)} id='formulario' encType="multipart/form-data" noValidate>
-              <TextField
-                placeholder="Nombre"
-                type="text"
-                name="name"
-                value={data.name}
-                onChange={handleCreateName}
-              />
-              <TextareaAutosize
-                className="description"
-                placeholder="Descripción"
-                type="text"
-                name="description"
-                value={data.description}
-                onChange={handleCreateDescription}
-              />
+        <Grid item xs={12} md={9} columns={2}>
+          <Grid item xs={12} md={9} sx={{
+            width: '70%',
+            height: '80vh',
+            marginTop: '9rem',
+            marginLeft: '9rem'
+          }} >
+            <Grid container spacing={2} sx={{ display: 'flex', flexDirection: 'column', gap: '6', width: '50%' }} >
+              <Typography sx={{ fontSize: '1.5rem', color: '#333', margin: '1rem 0' }}>Creacion de Novedades</Typography>
+              <form onSubmit={(e) => handleSubmit(e)} id='formulario' encType="multipart/form-data" noValidate>
+                <Grid container>
+                  <Grid sm={12}>
+                    <TextField
+                      placeholder="Nombre"
+                      type="text"
+                      name="name"
+                      value={data.name}
+                      onChange={handleCreateName}
+                      sx={{
+                        marginTop: '2rem',
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', border: '3px solid rgb(160, 7, 7)', borderRadius: 2
+                      }}
+                    />
+                  </Grid>
+                  <Grid sm={12}>
+                    <TextareaAutosize
+                      className="description"
+                      placeholder="Descripción"
+                      type="text"
+                      name="description"
+                      value={data.description}
+                      onChange={handleCreateDescription}
+                      sx={{
+                        marginTop: '2rem',
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', border: '3px solid rgb(160, 7, 7)', borderRadius: 2
+                      }}
+                    />
+                  </Grid>
+                  <Grid sm={12}>
+                    <TextField type="file" name="video" accept="video/mp4" onChange={handleFileSelect} sx={{
+                      marginTop: '2rem',
+                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', border: '3px solid rgb(160, 7, 7)', borderRadius: 2
+                    }} />
+                  </Grid>
+                  <Grid sm={12}>
+                    <Typography sx={{
+                      marginTop: '2rem',
 
-              <input type="file" name="video" accept="video/mp4" onChange={handleFileSelect}></input>
-              <Typography >
-                Selecciona una Obra
-              </Typography>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                name="name"
-                value={selectWork}
-                onChange={handleselectWork}
-                label="Obras"
-                sx={{
-                  border: 'none',
-                  boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)'
-                }}
-              >
-                {
-                  works && works.length ?
-                    works.map((e) => {
-                      return <MenuItem key={e.id} value={e.id}>{e.name}</MenuItem>
-                    }) : <MenuItem value='No hay Obras'>No hay Obras</MenuItem>
-                }
-              </Select>
-              <Typography sx={{ marginTop: '1.2rem', color: 'rgb(160, 7, 7) ' }}>
-                asignar categoria...
-              </Typography>
+                    }}>
+                      Selecciona una Obra
+                    </Typography>
+                    <Select
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      name="name"
+                      value={selectWork}
+                      onChange={handleselectWork}
+                      label="Obras"
+                      sx={{
+                        marginTop: '1rem',
+                        marginBlockStart: '5',
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', border: '3px solid rgb(160, 7, 7)', borderRadius: 2
+                      }}
+                    >
+                      {
+                        works && works.length ?
+                          works.map((e) => {
+                            return <MenuItem key={e.id} value={e.id}>{e.name}</MenuItem>
+                          }) : <MenuItem value='No hay Obras'>No hay Obras</MenuItem>
+                      }
+                    </Select>
+                  </Grid>
 
-              <Box sx={{ width: 320, display: 'flex', gap: '1rem', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Box sx={{ width: '100%', display: 'flex', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
-                  <FormControl sx={{ marginTop: '1rem' }} >
+                  <Grid > <FormControl sx={{ marginTop: '1rem' }} >
                     <InputLabel id="demo-simple-select-label"></InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
@@ -242,42 +264,54 @@ export default function NewsForm() {
                           }) : <MenuItem value='No hay caregorias'>No hay categorias</MenuItem>
                       }
                     </Select>
-                  </FormControl>
-                  <TextField
-                    type='number'
-                    InputProps={{ inputProps: { min: 10, max: 100, step: 5 } }}
-                    onChange={handleChange}
-                    value={progress.value}
-                    label="% Avance"
-                    name='value'
-                    InputLabelProps={{
-                      style: {
-                        textTransform: "uppercase",
-                        fontSize: ".8rem",
-                      }
-                    }}
-                    sx={{
-                      marginTop: '2rem',
-                      boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', border: '3px solid rgb(160, 7, 7)', borderRadius: 2
-                    }}
-                  />
-                </Box>
+                  </FormControl></Grid>
+                  <Grid>
+                    <TextField
+                      type='number'
+                      InputProps={{ inputProps: { min: 10, max: 100, step: 5 } }}
+                      onChange={handleChange}
+                      value={progress.value}
+                      label="% Avance"
+                      name='value'
+                      InputLabelProps={{
+                        style: {
+                          textTransform: "uppercase",
 
-                <Box sx={{ marginLeft: '-17rem' }}>
-                  <Button sx={{ marginTop: '.8rem', marginLeft: '.5rem', fontSize: '.7rem', backgroundColor: 'rgb(160, 7, 7) ', color: '#fff' }} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
-                </Box>
-              </Box>
-              <Box sx={{ width: '100%' }}>
-                <Stack direction="row" spacing={1}>
-                  {ship && ship.length > 0 ? ship.map((e, i) => (
-                    <Chip key={i} label={` ${e.category} ${e.value}%`} onDelete={() => handleChipDelete(`${e.category}`)} />
-                  )) : <Typography sx={{ color: '#636362', marginTop: '2rem' }}>No hay Categorias</Typography>}
-                </Stack>
-              </Box>
-              <div>
-                <input className="submit" type="submit" value='Enviar' />
-              </div>
-            </form>
+                        }
+                      }}
+                      sx={{
+                        marginTop: '1rem',
+                        boxShadow: '5px 5px 13px 2px rgba(0,0,0,0.39)', border: '3px solid rgb(160, 7, 7)', borderRadius: 2
+                      }}
+                    />
+                  </Grid>
+
+                  <Grid container>
+                    <Grid>
+                      <Typography sx={{ marginTop: '1.2rem', color: 'rgb(160, 7, 7) ' }}>
+                        asignar categoria...
+                      </Typography>
+                    </Grid>
+                    <Grid>
+                      <Button sx={{ marginTop: '.8rem', marginLeft: '.5rem', fontSize: '.7rem', backgroundColor: 'rgb(160, 7, 7) ', color: '#fff' }} onClick={() => handleAdd(selectedCategory.name)}>crear</Button>
+                    </Grid>
+
+                  </Grid>
+                  <Grid sm={12}>
+                    <Box sx={{ width: '100%' }}>
+                      <Stack direction="row" spacing={1}>
+                        {ship && ship.length > 0 ? ship.map((e, i) => (
+                          <Chip key={i} label={` ${e.category} ${e.value}%`} onDelete={() => handleChipDelete(`${e.category}`)} />
+                        )) : <Typography sx={{ color: '#636362', marginTop: '2rem' }}>No hay Categorias</Typography>}
+                      </Stack>
+                    </Box>
+                  </Grid>
+                  <Grid sm={12}>
+                    <input className="submit" type="submit" value='Enviar' />
+                  </Grid>
+                </Grid>
+              </form>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

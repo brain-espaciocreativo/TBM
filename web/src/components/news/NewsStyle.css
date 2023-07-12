@@ -1,10 +1,5 @@
 form{
-    width: 70vw;
-    height: 68vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+   
 }
 .submit{
     background-color: rgb(160, 7, 7);
@@ -20,4 +15,5 @@ form{
 }
 .description{
     height: 150px !important;
+    width: auto;
 }
