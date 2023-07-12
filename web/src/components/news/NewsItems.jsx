@@ -15,7 +15,7 @@ export default function WorkItem() {
 
     useEffect(() => {
         dispatch(getAllNews());
-    }, [dispatch,news]);
+    }, [dispatch]);
 
     return (
         <div>
