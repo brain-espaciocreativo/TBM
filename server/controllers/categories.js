@@ -1,4 +1,4 @@
-const {Categories, Progress} = require('../models');
+const {Categories} = require('../models');
 const BusinessError = require('../utils/BusinessError');
 
 const getAll = async(req, res, next)=>{

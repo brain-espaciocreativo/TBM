@@ -5,7 +5,9 @@ import React, {useEffect} from 'react'
 import ReactPlayer from 'react-player';
 import { useDispatch } from 'react-redux';
 import { deleteOneNews } from '../../redux/slices/newSlice';
+import { categoriesSlide } from '../../redux/slices/categoriesSlice';
 import {config} from '../../config/config.js';
+import Progress from "../progress/Progress";
 
 
 const useStyle = makeStyles({
@@ -26,11 +28,10 @@ const useStyle = makeStyles({
     }
   });
 
-export default function CardNews( { id, name, description, video } ) {
+export default function CardNews( { id, name, description, video, progresses } ) {
 
   const styles = useStyle();
   const dispatch = useDispatch();
-  
 
   const deleteNews = (data)=>{
     console.log(data);
@@ -76,6 +77,10 @@ export default function CardNews( { id, name, description, video } ) {
                               <source src={`${config.apiURL}/${video}`} type='video/mp4'/>
                              </video>
                         }
+                        {progresses && progresses.map( (prog,i) => {
+                          return ( <Progress key={i}value={prog.value} categorie={prog.categoryId}/>);
+                        } )}
+                       
                         <Button 
                           onClick={()=>deleteNews(id)}
                           sx={{marginTop: '.8rem',marginLeft:'.5rem',fontSize:'.7rem' , backgroundColor:'rgb(160, 7, 7) ', color:'#fff'}}
