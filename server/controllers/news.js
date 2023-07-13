@@ -1,4 +1,4 @@
-const { News, Progress } = require('../models/index')
+const { News, Progress, Categories } = require('../models/index')
 const {
     destroyWithNewId,
     createWithNewsId,
@@ -10,6 +10,9 @@ const getAll = async (req, res, next) => {
         const data = await News.findAll({
             include: {
                 model: Progress,
+                include: {
+                    model: Categories,
+                },
             },
         })
 
