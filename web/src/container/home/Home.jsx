@@ -57,7 +57,7 @@ export default function Dashboard() {
           gap: '2rem',
           flexWrap: 'wrap'        
         }} item>
-                {news && news.length ? news.map((e) =>
+                {news && news.length && news.length > 0 ? news.map((e) =>
                 ( 
                     <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
 
