@@ -1,4 +1,4 @@
-const { News, Progress, Categories } = require('../models/index')
+const { News, Progress, Categories, Works } = require('../models/index')
 const {
     destroyWithNewId,
     createWithNewsId,
@@ -8,12 +8,17 @@ const BusinessError = require('../utils/BusinessError')
 const getAll = async (req, res, next) => {
     try {
         const data = await News.findAll({
-            include: {
-                model: Progress,
-                include: {
-                    model: Categories,
+            include: [
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
                 },
-            },
+                {
+                    model: Works,
+                },
+            ],
         })
 
         res.status(201).send({ status: 'OK', data })

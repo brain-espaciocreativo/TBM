@@ -11,11 +11,10 @@ export default function WorkItem() {
 
     const dispatch = useDispatch();
     const news = useSelector(state => state.news.newList);
-    // console.log(news)
 
     useEffect(() => {
         dispatch(getAllNews());
-        console.log(news)
+
     }, [dispatch]);
 
     return (
@@ -26,7 +25,7 @@ export default function WorkItem() {
                         <Box p={5} sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '-5rem', width: '100%', marginLeft: '2rem' }}>
                             {news && news.length ? news.map((e) =>
                             (
-                                <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} progresses={e.progresses}/>
+                                <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} progresses={e.progresses} work={e.work}/>
                             )) : <NewsUI />
                             }
                         </Box>

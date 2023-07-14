@@ -33,7 +33,14 @@ const useStyle = makeStyles({
     },
 })
 
-export default function CardNews({ id, name, description, video, progresses }) {
+export default function CardNews({
+    id,
+    name,
+    description,
+    video,
+    progresses,
+    work,
+}) {
     const styles = useStyle()
     const dispatch = useDispatch()
 
@@ -52,6 +59,7 @@ export default function CardNews({ id, name, description, video, progresses }) {
             <Card className={styles.root} key={id}>
                 <CardActionArea className="player-wrapper">
                     <CardContent>
+                        <Typography variant="h6">{`${work.name}`}</Typography>
                         <Typography
                             gutterBottom
                             variant="h6"
