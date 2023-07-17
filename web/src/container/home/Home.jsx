@@ -59,7 +59,7 @@ export default function Dashboard() {
         }} item>
                 {news && news.length && news.length > 0 ? news.map((e) =>
                 ( 
-                    <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
+                    <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} work={e.work} progresses={e.progresses}/>
 
                  )) : ""
                 } 

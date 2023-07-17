@@ -59,7 +59,7 @@ export default function CardNews({
             <Card className={styles.root} key={id}>
                 <CardActionArea className="player-wrapper">
                     <CardContent>
-                        <Typography variant="h6">{`${work.name}`}</Typography>
+                        <Typography variant="h6">{`${work?.name}`}</Typography>
                         <Typography
                             gutterBottom
                             variant="h6"
