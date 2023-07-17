@@ -107,7 +107,7 @@ export default function CardNews({
                                         key={i}
                                         value={prog.value}
                                         categorie={stringCase(
-                                            `${prog.category.name}`
+                                            `${prog?.category?.name}`
                                         )}
                                     />
                                 )
