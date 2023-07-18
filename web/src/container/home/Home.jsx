@@ -1,13 +1,15 @@
-import  { useEffect} from 'react';
+import  { useEffect,useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box,Grid,CardActionArea,Card,CardContent,Typography} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getAllNews } from '../../redux/slices/newSlice';
+import { getData } from "../../redux/slices/userSlice";
 const linksArray = ['Charts', 'Users'];
 import NavDashboard from '../../components/navDashboard/NavDashboard';
 import ReactPlayer from 'react-player/youtube'
 import HomeUI from './HomeUI';
 import CardNews from '../../components/cardNews/CardNews';
+import WorkItem from "../../components/works/WorkNoti";
 
 const useStyle = makeStyles({
   btn: {
@@ -32,10 +34,30 @@ export default function Dashboard() {
    const dispatch = useDispatch();
 
    const news = useSelector(state => state.news.newList);
+   const [work, setWork] = useState({});
    
-   useEffect(()=>{
-     dispatch(getAllNews());
- },[dispatch]);
+   useEffect(() => {
+    const payload = {
+      email: 'andresramirez82@gmail.com'
+    };
+
+    getData(payload)
+        .then(result => {
+            setWork(result);
+            //console.log(result)
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}, []);
+
+useEffect(() => {
+  if (work !==undefined){
+   
+    console.log(work)
+  }
+ 
+}, [work]);
   
   return (
     <div>
@@ -55,14 +77,12 @@ export default function Dashboard() {
         <Grid sx={{
           display:'flex',
           gap: '2rem',
-          flexWrap: 'wrap'        
+          flexWrap: 'wrap',
+          marginTop: '50px'        
         }} item>
-                {news && news.length && news.length > 0 ? news.map((e) =>
-                ( 
-                    <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} work={e.work} progresses={e.progresses}/>
-
-                 )) : ""
-                } 
+                {work.works && work.works.length > 0 ? work.works.map((w) => (
+                  <WorkItem name={w.name} id={w.id} description={w.description} progresses={w.progresses}></WorkItem>
+                )) : "" }
               </Grid> 
         </Grid>
       </Box>

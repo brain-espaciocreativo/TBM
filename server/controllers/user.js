@@ -276,6 +276,7 @@ const createDataBase = async (req, res) => {
 
 const getUserData = async (req, res) => {
     const { email } = req.body;
+
     try {
         if (!email) {
             throw new BusinessError("Es necesario el email", 401);
@@ -300,7 +301,7 @@ const getUserData = async (req, res) => {
 
         res.status(200).send(user)
     } catch (error) {
-        next(error);
+        res.status(500).send(error)
     }
 }
 module.exports = {
