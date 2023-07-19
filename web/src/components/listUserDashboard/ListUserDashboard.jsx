@@ -61,19 +61,22 @@ export default function ListUserDashboard() {
 
   const dispatch = useDispatch();
 
-  const users = useSelector(state => state.users.list);
-
+  let users=[];
 
   const [usersList, setUsersList] = useState([])
-  const [count, setCount] = useState(0)
-
-  if (users && count > 1) {
-    users.map((e) => {
-      setUsersList(state => [...state, e.email])
-    })
-    setCount(count + 1)
-  }
-
+  
+  users =  useSelector(state => state.users.list);
+  
+  useEffect(()=>{
+    
+    if (users) {
+      users.map((e) => {
+        setUsersList(state => [...state, e.email])
+      })
+   
+    }
+    
+  },[users]);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -111,11 +114,11 @@ export default function ListUserDashboard() {
 
   const createUser = async () => {
     if (usersList.includes(createUserState.email)) {
+      return(
       Swal.fire({
         title: 'usuario con email ya registrado!',
-      })
-      handleModalCreate()
-      return;
+      }),
+      handleModalCreate())
     }
     //  else{
     //   dispatch(createOneUser(createUserState));
@@ -140,10 +143,18 @@ export default function ListUserDashboard() {
       setCreateUserState('')
       handleModalCreate()
     }
-    // }
+
   }
 
   const editUser = () => {
+/*    if (usersList.includes(editState.email) &&usersList.includes(editState.email) ) {
+      return(
+      Swal.fire({
+        title: 'usuario con email ya registrado!',
+      }),
+      handleModalEdit())
+    }
+*/
     dispatch(updateOneUser(editState))
     Swal.fire({
       title: 'Usuario actualizado!',
