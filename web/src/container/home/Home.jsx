@@ -1,41 +1,37 @@
-import  { useEffect,useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box,Grid,CardActionArea,Card,CardContent,Typography} from '@mui/material';
+import { Box, Grid, CardActionArea, Card, CardContent, Typography, Container } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getAllNews } from '../../redux/slices/newSlice';
 import { getData } from "../../redux/slices/userSlice";
 const linksArray = ['Charts', 'Users'];
 import NavDashboard from '../../components/navDashboard/NavDashboard';
 import ReactPlayer from 'react-player/youtube'
-import HomeUI from './HomeUI'
-import CardNews from '../../components/cardNews/CardNews'
-import WorkItem from '../../components/works/WorkNoti'
+import HomeUI from './HomeUI';
+import CardNews from '../../components/cardNews/CardNews';
+import WorkItem from "../../components/works/WorkNoti";
 
 const useStyle = makeStyles({
-    btn: {
-        background: 'black',
-        color: 'white',
-    },
-    root: {
-        maxWidth: 345,
-        marginTop: '10rem',
-    },
-    media: {
-        height: 140,
-    },
-    progress: {
-        paddingTop: '50px',
-    },
-})
+  btn: {
+    background: 'black',
+    color: 'white'
+  },
+  root: {
+    marginTop: '5rem'
+  },
+  media: {
+    height: 140
+  },
+  progress: {
+    paddingTop: '50px'
+  }
+});
 export default function Dashboard() {
-    const styles = useStyle()
 
-    const dispatch = useDispatch()
+  const styles = useStyle();
+  const [work, setWork] = useState({});
 
-    const news = useSelector((state) => state.news.newList)
-    const [work, setWork] = useState({})
-
-    useEffect(() => {
+   useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'))
         const payload = {
             email: user.email,
@@ -50,15 +46,20 @@ export default function Dashboard() {
             })
     }, [])
 
-    useEffect(() => {
-        if (work !== undefined) {
-            console.log(work)
-        }
-    }, [work])
+  useEffect(() => {
+    if (work !== undefined) {
 
-    return (
-        <div>
-            <NavDashboard links={linksArray} />
+      
+     console.log(work)
+    }
+
+  }, [work]);
+
+  return (
+    <div>
+      <NavDashboard
+        links={linksArray}
+      />
 
       <Container className={styles.root}>
         <Grid container>
