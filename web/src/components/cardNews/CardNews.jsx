@@ -12,7 +12,7 @@ import ReactPlayer from 'react-player'
 import { useDispatch } from 'react-redux'
 import { deleteOneNews } from '../../redux/slices/newSlice'
 import { categoriesSlide } from '../../redux/slices/categoriesSlice'
-import { config } from '../../config/config.js'
+import { config } from '../../config/config.js';
 import Progress from '../progress/Progress'
 
 const useStyle = makeStyles({

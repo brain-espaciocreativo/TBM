@@ -3,7 +3,12 @@ import {
     Card,
     CardActionArea,
     CardContent,
-    Typography,
+    CardHeader,
+    IconButton,
+    Badge,
+    Avatar,
+    Paper,
+    Modal
 } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import axios from 'axios'
@@ -13,7 +18,11 @@ import { useDispatch } from 'react-redux'
 import { deleteOneNews } from '../../redux/slices/newSlice'
 import { categoriesSlide } from '../../redux/slices/categoriesSlice'
 import { config } from '../../config/config.js'
-import Progress from '../progress/Progress'
+import Progress from '../progress/Progress';
+import { GroupByCategoryProgress, totalProcProgress } from "./functions";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import MediaCard from "./CardWork";
 
 const useStyle = makeStyles({
     btn: {
@@ -30,60 +39,49 @@ const useStyle = makeStyles({
     media: {
         height: 140,
     },
+    modal: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100 %',
+        height: '100 %',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
 })
 
 export default function CardWork({
     id,
     name,
     description,
-    progresses
+    progresses,
+    news
 
 }) {
     const [prog, setProg] = useState([]);
     const [total, settotal] = useState();
+    const [Notifi, setNotif] = useState([]);
+    const [modal, setModal] = useState(false);
     useEffect(() => {
+        /**
+         * Here I calculate and group by category the Progress Matrix
+         */
         if (progresses !== undefined) {
-            const data = progresses;
-
-            const groupedData = data.reduce((result, item) => {
-                const category = item.category.name;
-                if (!result[category]) {
-                    result[category] = {
-                        category: category,
-                        totalPercentage: 0,
-                        maxWeight: item.weight
-                    };
-                } else {
-                    if (item.weight !== null && (result[category].maxWeight === null || item.weight > result[category].maxWeight)) {
-                        result[category].maxWeight = item.weight;
-                    }
-                }
-                result[category].totalPercentage += item.value;
-                return result;
-            }, {});
-
-            const groupedArray = Object.values(groupedData);
-
-            let arrayfinal = [];
-            groupedArray.map(element => {
-                const total = element.totalPercentage * element.maxWeight / 100;
-                const elemento = {
-                    category: element.category,
-                    Percentage: element.totalPercentage,
-                    Weight: element.maxWeight,
-                    total: total
-
-                };
-                arrayfinal.push(elemento);
-            });
+            const arrayfinal = GroupByCategoryProgress(progresses);
+            const totalAcumulado = totalProcProgress(arrayfinal);
             setProg(arrayfinal);
-            const totalAcumulado = arrayfinal.reduce((accumulator, element) => {
-                return accumulator + element.total;
-            }, 0);
             settotal(totalAcumulado);
         }
 
     }, [progresses]);
+
+
+    useEffect(() => {
+        setNotif(news.length);
+    }, [news]);
+
+
     const styles = useStyle()
     const dispatch = useDispatch()
 
@@ -97,32 +95,43 @@ export default function CardWork({
         )
     }
 
-    return (
+    const modalNotifications = () => {
+        setModal(true);
+    }
+
+    return (<>
+        <Modal className={styles.modal} open={modal} onClose={() => setModal(false)}><Paper>
+            <Grid container>
+                <Grid item>
+                    {news && news.length > 0 ? news.map((n,i) => (
+                        <MediaCard key={i} video={n.video}></MediaCard>
+                    )) : 'no hay notificaciones'}
+                </Grid>
+            </Grid>
+            </Paper></Modal>
         <Grid item>
             <Card className={styles.root} key={id}>
+                <CardHeader
+                    avatar={
+                        <Avatar aria-label="recipe">
+                            <EngineeringIcon />
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings" onClick={modalNotifications}>
+                            <Badge badgeContent={Notifi} color="primary">
+                                <NotificationsIcon />
+                            </Badge>
+
+                        </IconButton>
+                    }
+                    title={`${name}`}
+                    subheader={`${description}`}
+                />
                 <CardActionArea className="player-wrapper">
+
                     <CardContent>
-                        <Typography variant="h6">{`${name}`}</Typography>
 
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                        >
-                            {description}
-                        </Typography>
-
-                        <Typography
-                            gutterBottom
-                            variant="h6"
-                            component="h6"
-                            sx={{
-                                color: '#000',
-                                fontWeight: '600',
-                                display: 'flex',
-                                justifyContent: 'end',
-                            }}
-                        ></Typography>
                         {prog &&
                             prog.map((prog, i) => {
                                 return (
@@ -135,19 +144,24 @@ export default function CardWork({
                                     />
                                 )
                             })}
+                        <Paper style={{ maxHeight: 70, overflow: 'auto' }}>
                             {total && <Progress
-                                        key={`totalcategoryas`}
-                                        value={total}
-                                        categorie={stringCase(
-                                            `Total`
-                                        )}
-                                    />}
+                                key={`totalcategoryas`}
+                                value={total}
+                                categorie={stringCase(
+                                    `Total`
+                                )}
+                            />}
+                        </Paper>
+
 
 
                     </CardContent>
                 </CardActionArea>
 
             </Card>
+
         </Grid>
+    </>
     )
 }

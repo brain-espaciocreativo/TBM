@@ -77,7 +77,7 @@ export default function Dashboard() {
         <Grid container>
           <Grid item>
             {work.works && work.works.length > 0 ? work.works.map((w) => (
-              <WorkItem name={w.name} id={w.id} description={w.description} progresses={w.progresses} key={`obrasdeusuario${w.id}`}></WorkItem>
+              <WorkItem name={w.name} id={w.id} description={w.description} progresses={w.progresses} news={w.news} key={`obrasdeusuario${w.id}`}></WorkItem>
             )) : ""}
           </Grid>
 
