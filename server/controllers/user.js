@@ -46,6 +46,13 @@ const createOneUser = async (req, res, next) => {
         const hashPass = hash.MD5(password)
         if (!name || !surname || !email || !password || !role || !phone)
             throw new BusinessError('Datos obligatorios', 401)
+
+        const users = await Users.findAll({ where: { email: email } })
+
+        if (users && users.length > 0) {
+            throw new BusinessError('Email ya ocupado en otro usuario', 402)
+        }
+
         const data = await Users.create(
             {
                 name: name,
@@ -64,24 +71,19 @@ const createOneUser = async (req, res, next) => {
         next(error)
     }
 }
+
 const updateOneUser = async (req, res, next) => {
     const { id } = req.params
-    const { name, surname, role, phone, email, password } = req.body
+    const { name, surname, role, phone, password } = req.body
     try {
-        if (!name || !surname || !email || !password || !role || !phone)
+        if (!name || !surname || !password || !role || !phone)
             throw new BusinessError('Datos obligatorios', 402)
-
-        const users = await Users.findAll({ where: { email: email } })
-
-        if (users && users.length > 0) {
-            throw new BusinessError('Email ya ocupado en otro usuario', 402)
-        }
 
         const data = await Users.update(
             {
                 name: name,
                 surname: surname,
-                email: email,
+                //email: email,
                 phone: phone,
                 password: password,
                 role: role,
