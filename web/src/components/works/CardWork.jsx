@@ -33,8 +33,8 @@ export default function MediaCard(props) {
 
     return (
         <>
-            {Notifi && <Card sx={{ display: 'flex' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            {Notifi && <Card sx={{ display: 'flex', padding: '1rem' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: '30%' }}>
                     <Box sx={{ width: '150px', display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                         <Typography component="div" variant="h6">
                             <IconButton aria-label="settings">
@@ -53,18 +53,19 @@ export default function MediaCard(props) {
                     </CardContent>
 
                 </Box>
-                <video controls width="25%">
+                <video controls height={140} >
                     <source
                         src={`${config.apiURL}/${Notifi.video}`}
                         type="video/mp4"
                     />
                 </video>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', columnGap: '1rem', maxHeight: 150, overflow: 'auto', padding: 1 }}>
+                    
 
                         {Notifi.progresses &&
                             Notifi.progresses.map((p, i) => {
                                 return (
+                                    <Box sx={{ display: 'flex',  flexDirection: 'column', with: '10rem' , pl: 1, pb: 1 }}>
                                     <Progress
                                         key={`progressesOfNew${i}`}
                                         value={p.value}
@@ -72,10 +73,11 @@ export default function MediaCard(props) {
                                             `${p?.category.name}`
                                         )}
                                     />
+                                    </Box>
                                 )
                             })}
 
-                    </Box>
+                    
                 </Box>
             </Card>}
         </>

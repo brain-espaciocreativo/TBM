@@ -101,15 +101,17 @@ export default function CardWork({
     }
 
     return (<>
-        <Modal className={styles.modal} open={modal} onClose={() => setModal(false)}><Paper>
-            <Grid container>
-                <Grid item>
-                    {news && news.length > 0 ? news.map((n,i) => (
-                        <MediaCard key={i} id={n.id}></MediaCard>
-                    )) : 'no hay notificaciones'}
+        <Modal className={styles.modal} open={modal} onClose={() => setModal(false)} sx={{ maxHeight: '100%', overflow: 'auto', padding: 5 }}>
+            <Paper sx={{ paddingTop: '10rem' }}>
+                <Grid container >
+                    <Grid item sx={{ padding: '1rem', marginTop: '5rem' }}>
+                        {news && news.length > 0 ? news.map((n, i) => (
+                            <MediaCard key={i} id={n.id}></MediaCard>
+                        )) : 'no hay notificaciones'}
+                    </Grid>
                 </Grid>
-            </Grid>
-            </Paper></Modal>
+            </Paper>
+        </Modal>
         <Grid item>
             <Card className={styles.root} key={id}>
                 <CardHeader
@@ -132,20 +134,20 @@ export default function CardWork({
                 <CardActionArea className="player-wrapper">
 
                     <CardContent>
+                        <Paper style={{ maxHeight: 200, overflow: 'auto', padding: 5 }}>
+                            {prog &&
+                                prog.map((prog, i) => {
+                                    return (
+                                        <Progress
+                                            key={i}
+                                            value={prog.Percentage}
+                                            categorie={stringCase(
+                                                `${prog?.category}`
+                                            )}
+                                        />
+                                    )
+                                })}
 
-                        {prog &&
-                            prog.map((prog, i) => {
-                                return (
-                                    <Progress
-                                        key={i}
-                                        value={prog.Percentage}
-                                        categorie={stringCase(
-                                            `${prog?.category}`
-                                        )}
-                                    />
-                                )
-                            })}
-                        <Paper style={{ maxHeight: 70, overflow: 'auto', padding:5 }}>
                             {total && <Progress
                                 key={`totalcategoryas`}
                                 value={total}
@@ -153,10 +155,8 @@ export default function CardWork({
                                     `Total`
                                 )}
                             />}
+
                         </Paper>
-
-
-
                     </CardContent>
                 </CardActionArea>
 
