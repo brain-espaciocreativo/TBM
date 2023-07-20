@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Button,Toolbar, Typography, Box, useTheme, useMediaQuery } from '@mui/material/';
 import { makeStyles } from '@mui/styles';
-import DrawerDashboard from '../drawerDashboard/DrawerDashboard';
+import DrawerDashboard from '../drawerDashboard/DrawerHome';
 import './NavDashboard.css';
 import Swal from 'sweetalert2';
 
