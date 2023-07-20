@@ -30,7 +30,19 @@ const getAll = async (req, res, next) => {
 const get = async (req, res, next) => {
     const { id } = req.params
     try {
-        const data = await News.findByPk(id)
+        const data = await News.findByPk(id, {
+            include: [
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
+                },
+                {
+                    model: Works,
+                },
+            ],
+        })
 
         res.status(201).send({ data })
     } catch (error) {
