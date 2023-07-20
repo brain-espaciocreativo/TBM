@@ -24,6 +24,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import MediaCard from "./CardWork";
 
+
 const useStyle = makeStyles({
     btn: {
         background: 'black',
@@ -104,7 +105,7 @@ export default function CardWork({
             <Grid container>
                 <Grid item>
                     {news && news.length > 0 ? news.map((n,i) => (
-                        <MediaCard key={i} video={n.video}></MediaCard>
+                        <MediaCard key={i} id={n.id}></MediaCard>
                     )) : 'no hay notificaciones'}
                 </Grid>
             </Grid>

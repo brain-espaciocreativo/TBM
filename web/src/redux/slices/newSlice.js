@@ -33,6 +33,17 @@ export const getAllNews = () => {
     }
 }
 
+export const get = async (id) => {
+    try {
+        const response = await axios.get(import.meta.env.VITE_URL+'/news/'+id);
+        return response.data.data;
+    } catch (error) {
+        // Handle any errors that occurred during the request
+        console.error(error);
+        throw error; // Rethrow the error to be handled by the caller
+    }
+}
+
 export const createOneNews = (payload) => {
     return async (dispatch) => {
         await axios
