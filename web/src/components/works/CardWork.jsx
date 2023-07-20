@@ -3,12 +3,9 @@ import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
+import Skeleton from '@mui/material/Skeleton';
 import { config } from '../../config/config.js';
 import { get } from "../../redux/slices/newSlice.js";
 import Progress from '../progress/Progress';
@@ -23,9 +20,12 @@ const stringCase = (param) => {
 export default function MediaCard(props) {
     const [Notifi, setNotif] = useState();
     useEffect(() => {
-        get(props.id).then((result) => {
-            setNotif(result);
-        })
+        if (props.id !== undefined) {
+            get(props.id).then((result) => {
+                setNotif(result);
+            })
+
+        }
 
     }, [props.id]);
 
@@ -53,33 +53,45 @@ export default function MediaCard(props) {
                     </CardContent>
 
                 </Box>
-                <video controls height={140} >
-                    <source
-                        src={`${config.apiURL}/${Notifi.video}`}
-                        type="video/mp4"
-                    />
-                </video>
-                <Box sx={{ display: 'flex', flexDirection: 'column', columnGap: '1rem', maxHeight: 150, overflow: 'auto', padding: 1 }}>
-                    
+                {Notifi.video ?
+                    <video controls height={140} >
+                        <source
+                            src={`${config.apiURL}/${Notifi?.video}`}
+                            type="video/mp4"
+                        />
 
-                        {Notifi.progresses &&
-                            Notifi.progresses.map((p, i) => {
-                                return (
-                                    <Box sx={{ display: 'flex',  flexDirection: 'column', with: '10rem' , pl: 1, pb: 1 }}>
+                    </video> : <Skeleton
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '200px'
+                        }}
+                        variant="rectangular"
+                        height={140}
+                        width={250}
+                    >No hay video cargado</Skeleton>}
+                <Box sx={{ display: 'flex', flexDirection: 'column', columnGap: '1rem', maxHeight: 150, overflow: 'auto', padding: 1 }}>
+
+
+                    {Notifi.progresses &&
+                        Notifi.progresses.map((p, i) => {
+                            return (
+                                <Box sx={{ display: 'flex', flexDirection: 'column', with: '10rem', pl: 1, pb: 1 }} key={`progressesOfNew${i}`}>
                                     <Progress
-                                        key={`progressesOfNew${i}`}
+
                                         value={p.value}
                                         categorie={stringCase(
                                             `${p?.category.name}`
                                         )}
                                     />
-                                    </Box>
-                                )
-                            })}
+                                </Box>
+                            )
+                        })}
 
-                    
+
                 </Box>
-            </Card>}
+            </Card >}
         </>
 
     );

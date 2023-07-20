@@ -31,29 +31,20 @@ export default function Dashboard() {
   const styles = useStyle();
   const [work, setWork] = useState({});
 
-   useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        const payload = {
-            email: user.email,
-        }
-
-        getData(payload)
-            .then((result) => {
-                setWork(result)
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-    }, [])
-
   useEffect(() => {
-    if (work !== undefined) {
-
-      
-     console.log(work)
+    const user = JSON.parse(localStorage.getItem('user'))
+    const payload = {
+      email: user.email,
     }
 
-  }, [work]);
+    getData(payload)
+      .then((result) => {
+        setWork(result)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, []);
 
   return (
     <div>
@@ -78,10 +69,8 @@ export default function Dashboard() {
           <Grid item>
             {work.works && work.works.length > 0 ? work.works.map((w) => (
               <WorkItem name={w.name} id={w.id} description={w.description} progresses={w.progresses} news={w.news} key={`obrasdeusuario${w.id}`}></WorkItem>
-            )) : ""}
+            )) : "No hay obras asociadas a este usuario"}
           </Grid>
-
-
         </Grid>
       </Container>
 
