@@ -179,7 +179,7 @@ const reset = async (req, res, next) => {
         next(error)
     }
 }
-const updatePass = async (req, res, next) => {
+const updatePassForToken = async (req, res, next) => {
     const { token } = req.params
 
     if (req.body.password === '') {
@@ -200,6 +200,40 @@ const updatePass = async (req, res, next) => {
                 {
                     where: {
                         id: validuser.id,
+                    },
+                }
+            )
+            res.status(201).send({
+                status: 201,
+                message: 'se cambio la contraseña exitosamente',
+            })
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
+const updatePass = async (req, res, next) => {
+    const { email, pass } = req.body
+
+    if (pass === '') {
+        throw new BusinessError('Contrasena incorrect', 403)
+    }
+    try {
+        //const pass = req.body.password
+        // const verifytoken = jwt.verify(token, 'ejemplodeprueba')
+        const validuser = await Users.findOne({
+            where: {
+                email: email,
+            },
+        })
+        if (validuser && validuser.id) {
+            const newpassword = hash.MD5(pass)
+            await Users.update(
+                { password: newpassword },
+                {
+                    where: {
+                        email: email,
                     },
                 }
             )

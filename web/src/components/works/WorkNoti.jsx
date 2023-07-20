@@ -144,7 +144,7 @@ export default function CardWork({
                                     />
                                 )
                             })}
-                        <Paper style={{ maxHeight: 70, overflow: 'auto' }}>
+                        <Paper style={{ maxHeight: 70, overflow: 'auto', padding:5 }}>
                             {total && <Progress
                                 key={`totalcategoryas`}
                                 value={total}
