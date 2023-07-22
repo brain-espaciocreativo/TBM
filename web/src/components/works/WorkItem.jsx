@@ -71,7 +71,8 @@ export default function WorkItem() {
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">Categorias</Typography>
                   {
                     e.progresses.map((element, i) => {
-                      return <Chip sx={{ background: '#f0b8ba' }} key={i} label={`${element.category.name} ${element.value}% ${element.weight}%`} />
+                      const weight = element.weight ? element.weight : '-';
+                      return <Chip sx={{ background: '#f0b8ba' }} key={i} label={`${element.category.name} ${element.value}% ${weight}%`} />
                     })
                   }
                 </Paper>
