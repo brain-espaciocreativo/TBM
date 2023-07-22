@@ -94,6 +94,36 @@ const get2 = async (req, res, next) => {
     }
 }
 
+const getCategory = async (req, res, next) => {
+    const { id } = req.params
+    try {
+        if (!id) {
+            throw new BusinessError('Datos obligatorios', 401)
+        }
+        const data = await Works.findOne({
+            where: {
+                id: id,
+            },
+            include: [
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
+                    where: {
+                        weight: {
+                            [Op.not]: null,
+                        },
+                    },
+                },
+            ],
+        })
+        res.status(201).send({ data: data })
+    } catch (error) {
+        next(error)
+    }
+}
+
 const create = async (req, res, next) => {
     const { work, progresses, usersIds } = req.body
 
@@ -232,5 +262,6 @@ module.exports = {
     update,
     destroy,
     getByName,
-    get2
+    get2,
+    getCategory
 }

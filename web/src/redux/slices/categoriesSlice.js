@@ -40,6 +40,16 @@ export const getAllCategories = () => {
     }
 }
 
+export const getCategories = (id) => {
+    return async (dispatch) => {
+        await axios(import.meta.env.VITE_URL+'/work/category/'+id)
+        .then((res) => {
+            dispatch(setCategoriesList(res.data.data));
+        })
+        .catch((error) => console.log(error))
+    }
+}
+
 export const createOneCategory = (payload) => {
     return async (dispatch) => {
          await axios.post(import.meta.env.VITE_URL+'/categories', {name: payload})

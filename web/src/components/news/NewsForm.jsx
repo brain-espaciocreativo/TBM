@@ -22,13 +22,14 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getAllWorks } from '../../redux/slices/workSlice'
-import { getAllCategories } from '../../redux/slices/categoriesSlice'
+import { getCategories } from '../../redux/slices/categoriesSlice'
 import './NewsStyle.css'
 
 export default function NewsForm() {
     const dispatch = useDispatch()
     const works = useSelector((state) => state.works.workList)
     const categories = useSelector((state) => state.categories.categories)
+    const [arrayCat, setArrayCat] = useState([])
     const navigate = useNavigate()
     const [ship, setShip] = useState([])
 
@@ -63,8 +64,29 @@ export default function NewsForm() {
 
     useEffect(() => {
         dispatch(getAllWorks())
-        dispatch(getAllCategories())
     }, [dispatch])
+
+    useEffect(() => {
+        if (selectWork > 0 ) {
+            dispatch(getCategories(selectWork));
+        }
+
+    }, [selectWork])
+
+    useEffect(() => {  
+        if (categories.progresses !== undefined) {
+            let arreglo = [];
+            categories.progresses.map((c, i) => {
+                arreglo.push(c.category)
+            })
+           setArrayCat(arreglo);
+        }
+    }, [categories])
+
+
+
+
+
 
     useEffect(() => {
         setData((state) => ({ ...state, workId: selectWork }))
@@ -345,9 +367,9 @@ export default function NewsForm() {
                                                     borderRadius: 2,
                                                 }}
                                             >
-                                                {categories &&
-                                                categories.length ? (
-                                                    categories.map((e, i) => {
+                                                {arrayCat &&
+                                                    arrayCat.length ? (
+                                                    arrayCat.map((e, i) => {
                                                         return (
                                                             <MenuItem
                                                                 key={i}

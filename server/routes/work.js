@@ -3,6 +3,7 @@ const router = Router()
 const {
     get,
     get2,
+    getCategory,
     getAll,
     getByName,
     update,
@@ -12,6 +13,7 @@ const {
 
 router.get('/', getAll)
 router.get('/all/:id', get2)
+router.get('/category/:id', getCategory)
 router.get('/:id', get)
 router.post('/', create)
 router.put('/:id', update)
