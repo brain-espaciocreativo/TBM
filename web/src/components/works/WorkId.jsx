@@ -2,11 +2,19 @@ import { Card, CardContent, Chip, Grid, Typography, useMediaQuery, useTheme, But
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
-import { getOneWork } from "../../redux/slices/workSlice";
+import { getOneWorkAllProgress } from "../../redux/slices/workSlice";
 import NavDashboard2 from "../navDachboard2/NavDashboard2";
 import NavDashboard from "../navDashboard/NavDashboard";
 import KeyboardBackspace from '@mui/icons-material/KeyboardBackspace';
-import { Visibility } from '@mui/icons-material';
+import { GroupByCategoryProgress, totalProcProgress } from "./functions";
+import Progress from '../progress/Progress';
+import MediaCard from "./CardWork";
+
+const stringCase = (param) => {
+    return `${param}`.replace(/(^\w{1})|(\s+\w{1})/g, (letra) =>
+        letra.toUpperCase()
+    )
+}
 
 export default function WorkId() {
 
@@ -17,10 +25,13 @@ export default function WorkId() {
 
     const { id } = useParams();
 
-    const [data, setData] = useState()
+    const [data, setData] = useState();
+    const [progresses, setProgresses] = useState([]);
+    const [prog, setProg] = useState([]);
+    const [total, settotal] = useState();
 
     useEffect(() => {
-        dispatch(getOneWork(id))
+        dispatch(getOneWorkAllProgress(id))
     }, [id, dispatch])
 
     useEffect(() => {
@@ -29,9 +40,36 @@ export default function WorkId() {
                 name: work.name,
                 description: work.description
             })
+            setProgresses(work.progresses);
         }
-        console.log(work);
+        
     }, [work]);
+
+    useEffect(() => {
+        /**
+         * Here I calculate and group by category the Progress Matrix
+         */
+        if (progresses !== undefined) {
+            const arrayfinal = GroupByCategoryProgress(progresses);
+            const totalAcumulado = totalProcProgress(arrayfinal);
+            setProg(arrayfinal);
+            settotal(totalAcumulado);
+        }
+
+    }, [progresses]);
+
+    useEffect(() => {
+        /**
+         * Here I calculate and group by category the Progress Matrix
+         */
+        if (progresses !== undefined) {
+            const arrayfinal = GroupByCategoryProgress(progresses);
+            const totalAcumulado = totalProcProgress(arrayfinal);
+            setProg(arrayfinal);
+            settotal(totalAcumulado);
+        }
+
+    }, [progresses]);
 
     const theme = useTheme();
 
@@ -67,13 +105,26 @@ export default function WorkId() {
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                     Progreso
                                 </Typography>
-                                {
-                                    work && work.progresses
-                                        ? work.progresses.map(element => {
-                                            return <Chip sx={{ background: '#f0b8ba' }} key={element.id} label={`${element.category.name} ${element.value}% ${element.weight}%`} />
-                                        })
-                                        : <p>No hay progreso</p>
-                                }
+                                {prog &&
+                                prog.map((prog, i) => {
+                                    return (
+                                        <Progress
+                                            key={i}
+                                            value={prog.Percentage}
+                                            categorie={stringCase(
+                                                `${prog?.category}`
+                                            )}
+                                        />
+                                    )
+                                })}
+
+                            {total && <Progress
+                                key={`totalcategoryas`}
+                                value={total}
+                                categorie={stringCase(
+                                    `Total`
+                                )}
+                            />}
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">Usuarios</Typography>
                                 {
                                     work && work.users
@@ -85,17 +136,12 @@ export default function WorkId() {
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">Novedades</Typography>
                                 {
                                     work && work.news
-                                        ? work.news.map(element => {
+                                        ? work.news.map((element,i) => {
                                             return (
-                                            <Card key={element.id} style={{ margin: '50px 0' }}>
-                                                <CardContent >
-                                                    <Typography >{element.name}</Typography>
-                                                    <Typography variant="body2" sx={{ mb: 1.5 }} color="text.secondary">{element.description}</Typography>
-                                                </CardContent>
-                                            </Card>
+                                                <MediaCard key={i} id={element.id}></MediaCard>
                                             )
                                         })
-                                        : <p>No hay usuarios</p>
+                                        : <p>No hay Notificaciones</p>
                                 }
 
                             </>

@@ -76,7 +76,7 @@ const updateOneUser = async (req, res, next) => {
     const { id } = req.params
     const { name, surname, role, phone, password } = req.body
     try {
-        if (!name || !surname || !password || !role || !phone)
+        if (!name || !surname || !role || !phone)
             throw new BusinessError('Datos obligatorios', 402)
 
         const data = await Users.update(

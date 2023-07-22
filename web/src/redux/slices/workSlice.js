@@ -51,6 +51,16 @@ export const getOneWork = (payload) => {
     }
 }
 
+export const getOneWorkAllProgress = (payload) => {
+    return async (dispatch) => {
+        await axios(import.meta.env.VITE_URL + '/work/all/' + payload)
+            .then((res) => {
+                dispatch(getWorkOne(res.data.data))
+            })
+            .catch((error) => console.log(error))
+    }
+}
+
 export const createOneWork = (payload) => {
     const params = {
         work: payload.work,

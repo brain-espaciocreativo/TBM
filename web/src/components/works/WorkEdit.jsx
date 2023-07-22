@@ -35,7 +35,7 @@ export default function WorkEdit() {
       setShip(state => [...state, { categoryId: selectedCategory.id, category: e.category, progress: { value: e.value, weight: e.weight } }]);
     });
     work.users.map((e) => {
-      setShipUsers((state) => [...state, {id: e.user_work.userId, name: e.name, email:e.email, surname: e.surname, phone:e.phone, role:e.role}])
+      setShipUsers((state) => [...state, { id: e.user_work.userId, name: e.name, email: e.email, surname: e.surname, phone: e.phone, role: e.role }])
     });
     setNumbre(number + 1)
   }
@@ -80,7 +80,7 @@ export default function WorkEdit() {
   }
 
   const handleEdit = () => {
-   dispatch(updateOneWork({ work: createWorkState, chip: ship, users: shipUsers}))
+    dispatch(updateOneWork({ work: createWorkState, chip: ship, users: shipUsers }))
     Swal.fire({
       title: 'Obra Actualizada!',
     })
@@ -104,13 +104,21 @@ export default function WorkEdit() {
   }
 
   const handleAddChipUser = () => {
-    if (shipUsers.includes(selectUser)) {
+    if (selectUser === '') {
       return Swal.fire({
-        title: `el usuario  ${selectUser.name} ya existe`,
+        title: `Debe selecionar un usuario`,
       })
-    }else {
-      setShipUsers(state => [...state, selectUser ]);
+    } else {
+      if (shipUsers.includes(selectUser)) {
+        return Swal.fire({
+          title: `el usuario  ${selectUser.name} ya existe`,
+        })
+      } else {
+        setShipUsers(state => [...state, selectUser]);
+      }
+
     }
+
   }
 
   const handleChipDeleteUser = (chipToDelete) => {
@@ -132,7 +140,7 @@ export default function WorkEdit() {
     }
 
     if (!array.includes(selectedCategory)) {
-      setShip([...ship, { categoryId: selectedCategory.id, category: selectedCategory, progress: {value: progress.value, weight: progress.weight} }]);
+      setShip([...ship, { categoryId: selectedCategory.id, category: selectedCategory, progress: { value: progress.value, weight: progress.weight } }]);
     } else {
       Swal.fire({ title: 'categoria ya está añadida' })
     }
@@ -162,7 +170,7 @@ export default function WorkEdit() {
   }
 
   const handleChipDelete = (chipToDelete) => {
-    setShip( ship.filter((ship) => ship.category.name != chipToDelete))
+    setShip(ship.filter((ship) => ship.category.name != chipToDelete))
     setArray((e) => e.filter((array) => array.name !== chipToDelete))
   }
 

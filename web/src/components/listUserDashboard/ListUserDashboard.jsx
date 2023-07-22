@@ -92,7 +92,6 @@ export default function ListUserDashboard() {
         email: '',
         phone: '',
         role: '',
-        password: '',
     })
     const [passState, setEditPass] = useState({
         email: '',
@@ -138,7 +137,6 @@ export default function ListUserDashboard() {
                 email: data.email,
                 phone: data.phone,
                 role: data.role,
-                password: data.password,
             })
         }
     }
@@ -441,23 +439,6 @@ export default function ListUserDashboard() {
                 label="Email"
                 className={styles.inputs}
                 readOnly={true}
-            />
-            <TextField
-                className={styles.inputs}
-                label="Contraseña"
-                type="password"
-                name="password"
-                value={editState.password}
-                //required
-                readOnly={true}
-                //  onChange={handleChangeEdit}
-                // onBlur={handleBlur}
-                InputLabelProps={{
-                    style: {
-                        textTransform: 'uppercase',
-                        fontSize: '.8rem',
-                    },
-                }}
             />
             <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Role</InputLabel>
