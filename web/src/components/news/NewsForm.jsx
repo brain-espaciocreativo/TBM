@@ -67,26 +67,20 @@ export default function NewsForm() {
     }, [dispatch])
 
     useEffect(() => {
-        if (selectWork > 0 ) {
-            dispatch(getCategories(selectWork));
+        if (selectWork > 0) {
+            dispatch(getCategories(selectWork))
         }
-
     }, [selectWork])
 
-    useEffect(() => {  
+    useEffect(() => {
         if (categories.progresses !== undefined) {
-            let arreglo = [];
+            let arreglo = []
             categories.progresses.map((c, i) => {
                 arreglo.push(c.category)
             })
-           setArrayCat(arreglo);
+            setArrayCat(arreglo)
         }
     }, [categories])
-
-
-
-
-
 
     useEffect(() => {
         setData((state) => ({ ...state, workId: selectWork }))
@@ -204,7 +198,9 @@ export default function NewsForm() {
         setShip((chips) =>
             chips.filter((chip) => chip.category != chipToDelete)
         )
-        setArray((e) => e.filter((array) => array !== chipToDelete))
+        setArray((array) =>
+            array.filter((category) => category.name !== chipToDelete)
+        )
     }
 
     return (
@@ -367,8 +363,7 @@ export default function NewsForm() {
                                                     borderRadius: 2,
                                                 }}
                                             >
-                                                {arrayCat &&
-                                                    arrayCat.length ? (
+                                                {arrayCat && arrayCat.length ? (
                                                     arrayCat.map((e, i) => {
                                                         return (
                                                             <MenuItem
