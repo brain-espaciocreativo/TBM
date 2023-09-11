@@ -1,5 +1,7 @@
 #!/bin/sh
 echo 'Iniciando instalacion';
+npm i -g concurrently
+npm i -g live-server
 
 cd web
 echo 'Instalando web';
