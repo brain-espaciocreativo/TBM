@@ -1,71 +1,79 @@
-import  { useEffect} from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box,Grid,CardActionArea,Card,CardContent,Typography} from '@mui/material';
+import { Box, Grid, CardActionArea, Card, CardContent, Typography, Container } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getAllNews } from '../../redux/slices/newSlice';
+import { getData } from "../../redux/slices/userSlice";
 const linksArray = ['Charts', 'Users'];
 import NavDashboard from '../../components/navDashboard/NavDashboard';
 import ReactPlayer from 'react-player/youtube'
 import HomeUI from './HomeUI';
 import CardNews from '../../components/cardNews/CardNews';
+import WorkItem from "../../components/works/WorkNoti";
 
 const useStyle = makeStyles({
   btn: {
     background: 'black',
     color: 'white'
   },
-  root:{
-    maxWidth:345,
-    marginTop:'10rem'    
+  root: {
+    marginTop: '5rem'
   },
-  media:{
-    height:140
+  media: {
+    height: 140
   },
-  progress:{
-    paddingTop:'50px'
+  progress: {
+    paddingTop: '50px'
   }
 });
 export default function Dashboard() {
 
   const styles = useStyle();
+  const [work, setWork] = useState({});
 
-   const dispatch = useDispatch();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const payload = {
+      email: user.email,
+    }
 
-   const news = useSelector(state => state.news.newList);
-   
-   useEffect(()=>{
-     dispatch(getAllNews());
- },[dispatch]);
-  
+    getData(payload)
+      .then((result) => {
+        setWork(result)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, []);
+
   return (
     <div>
-      <NavDashboard 
-      links={linksArray}
-       />
+      <NavDashboard
+        links={linksArray}
+      />
 
-     <Box p={5}>
-        <Grid container spacing={2}>
-          <Typography variant='h5' 
-          component='h6'
-          sx={{color: 'rgb(142, 7, 7)',
-          padding:'15px 0 15px 0',
-          marginTop: '80px'
-        }}
-          >Novedades</Typography>
-        <Grid sx={{
-          display:'flex',
-          gap: '2rem',
-          flexWrap: 'wrap'        
-        }} item>
-                {news && news.length ? news.map((e) =>
-                ( 
-                    <CardNews key={e.id} id={e.id} name={e.name} description={e.description} date={e.date} video={e.video} />
-
-                 )) : ""
-                } 
-              </Grid> 
+      <Container className={styles.root}>
+        <Grid container>
+          <Grid xs={12} sm={6} item>Nombre: {work.name}</Grid><Grid xs={12} sm={6} item>Email: {work.email}</Grid>
         </Grid>
-      </Box>
+        <Grid container>
+          <Typography variant='h5'
+            component='h6'
+            sx={{
+              color: 'rgb(142, 7, 7)',
+              padding: '15px 0 15px 0',
+            }}
+          >Novedades</Typography>
+        </Grid>
+        <Grid container>
+          <Grid item>
+            {work.works && work.works.length > 0 ? work.works.map((w) => (
+              <WorkItem name={w.name} id={w.id} description={w.description} progresses={w.progresses} news={w.news} key={`obrasdeusuario${w.id}`}></WorkItem>
+            )) : "No hay obras asociadas a este usuario"}
+          </Grid>
+        </Grid>
+      </Container>
+
     </div>
   )
 };

@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const User = (conn) => conn.define('user', {
+const Users = (conn) => conn.define('users', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -28,4 +28,4 @@ const User = (conn) => conn.define('user', {
   timestamps: false
 });
 
-module.exports = User;
+module.exports = Users;

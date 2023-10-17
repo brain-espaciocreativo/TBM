@@ -89,6 +89,18 @@ export const getOneUser = (payload) => {
         .catch((error) => console.log(error));
     }
 }
+
+export const getData = async (payload) => {
+    try {
+        const response = await axios.post(import.meta.env.VITE_URL+'/user/data/get', payload);
+        return response.data;
+    } catch (error) {
+        // Handle any errors that occurred during the request
+        console.error(error);
+        throw error; // Rethrow the error to be handled by the caller
+    }
+}
+
 export const cleanOneUser = () =>{
     return  (dispatch) =>{
         dispatch(cleanUser());

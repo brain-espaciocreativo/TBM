@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -51,15 +52,23 @@ export default function DrawerDashboard({links}) {
             <Link to='/admin' className='btt'>
                   <ListItem button>
                       <ListItemIcon>
-                          <HomeIcon className='icon' />
+                          <HomeIcon className='icons' />
                       </ListItemIcon>
                       <ListItemText primary='Inicio' className='btns'/>
                   </ListItem>
               </Link>
+              <Link to='/admin/news/create' className='btt'>
+                <ListItem button>
+                     <ListItemIcon>
+                        <AddIcon className='icons'/>
+                    </ListItemIcon>
+                    <ListItemText primary='Crear novedad' className='btns' />
+                </ListItem>
+              </Link>
               <Link to='/work' className='btt'>
                   <ListItem button>
                       <ListItemIcon>
-                          <HomeRepairServiceIcon className='icon' />
+                          <HomeRepairServiceIcon className='icons' />
                       </ListItemIcon>
                       <ListItemText primary='Obras' className='btns'/>
                   </ListItem>
@@ -67,7 +76,7 @@ export default function DrawerDashboard({links}) {
               <Link to='/users' className='btt'>
                 <ListItem button>
                     <ListItemIcon>
-                        <GroupIcon className='icon'/>
+                        <GroupIcon className='icons'/>
                     </ListItemIcon>
                     <ListItemText primary='Usuarios' className='btns' />
                 </ListItem>
@@ -75,7 +84,7 @@ export default function DrawerDashboard({links}) {
               <Link to='#' className='btt'>
                 <ListItem onClick={handleClean} button >
                     <ListItemIcon>
-                        <LogoutIcon className='icon'/>
+                        <LogoutIcon className='icons'/>
                     </ListItemIcon>
                     <ListItemText primary='Cerrar Sesión' className='btns'/>
                 </ListItem>

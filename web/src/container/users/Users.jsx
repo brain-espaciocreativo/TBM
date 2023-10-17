@@ -26,16 +26,13 @@ export default function Users() {
       <Grid container>
          {
             !isMatch &&
-            <Grid item xs={3} columns={1}>
+            <Grid item md={3} columns={1}>
               <NavDashboard2/>
             </Grid>
           }
-          <Grid item xs={9} columns={2} sx={{marginTop:'7rem'}}>
+          <Grid item xs={12} md={9} columns={2} sx={{marginTop:'7rem'}}>
             <ListUserDashboard />
           </Grid>
         </Grid>
-      
-
-        
     </>
   )}

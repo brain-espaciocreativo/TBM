@@ -1,96 +1,107 @@
-const {Progress, Works, Categories, News} = require('../models');
+const { Op } = require('sequelize');
+const { Progress, Categories } = require('../models');
 const BusinessError = require('../utils/BusinessError');
 
-const getAllProgress = async(req, res, next)=>{
+const getByWorkId = async (workId) => {
     try {
         const data = await Progress.findAll({
-            include: 
-                {
-                  model: Categories
+            include: {
+                model: Categories,
+            },
+            where: {
+                workId: workId
+            }
+        });
+        res.status(201).send({ status: "OK", data });
+    } catch (error) {
+        next(error)
+    }
+};
+
+const getByWorkIdAndWeight = async (workId) => {
+    try {
+        const data = await Progress.findAll({
+            include: {
+                model: Categories,
+            },
+            where: {
+                workId: workId,
+                weight: {
+                    [Op.not]: null
                 }
-            });
-        res.status(201).send({status: "OK", data});
+            }
+        });
+        res.status(201).send({ status: "OK", data });
     } catch (error) {
         next(error)
     }
-}
-const getOnePorgress = async(req, res, next)=>{
-    const { id } = req.params;
+};
+
+const getByNewsId = async (newsId) => {
     try {
-        if (!id) {
-            throw new BusinessError('Datos obligatorios', 401);
-        }
-        const data = await Progress.findByPk(id);
-        res.status(201).send({data: data });
+        const data = await Progress.findAll({
+            include: {
+                model: Categories,
+            },
+            where: {
+                newsId: newsId
+            }
+        });
+        res.status(201).send({ status: "OK", data });
     } catch (error) {
         next(error)
     }
+};
+
+const create = async (progress, workId) => {
+    const { value, categoryId, weight } = progress;
+    if (!value || !categoryId || !workId || !weight) throw new BusinessError('Datos obligatorios', 401);
+
+    const data = await Progress.create({
+        value,
+        categoryId,
+        workId,
+        weight
+    });
+
+    return data;
+};
+
+const createWithNewsId = async (progress, workId, newsId) => {
+    const { value, categoryId } = progress;
+    if (!value || !categoryId || !workId ) throw new BusinessError('Datos obligatorios', 401);
+
+    const data = await Progress.create({
+        value,
+        categoryId,
+        workId,
+        newsId
+    });
+
+    return data;
 }
-const createOneProgress = async (req, res, next) => {
-    const { value, work_progress, newsId } = req.body; 
+
+const destroy = async (id) => {
     try {
-        if( !value ) throw new BusinessError('Datos obligatorios', 401);
-        
-        if(newsId && work_progress){
-            const data = await Progress.create({
-                value, work_progress, newsId
-            });
-            res.status(201).send({status: "OK", data: data });
-        }
-        else if(work_progress){
-            const data = await Progress.create({
-                value, work_progress
-            });
-            res.status(201).send({status: "OK", data: data });
-        }else if(newsId){
-            const data = await Progress.create({
-                value, newsId
-            });
-            res.status(201).send({status: "OK", data: data });
-        }else{
-            const data = await Progress.create({
-                value
-            });
-            res.status(201).send({status: "OK", data: data });
-        }
-        
-    } catch (error) {
-        next(error)
-    }
-}
-const updateOneProgress = async(req, res, next)=>{
-    const { id } = req.params;
-    const { value, workId, work_progress } = req.body;
-    try {
-        if(!workId || !categoriesId || !value ) throw new BusinessError('Datos obligatorios', 401);
-        const data = await Progress.update({
-            value: value,
-            workId: workId,
-            work_progress: work_progress
-        }, {
-        where: {
-            id: id
-        }});
-        res.status(201).send({status: "OK", data });
-    } catch (error) {
-        next(error)
-    }
-}
-const deleteOneProgress = async(req, res, next)=>{
-    const { id } = req.params;
-    try {
-        if(!id) throw new BusinessError('Datos obligatorios', 401);
-        await Progress.destroy({ where: { id: id }});
+        if (!id) throw new BusinessError('Datos obligatorios', 401);
+        await Progress.destroy({ where: { id: id } });
         res.status(204).send("Se elimino correctamente");
     } catch (error) {
         next(error)
     }
 }
 
+const destroyWithNewId = async (id) => {
+    if (!id) throw new BusinessError('Datos obligatorios', 401);
+    await Progress.destroy({ where: { newsId: id } });
+}
+
 module.exports = {
-    getAllProgress,
-    getOnePorgress,
-    createOneProgress,
-    updateOneProgress,
-    deleteOneProgress
+    getByWorkId,
+    getByWorkIdAndWeight,
+    getByNewsId,
+    create,
+    destroy,
+    destroyWithNewId,
+    createWithNewsId
 }

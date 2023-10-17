@@ -29,13 +29,13 @@ export default function Dashboard() {
       <Grid container>
           {
             !isMatch &&
-            <Grid item xs={3} columns={2}>
+            <Grid item md={3} columns={2}>
               <NavDashboard2/>
             </Grid>
           }
 
-          <Grid item xs={9}
-                    columns={2}
+          <Grid item xs={12} md={9}
+                    
                     sx={{
                     marginTop: '9rem',
                 }} >

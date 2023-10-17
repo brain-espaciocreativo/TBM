@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import './PasswordReset.css';
 import { Link } from "react-router-dom";
+import {config} from '../../config/config.js';
 
 const ForgotPassword = () =>{
 
@@ -13,7 +14,7 @@ const ForgotPassword = () =>{
         const userEmail = {
             email: e.target.email.value
         };
-        await axios.post('http://localhost:3000/user/sendpasswordlink' , userEmail)
+        await axios.post(`${config.apiURL}/user/sendpasswordlink` , userEmail)
             .then( (res) =>{
                 Swal.fire({
                     showConfirmButton: true,

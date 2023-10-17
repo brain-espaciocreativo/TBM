@@ -10,9 +10,9 @@ const Progress = (conn) => conn.define('progress', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    height_value: {
+    weight: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false

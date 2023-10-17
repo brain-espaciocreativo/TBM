@@ -1,209 +1,267 @@
-const {Works, News, Progress, Categories, Users} =  require('../models');
-const BusinessError = require('../utils/BusinessError');
+const { Works, News, Progress, Categories, Users } = require('../models')
+const { create: createProgress } = require('../controllers/progress')
+const BusinessError = require('../utils/BusinessError')
+const { Op } = require('sequelize')
 
-const getAllWork = async(req, res, next)=>{
+const getAll = async (req, res, next) => {
     try {
         const data = await Works.findAll({
             include: [
                 {
-                  model: News
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
                 },
                 {
-                  model: Progress,
-                  include: {
-                    model: Categories
-                }
-                },{
-                    model: Users
-                }]
-        });
-        res.status(201).send({status: "OK", data});
+                    model: Users,
+                    attributes: { exclude: ['password'] },
+                },
+            ],
+        })
+        res.status(201).send({ status: 'OK', data })
     } catch (error) {
         next(error)
     }
 }
-const getOneWork = async(req, res, next)=>{
-    const { id } = req.params;
+
+const get = async (req, res, next) => {
+    const { id } = req.params
     try {
         if (!id) {
-            throw new BusinessError('Datos obligatorios', 401);
+            throw new BusinessError('Datos obligatorios', 401)
         }
         const data = await Works.findOne({
-            where:{
-                id: id
-            },
-                include: [{
-                  model: News
-                },
-                {
-                    model: Progress,
-                    include: {
-                        model: Categories
-                    }
-                },{
-                    model:Users
-                }]
-            
-        });
-        res.status(201).send({data: data });
-    } catch (error) {
-        next(error)
-    }
-}
-const createOneWork = async(req, res, next)=>{
-    const { work, ships, shipUsers } = req.body;
-
-    try {
-        if(!work.name || !work.description ) throw new BusinessError('Datos obligatorios', 401);
-
-        if(ships){
-            let workCreated = null;
-            if(work.userId) {
-                const data = await Works.create({
-                    name: work.name,
-                    description: work.description,
-                    userId: work.userId
-                });
-                res.status(201).send({status: "OK", data: data });
-            }else{
-                workCreated = await Works.create({
-                    name: work.name,
-                    description: work.description
-                });
-                const currentWork = workCreated.get({ plain: true });
-
-                ships.map( async (e) => {
-                    const currentCategory = await Categories.findOne({
-                    where:{
-                        name: e.category
-                    }
-                    })
-                    
-                    const createdProgress = Progress.create({
-                        value: `${e.progress.value}`,
-                        height_value: `${e.progress.height_value}`,
-                        work_progress: currentWork.id,
-                        categoryId: currentCategory.dataValues.id
-                    })
-
-                    const categoria = Categories.create({
-                        name: `${e.category.name}`,
-                        progressId: 1
-                    })
-                })
-                res.status(201).send({status: "OK", data: workCreated })
-
-
-        if(shipUsers){
-            const usersData = await shipUsers.map( async (e) =>{
-                    const data = await Users.findOne({
-                    where:{
-                        email: e.email
-                    }
-                })
-                workCreated.addUsers(data)
-            })
-        }
-        }
-    }      
-    }catch (error) {
-        next(error)
-    }
-}
-const updateOneWork = async(req, res, next)=>{
-    const { id } = req.params;
-    const { name, description } = req.body.categoryData;
-
-    const workData = req.body.categoryData;
-    const oldProgress = req.body.categoryData.progresses;
-    const newProgress = req.body.chip;
-    
-
-    try {
-        if(!name || !description )throw new BusinessError('Datos obligatorios', 401);  
-        newProgress.map( async (j) =>{
-            let result = true;
-                oldProgress.map( (e) => {
-                    if(e.category.name === j.category){
-                        result = false
-                        Progress.update({
-                            value: j.progress.value,
-                            height_value: j.progress.height_value,
-                        },{
-                            where:{
-                                id: e.id
-                            }
-                        })
-                    }
-                })
-
-                if(result){
-                    const newData  = await Categories.findOne({
-                        where: {
-                            name: j.category
-                        }
-                    })
-                    Progress.create({
-                        value: j.progress.value,
-                        height_value: j.progress.height_value,
-                        categoryId: newData.id,
-                        work_progress: workData.id
-                    })
-                }
-        })
-        const data = await Works.update({
-            name:name,
-            description:description
-        }, {
             where: {
-                id: id
-            }
-        });
-        res.status(201).send({status: "OK", data });
-    } catch (error) {
-        next(error)
-    }
-}
-const deleteOneWork = async(req, res, next)=>{
-    const { id } = req.params;
-    try {
-        const data = await Works.findOne({ where: { id: id }})
-        await Works.destroy({ where: { id: id }});
-        res.status(200).send({status: 200, data: data});
-    } catch (error) {
-        next(error)
-    }
-}
-const getOneByName = async(req, res, next)=>{
-    const { name } = req.params;
-    try {
-        const data = await Works.findOne({
-            where:{
-                name: name
+                id: id,
             },
-                include: [{
-                  model: News
+            include: [
+                {
+                    model: News,
                 },
                 {
                     model: Progress,
                     include: {
-                        model: Categories
-                    }
-                },{
-                    model:Users
-                }]
-            
-        });
-        res.status(200).send({data: data });
+                        model: Categories,
+                    },
+                    where: {
+                        weight: {
+                            [Op.not]: null,
+                        },
+                    },
+                },
+                {
+                    model: Users,
+                    //     attributes: ['email'],
+                },
+            ],
+        })
+        res.status(201).send({ data: data })
     } catch (error) {
         next(error)
     }
 }
+
+const get2 = async (req, res, next) => {
+    const { id } = req.params
+    try {
+        if (!id) {
+            throw new BusinessError('Datos obligatorios', 401)
+        }
+        const data = await Works.findOne({
+            where: {
+                id: id,
+            },
+            include: [
+                {
+                    model: News,
+                },
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
+                },
+                {
+                    model: Users,
+                    //     attributes: ['email'],
+                },
+            ],
+        })
+        res.status(201).send({ data: data })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getCategory = async (req, res, next) => {
+    const { id } = req.params
+    try {
+        if (!id) {
+            throw new BusinessError('Datos obligatorios', 401)
+        }
+        const data = await Works.findOne({
+            where: {
+                id: id,
+            },
+            include: [
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
+                    where: {
+                        weight: {
+                            [Op.not]: null,
+                        },
+                    },
+                },
+            ],
+        })
+        res.status(201).send({ data: data })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const create = async (req, res, next) => {
+    const { work, progresses, usersIds } = req.body
+
+    try {
+        if (!work.name || !work.description)
+            throw new BusinessError('Datos obligatorios', 401)
+
+        const users = await Users.findAll({
+            where: {
+                id: usersIds,
+            },
+        })
+
+        const createdWork = await Works.create({
+            name: work.name,
+            description: work.description,
+        })
+
+        createdWork.addUsers(users)
+
+        if (progresses && progresses.length > 0) {
+            const createdProgresses = await Promise.all(
+                progresses.map((progress) =>
+                    createProgress(progress, createdWork.dataValues.id)
+                )
+            )
+
+            res.status(201).send({
+                status: 'OK',
+                data: {
+                    ...createdWork.dataValues,
+                    processes: createdProgresses,
+                },
+            })
+        } else {
+            res.status(201).send({ status: 'OK', data: createdWork })
+        }
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+const update = async (req, res, next) => {
+    const { id } = req.params
+    const { body } = req
+    const { name, description, usersIds } = body
+
+    try {
+        if (!name || !description)
+            throw new BusinessError('Datos obligatorios', 401)
+
+        let work = await Works.findOne({
+            where: {
+                id: id,
+            },
+            include: {
+                model: Users,
+            },
+        })
+
+        if (work.users) {
+            work.users.map((u) => work.removeUser(u))
+        }
+
+        const users = await Users.findAll({
+            where: {
+                id: usersIds,
+            },
+        })
+
+        await Works.update(
+            {
+                name: name,
+                description: description,
+            },
+            {
+                where: {
+                    id: id,
+                },
+            }
+        )
+
+        work.addUsers(users)
+
+        res.status(201).send({ status: 'OK', work })
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+const destroy = async (req, res, next) => {
+    const { id } = req.params
+    try {
+        const data = await Works.findOne({ where: { id: id } })
+        await Works.destroy({ where: { id: id } })
+        res.status(200).send({ status: 200, data: data })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getByName = async (req, res, next) => {
+    const { name } = req.params
+    try {
+        const data = await Works.findOne({
+            where: {
+                name: name,
+            },
+            include: [
+                {
+                    model: News,
+                },
+                {
+                    model: Progress,
+                    include: {
+                        model: Categories,
+                    },
+                },
+                {
+                    model: Users,
+                },
+            ],
+        })
+        res.status(200).send({ data: data })
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
-    getAllWork,
-    getOneWork,
-    createOneWork,
-    updateOneWork,
-    deleteOneWork,
-    getOneByName
+    getAll,
+    get,
+    create,
+    update,
+    destroy,
+    getByName,
+    get2,
+    getCategory
 }

@@ -7,9 +7,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently --kill-others \"npm run server\" \"npm run web\"",
+    "start": "concurrently --kill-others \"npm run server\" \"npm run web\" \"npm run app\"",
     "web": "cd web && npm run preview",
     "server":"cd server && npm run dev",
+    "app": "cd app && live-server --port=3001 --host=0.0.0.0",
     "install": "sh ./install.sh"
   },
   "repository": {

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCallback } from 'react';
 import './ForgotPassword.css';
+import {config} from '../../config/config';
 
 
 const ForgotPassword = () => {
@@ -15,7 +16,7 @@ const ForgotPassword = () => {
   const [password, setPassword] = useState("")
 
 const userValid = async () =>{
-  await axios.get(`http://localhost:3000/user/reset/${token}`)
+  await axios.get(`${config.apiURL}/user/reset/${token}`)
     .then( (res) =>{
       if(res === 201){
         console.log('user valido',res);
@@ -47,7 +48,7 @@ const userValid = async () =>{
   const handletoken = async (e) =>{
     e.preventDefault();
 
-    await axios.put(`http://localhost:3000/user/updatepassword/${token}`, {password:password})
+    await axios.put(`${config.apiURL}/user/updatepassword/${token}`, {password:password})
     .then( (res) =>{
       if(res){
         setPassword();
